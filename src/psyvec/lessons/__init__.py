@@ -18,6 +18,8 @@ from psyvec.lessons.core import (
     Lifecycle,
     ValidationResult,
     distill,
+    find_near_duplicates,
+    lesson_similarity,
     validate,
 )
 
@@ -28,6 +30,8 @@ __all__ = [
     "Lifecycle",
     "ValidationResult",
     "distill",
+    "find_near_duplicates",
+    "lesson_similarity",
     "validate",
     "AuditDecision",
     "PairedBenefitObservation",

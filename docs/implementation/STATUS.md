@@ -8,16 +8,28 @@ Resuming in a fresh session? Read [HANDOFF.md](HANDOFF.md) first.
 | 1 | Model/backend abstraction and compatibility ports | BLOCKED (external) |
 | 2 | Offline role-adapter registry and routing | partially complete; P2-3/P2-4/P2-5 BLOCKED (dependency) |
 | 3 | Typed decision state, separated roles, and case memory | partially complete |
-| 4 | Offline experience spine and contrast verification | partially complete |
+| 4 | Offline experience spine, contrast verification, and replay determinism | offline criteria met |
 | 5 | Lesson-memory audit, poisoning checks, and quarantine | offline criteria met |
 | 6 | Role preference partitions and manifest-difference verification | BLOCKED (dependency) |
 | 7 | Policy registry, regression records, and promotion audit | partially complete |
-| 8 | Split protocol, metrics/statistics, manifests, and privacy audit | partially complete |
+| 8 | Split protocol, metrics/statistics, manifests, ablation budget, and privacy audit | offline criteria met |
 
 Row 3 is `partially complete` rather than `offline criteria met` because Doc 07's
 Phase 3 gate also requires a dual-run rollback against the legacy engine, which
 needs the still-blocked Phase 0 baseline trace. See the
 [Phase 3 report](PHASE_3_STATE_AND_ROLES_REPORT.md).
+
+## Offline work completed after the first handoff
+
+- Phase 4 P4-3: `src/psyvec/evolution/replay.py` — deterministic replay keys and
+  Doc 06 session isolation (a "clear memory" prompt is refused).
+- Phase 5 P5-4: `LessonStore.merge` and `find_near_duplicates` —
+  near-duplicate lessons fold into one entry that records `merged_from`.
+- Phase 8 P8-4: `src/psyvec/research/budget.py` — matched ablation budgets and
+  seed robustness, measurements only.
+- `src/psyvec/privacy/runtime.py` is wired into
+  `psyvec.integration.legacy_bridge`, so the runtime logging path redacts by
+  default (Doc 00 quirk 7).
 
 ## Scope of evidence
 

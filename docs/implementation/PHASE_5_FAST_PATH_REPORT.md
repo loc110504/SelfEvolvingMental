@@ -16,11 +16,20 @@ Status: OFFLINE CRITERIA MET
   previous promoted versions remain auditable and retrieval excludes both.
 - Added four offline unit tests for monitoring, support, poisoning, and
   conflict quarantine.
+- **P5-4 merge (added later, offline).** `lesson_similarity` scores two lessons
+  by token overlap of their procedural text, returning zero across roles or
+  scopes; `find_near_duplicates` groups current entries above a
+  **caller-supplied** similarity threshold; and `LessonStore.merge` folds
+  duplicates into a primary, writing `merged_from` (previously an unused field)
+  plus the union of source contrast ids and validation result ids. Duplicates
+  are retired with `retired:merged_into:<primary>` rather than deleted, so the
+  store stays append-only. Covered by `tests/unit/test_lesson_merge.py`.
 
 ## Deliberately not changed
 
 No code under the pinned `AgentMental/` baseline was changed. No threshold was
-hard-coded: transfer support and win rate remain caller-supplied,
+hard-coded: transfer support, win rate and the merge similarity threshold
+remain caller-supplied,
 development-selected values. No training and no DPO run has happened, and every
 check is against injected fakes rather than a live model, dataset, or
 participant simulator.
@@ -30,13 +39,13 @@ participant simulator.
 ```sh
 python3 -m unittest discover -s tests -p 'test_*.py'
 python3 scripts/verify_agentmental_baseline.py
-ruff check src tests/unit
+ruff check src tests/unit tests/integration
 mypy --strict src/psyvec
 ```
 
-Run from the repository root: **98 tests passed**; the baseline verifier
-reported **9 PASS lines**; Ruff reported no issues in **32 source files**; and
-strict mypy completed successfully.
+Run from the repository root: **164 tests passed**; the baseline verifier
+reported **11 PASS lines**; Ruff reported no issues; and strict mypy completed
+successfully across **48 source files**.
 
 ## Gate status
 

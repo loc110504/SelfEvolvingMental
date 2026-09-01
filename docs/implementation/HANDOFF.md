@@ -11,10 +11,10 @@ evidence of a run.
 Run from the repository root:
 
 ```sh
-python3 -m unittest discover -s tests -p 'test_*.py'    # expect 127 tests, OK
+python3 -m unittest discover -s tests -p 'test_*.py'    # expect 164 tests, OK
 python3 scripts/verify_agentmental_baseline.py          # expect 11 PASS lines
 ruff check src tests/unit tests/integration             # expect clean
-mypy --strict src/psyvec                                # expect 45 source files, no issues
+mypy --strict src/psyvec                                # expect 48 source files, no issues
 git -C AgentMental status --short                        # expect empty
 ```
 
@@ -23,23 +23,16 @@ The verifier's manifest hash must still be
 someone edited the pinned clone and the Phase 0 evidence is void — stop and investigate
 before doing anything else.
 
-## FIRST DECISION: the work is untracked
+## The work is committed
 
-`src/`, `tests/`, `scripts/`, `configs/`, `docs/`, `pyproject.toml` and `AgentMental/` are
-all **untracked** in `main` (`git status`). 127 tests' worth of implementation exists only
-as working-tree files plus 17 worktree branches. Nothing was committed to `main` because
-the user never asked for a commit.
+Resolved: the whole tree is committed on branch **`psyvec/offline-implementation`**, off
+`main`. Nothing is pushed and no PR exists.
 
-Decide with the user before other work:
-
-1. Commit the working tree to a branch off `main` (recommended), or
-2. Keep it untracked and continue, accepting the loss risk.
-
-`AgentMental/` is a nested clone with its own `.git`. Adding it to the parent repo creates
-a gitlink with no `.gitmodules`, and a fresh checkout of that gitlink is an empty
-directory — which breaks `scripts/verify_agentmental_baseline.py`. Options: add it to
-`.gitignore` and document the clone step, or make it a real submodule pinned at
-`0e2fc8ff27552845ae743e3373351120a96e216b`. Do not commit it as a bare gitlink.
+`AgentMental/` is **gitignored**, not committed. It is a nested clone with its own `.git`;
+committing it as a bare gitlink (there is no `.gitmodules`) gives a fresh checkout an
+empty directory, which breaks `scripts/verify_agentmental_baseline.py`. A fresh checkout
+must clone it separately at `0e2fc8ff27552845ae743e3373351120a96e216b`. Making it a real
+pinned submodule is still an open option nobody has taken.
 
 ## What exists
 
@@ -54,13 +47,13 @@ Twelve packages under `src/psyvec/`, all offline, all against injected fakes:
 | `roles/` | true `Updater` (only writer of revised scores) and read-only `Reporter` |
 | `memory/` | single-participant `CaseMemory`, access policy, adapter |
 | `assessment/` | characterized topic stopping matrix driven through typed events |
-| `evolution/` | frozen profile, experience buffer, branch invariants, hard-state mining, utility, validity, local contrast, preference pairs |
+| `evolution/` | frozen profile, experience buffer, branch invariants, hard-state mining, utility, validity, local contrast, preference pairs, replay determinism and session isolation |
 | `lessons/` | distill, source-excluded validation, versioned store, bounded retrieval, poisoning and negative-transfer audit |
 | `training/` | role partitions and manifest parameter-diff verification (no trainer) |
 | `policy/` | paired regression, compare-and-swap promotion, pointer rollback, audit |
 | `evaluation/` | memory ON/OFF, IAR, participant-level MAE, seeded bootstrap and permutation |
-| `research/` | frozen splits, permitted-use matrix, final-test access log, run manifest |
-| `privacy/` | redaction by default, participant pseudonyms, release audit |
+| `research/` | frozen splits, permitted-use matrix, final-test access log, run manifest, matched ablation budget and seed robustness |
+| `privacy/` | redaction by default, participant pseudonyms, release audit, and the redacting runtime log the bridge actually calls |
 
 `tests/integration/test_offline_pipeline.py` composes every layer end to end in one test.
 
@@ -94,17 +87,26 @@ added. This blocks:
 Everything else in Phases 2 and 6 is done. When the libraries are approved, the router and
 `verify_parameter_diff` are the seams they plug into — neither needs redesign.
 
-### C. Implementable offline right now
+### C. Was implementable offline — now done
 
-- **Phase 4 P4-3 replay determinism.** A replay engine proving same state + same profile +
-  same seed yields the same result, and that a "clear memory" prompt does not establish
-  isolation (Doc 06 requires a fresh or explicitly reset session, verified by tests).
-- **Phase 8 P8-4** robustness and ablation budget.
-- **Phase 5** lesson merge for near-duplicates. `LessonMemoryEntry.merged_from` exists but
-  nothing writes it.
-- Wiring `psyvec.privacy` into the runtime logging path. It exists but nothing calls it, so
-  upstream quirk 7 (logs may contain prompts, answers, memory and demographics) is
-  addressed in principle only.
+All four items from the previous handoff have landed:
+
+- **Phase 4 P4-3 replay determinism** — `src/psyvec/evolution/replay.py`. Same state,
+  profile, policy, simulator version, decoding and seed share one `replay_key` and must
+  produce the same hashed result; a `clear_memory_prompt` session is refused with its own
+  message, because Doc 06 requires a fresh or explicitly reset session.
+- **Phase 8 P8-4 robustness and ablation budget** — `src/psyvec/research/budget.py`.
+  Matched question and model-call budgets across arms, one reference arm, shared seed set,
+  per-seed spread and per-seed ablation differences. Measurements only, no verdict.
+- **Phase 5 lesson merge** — `LessonStore.merge` and `find_near_duplicates` in
+  `src/psyvec/lessons/core.py`. `merged_from` is now written; duplicates are retired, not
+  deleted; the similarity threshold is caller-supplied.
+- **Privacy in the runtime logging path** — `src/psyvec/privacy/runtime.py`, wired into
+  both builders in `psyvec.integration.legacy_bridge`. Prompts, completions, memory and
+  demographics are hashed by default, participants become pseudonyms, and
+  `raw_text_opt_in` records any raw-text exception.
+
+Nothing offline-implementable is known to be outstanding. What remains is A and B above.
 
 ## Deferred findings
 
@@ -140,19 +142,13 @@ Keep these unless the user changes them.
   hard-codes `hard_state_threshold`, `pair_margin`, `minimum_role_pairs`,
   `transfer_win_rate`, alpha, or a significance verdict.
 
-## Worktree branches
+## Worktree branches (removed)
 
-Seventeen branches hold the per-task commits, all merged into the working tree already.
-They are kept for diff review and can be removed once the work is committed:
-
-`psyvec-backend-assembly`, `psyvec-trace-completeness`, `phase2-router-registry`,
-`phase-docs`, `p3-roles`, `p3-casememory`, `p3-stopping`, `p4-miner`, `p5-fastpath`,
-`docs-phases`, `p6-preference`, `p7-onoff`, `p5-audit-docs`, `p8-privacy`, `p8-metrics`,
-`p0-evidence`, `docs-final` — each under `VanwPham/`.
-
-`git worktree list` shows their paths under `~/orca/workspaces/SelfEvolvingMental/`. Each
-holds a `TASK.md` (its brief) and, where a review round happened, a `FIXES.md`. Those two
-files were never committed.
+The seventeen `VanwPham/*` worker worktrees and branches are **gone**. Before removal every
+file each branch had touched was diffed against the main working tree; the tree was a
+strict superset in every case, so nothing was lost. Their content now lives in the
+`psyvec/offline-implementation` commit. `TASK.md` and `FIXES.md` briefs were never
+committed and are gone with the worktrees.
 
 ## Delegation pattern that worked
 

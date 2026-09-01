@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+import re
+from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, field, replace
 from typing import Any, Literal
 
@@ -140,6 +141,60 @@ def validate(
     )
 
 
+def lesson_similarity(first: Lesson, second: Lesson) -> float:
+    """Token-overlap similarity of two lessons' procedural text.
+
+    Deliberately crude: the merge threshold is caller-supplied, so this only has
+    to order near-duplicates above unrelated lessons.
+    """
+
+    if first.role != second.role or first.scope != second.scope:
+        return 0.0
+    first_tokens = _lesson_tokens(first)
+    second_tokens = _lesson_tokens(second)
+    union = first_tokens | second_tokens
+    if not union:
+        return 0.0
+    return len(first_tokens & second_tokens) / len(union)
+
+
+def find_near_duplicates(
+    entries: Sequence[LessonMemoryEntry], *, similarity_threshold: float
+) -> tuple[tuple[str, ...], ...]:
+    """Group current entries whose lessons are near-duplicates of each other.
+
+    The first id in each group is the primary — the one a merge keeps.
+    """
+
+    if not 0.0 < similarity_threshold <= 1.0:
+        raise ValueError("similarity_threshold must be in (0, 1]")
+    groups: list[list[LessonMemoryEntry]] = []
+    for entry in entries:
+        for group in groups:
+            if (
+                lesson_similarity(group[0].lesson, entry.lesson)
+                >= similarity_threshold
+            ):
+                group.append(entry)
+                break
+        else:
+            groups.append([entry])
+    return tuple(
+        tuple(member.lesson.lesson_id for member in group)
+        for group in groups
+        if len(group) > 1
+    )
+
+
+def _lesson_tokens(lesson: Lesson) -> frozenset[str]:
+    """Lowercased word tokens of the fields that carry the procedure."""
+
+    text = " ".join(
+        (lesson.trigger, lesson.do, lesson.avoid, lesson.criterion)
+    ).lower()
+    return frozenset(token for token in re.split(r"\W+", text) if token)
+
+
 class LessonStore:
     """In-memory append-only lesson versions with retrieval from current promotions."""
 
@@ -169,6 +224,78 @@ class LessonStore:
 
     def retire(self, lesson_id: str) -> LessonMemoryEntry:
         return self._transition(lesson_id, "promoted", "retired")
+
+    def current(self, lesson_id: str) -> LessonMemoryEntry:
+        """Return the newest version of one lesson."""
+
+        try:
+            return self._entries[lesson_id][-1]
+        except KeyError as error:
+            raise ValueError(f"unknown lesson: {lesson_id}") from error
+
+    def merge(
+        self, primary_id: str, duplicate_ids: Sequence[str]
+    ) -> LessonMemoryEntry:
+        """Fold near-duplicates into ``primary_id`` and retire them.
+
+        The merged version records every folded id in ``merged_from`` and takes
+        the union of the sources and validation results, so a merged lesson
+        keeps citing everything that ever justified it. Duplicates are retired
+        rather than deleted: the store is append-only.
+        """
+
+        if not duplicate_ids:
+            raise ValueError("a merge needs at least one duplicate lesson")
+        if primary_id in duplicate_ids:
+            raise ValueError("a lesson cannot be merged into itself")
+        if len(set(duplicate_ids)) != len(duplicate_ids):
+            raise ValueError("duplicate lesson ids must be unique")
+
+        primary = self.current(primary_id)
+        duplicates = tuple(self.current(lesson_id) for lesson_id in duplicate_ids)
+        mergeable: frozenset[Lifecycle] = frozenset({"validated", "promoted"})
+        for entry in (primary, *duplicates):
+            if entry.lifecycle not in mergeable:
+                raise ValueError(f"cannot merge a {entry.lifecycle} lesson")
+            if entry.lesson.role != primary.lesson.role:
+                raise ValueError("merged lessons must share one role")
+            if entry.lesson.scope != primary.lesson.scope:
+                raise ValueError("merged lessons must share one scope")
+
+        merged = replace(
+            primary,
+            lesson=replace(
+                primary.lesson,
+                source_contrast_ids=_ordered_union(
+                    entry.lesson.source_contrast_ids
+                    for entry in (primary, *duplicates)
+                ),
+            ),
+            version=primary.version + 1,
+            merged_from=_ordered_union(
+                (
+                    primary.merged_from,
+                    tuple(entry.lesson.lesson_id for entry in duplicates),
+                )
+            ),
+            validation_result_ids=_ordered_union(
+                entry.validation_result_ids for entry in (primary, *duplicates)
+            ),
+            governance_history=primary.governance_history
+            + tuple(f"merged:{entry.lesson.lesson_id}" for entry in duplicates),
+        )
+        self.append(merged)
+        for entry in duplicates:
+            self.append(
+                replace(
+                    entry,
+                    lifecycle="retired",
+                    version=entry.version + 1,
+                    governance_history=entry.governance_history
+                    + (f"retired:merged_into:{primary_id}",),
+                )
+            )
+        return merged
 
     def retrieve(
         self, role: str, scope: str, limit: int
@@ -200,3 +327,13 @@ class LessonStore:
             governance_history=previous.governance_history + (lifecycle,),
         )
         return self.append(next_entry)
+
+
+def _ordered_union(groups: Iterable[Sequence[str]]) -> tuple[str, ...]:
+    """Concatenate id sequences, keeping first-seen order and dropping repeats."""
+
+    seen: dict[str, None] = {}
+    for group in groups:
+        for value in group:
+            seen.setdefault(value, None)
+    return tuple(seen)

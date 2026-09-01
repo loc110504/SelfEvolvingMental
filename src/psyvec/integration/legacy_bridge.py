@@ -14,6 +14,7 @@ from typing import Any
 
 from psyvec.model.backend import BackendError
 from psyvec.model.legacy_ports import LegacyModelPort
+from psyvec.privacy.runtime import RedactingRuntimeLog
 
 _RoleOf = Callable[[Any], str]
 
@@ -23,11 +24,14 @@ def build_autogen_role_handler(
     *,
     role_of: _RoleOf,
     request_id_prefix: str = "autogen",
+    log: RedactingRuntimeLog | None = None,
+    participant_id: str | None = None,
 ) -> Callable[[Any, Any, Any, str], str | None]:
     """Replace upstream ``makerequest(manager, proxy, recipient, payload)``.
 
     ``payload`` is forwarded verbatim so prompt content stays byte-identical to
-    the characterized baseline.
+    the characterized baseline. When ``log`` is given, the prompt and completion
+    reach it hashed, never raw.
     """
 
     counter = itertools.count(1)
@@ -36,15 +40,37 @@ def build_autogen_role_handler(
         manager: Any, proxy: Any, recipient: Any, payload: str
     ) -> str | None:
         del manager, proxy
+        request_id = f"{request_id_prefix}-{next(counter)}"
+        role = role_of(recipient)
         try:
             response = port.complete(
-                request_id=f"{request_id_prefix}-{next(counter)}",
-                role=role_of(recipient),
+                request_id=request_id,
+                role=role,
                 system_prompt="",
                 user_prompt=payload,
             )
-        except BackendError:
+        except BackendError as error:
+            _log_call(
+                log,
+                request_id=request_id,
+                role=role,
+                participant_id=participant_id,
+                user_prompt=payload,
+                completion=None,
+                failed=True,
+                failure_kind=type(error).__name__,
+            )
             return None
+        _log_call(
+            log,
+            request_id=request_id,
+            role=role,
+            participant_id=participant_id,
+            user_prompt=payload,
+            completion=response.content,
+            failed=False,
+            failure_kind=None,
+        )
         return response.content
 
     return make_request
@@ -55,29 +81,70 @@ def build_direct_completion(
     *,
     role: str,
     request_id_prefix: str,
+    log: RedactingRuntimeLog | None = None,
+    participant_id: str | None = None,
 ) -> Callable[[str, str], str | None]:
     """Replace an upstream direct OpenAI call with a port-backed completion.
 
     Covers the ``memory.py`` extraction/reassessment and the
     ``generate_response.py`` simulator shapes: system prompt plus user prompt in,
-    text out, ``None`` on an explicit backend failure.
+    text out, ``None`` on an explicit backend failure. ``memory.py`` is the call
+    site Doc 00 quirk 7 is about, so ``log`` redacts rather than drops.
     """
 
     counter = itertools.count(1)
 
     def complete(system_prompt: str, user_prompt: str) -> str | None:
+        request_id = f"{request_id_prefix}-{next(counter)}"
         try:
             response = port.complete(
-                request_id=f"{request_id_prefix}-{next(counter)}",
+                request_id=request_id,
                 role=role,
                 system_prompt=system_prompt,
                 user_prompt=user_prompt,
             )
-        except BackendError:
+        except BackendError as error:
+            _log_call(
+                log,
+                request_id=request_id,
+                role=role,
+                participant_id=participant_id,
+                system_prompt=system_prompt,
+                user_prompt=user_prompt,
+                completion=None,
+                failed=True,
+                failure_kind=type(error).__name__,
+            )
             return None
+        _log_call(
+            log,
+            request_id=request_id,
+            role=role,
+            participant_id=participant_id,
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            completion=response.content,
+            failed=False,
+            failure_kind=None,
+        )
         return response.content
 
     return complete
+
+
+def _log_call(
+    log: RedactingRuntimeLog | None,
+    *,
+    participant_id: str | None,
+    **fields: Any,
+) -> None:
+    """Emit one redacted runtime record, dropping keys the call site did not set."""
+
+    if log is None:
+        return
+    if participant_id is not None:
+        fields["participant_id"] = participant_id
+    log.record(**{key: value for key, value in fields.items() if value is not None})
 
 
 @dataclass(frozen=True, slots=True)

@@ -28,8 +28,32 @@ from psyvec.evolution.mining import (
     build_branch_set,
     mine_hard_states,
 )
+from psyvec.evolution.replay import (
+    ISOLATED_SESSION_KINDS,
+    DeterminismReport,
+    ReplayDeterminismError,
+    ReplayEngine,
+    ReplayIsolationError,
+    ReplayObservation,
+    ReplayRequest,
+    ReplaySession,
+    assert_isolated,
+    determinism_report,
+    replay_manifest,
+)
 
 __all__ = [
+    "ISOLATED_SESSION_KINDS",
+    "DeterminismReport",
+    "ReplayDeterminismError",
+    "ReplayEngine",
+    "ReplayIsolationError",
+    "ReplayObservation",
+    "ReplayRequest",
+    "ReplaySession",
+    "assert_isolated",
+    "determinism_report",
+    "replay_manifest",
     "BranchCandidate",
     "BranchResult",
     "BranchInvariantError",
