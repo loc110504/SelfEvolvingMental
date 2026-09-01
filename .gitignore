@@ -1,0 +1,20 @@
+.codex/
+
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+
+# Runtime output must never be committed by default.
+artifacts/
+logs/
+.env
+
+# Local, potentially licensed datasets stay outside version control.
+data/raw/
+data/processed/
+
+# Pinned upstream clone. Clone separately at 0e2fc8ff27552845ae743e3373351120a96e216b;
+# see scripts/verify_agentmental_baseline.py.
+AgentMental/

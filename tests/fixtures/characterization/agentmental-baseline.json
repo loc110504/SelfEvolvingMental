@@ -1,0 +1,69 @@
+{
+  "characterization": {
+    "automated_simulator_accepts_label_argument": true,
+    "example_questions_omitted_from_question_payload": true,
+    "invalid_score_fallback": 0,
+    "max_questions_per_topic": 3,
+    "model_config": {
+      "cache_seed": 42,
+      "max_tokens": 2048,
+      "model": "qwen2.5-72b",
+      "temperature": 0
+    },
+    "necessity_continue_matrix": {
+      "0:1": false,
+      "1:1": true,
+      "1:2": false,
+      "2:1": true,
+      "2:3": true
+    },
+    "phq8": {
+      "item_score_max": 3,
+      "item_score_min": 0,
+      "question_examples_per_topic": 3,
+      "topic_count": 8
+    },
+    "policy_prompts_are_label_free": true,
+    "summary_agent_can_adjust_scores": true
+  },
+  "constraints": {
+    "authorized_participant_data_present": false,
+    "dataset_authorized": false,
+    "network_required": false,
+    "real_model_configured": false,
+    "split_manifest_present": false,
+    "tracked_model_config_placeholders_only": true,
+    "upstream_business_logic_modified": false
+  },
+  "schema_version": "1.0.0",
+  "upstream": {
+    "commit": "0e2fc8ff27552845ae743e3373351120a96e216b",
+    "origin": "https://github.com/MindIntLab-HFUT/AgentMental.git",
+    "tracked_files_sha256": {
+      ".gitignore": "7e9f95a1fc3ac6b1c07bfdaa087a2296db7e4c5d771c239c6cd8f483f03bc972",
+      "LICENSE": "534b91a680cd5da23d16ca5a099c354c1175e7ac98be05b43d903dc13d4178b8",
+      "README.md": "478c22bfcbd5df14e2f3c636fbf9a4fdf3c7606eade133bb4fb142434f45954e",
+      "data/data_download.py": "f4b3f8e0fdd286b2c0a4d3c83de35159f2971d7378b08e5335132504b08f5963",
+      "data/data_process.py": "49fbe1c4494a246f940eb0eec94641b554c30fd2555b539f60972b49e0608ace",
+      "data/extract_data.py": "debe64959c8fa15f481cf8edd237f1e595f0d5e87d5c98f0ca16630619419bfc",
+      "evaluation/README.md": "267cdd7fea63b396286e275eb3ca9e81a966ba49a1a652cbc8cd78a935a02df9",
+      "images/framework.png": "89287526f9e01e85e0d96d09ad9f9b16beaed60f0224473604550e848b1ede07",
+      "requirements.txt": "bd4726d7da191cc5fd4daf6b8f0027b0f6e6aadc35a107272e78798359c9a64d",
+      "result.py": "21d74ffc8b0904cf3201354f4eeecad0db0a1939c3c1e340440f2afa1a1de82d",
+      "scales/PHQ-8.json": "2577d1bad86559f86842f67e655a61fe9cc4a191f6bb3f1d486fc5bdc8b9552b",
+      "scales/scoring_standards.json": "b7ca86d4b37784ac7045db077fae93ea2ce7274cf92313d5506d8b5cebc8487a",
+      "src/OAI_CONFIG_LIST": "ad6f9f0bd59e6c1c74300080ab50271c89f99e055481a943ce8818eb5bb7324d",
+      "src/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/agents.py": "98b349bf1599029221fc43d5378fabfedda81bdfb6ceb6a7e4f959d5031e73ed",
+      "src/assessment.py": "9f59ec6977a8e6cbba26547d64a5f90ef6f6dc250588f1e016a1452a63f90402",
+      "src/config.py": "289656bdc144b8eb051c457201c689057694233c64df8970ebebf8b1ee35c1ee",
+      "src/data_load.py": "f3f4d2ef53b1e4158da63ec487a582c5c1ad435f2416e944daf047680e3a7a56",
+      "src/generate_response.py": "cbbf2e6d29674280420f5bf6871c72840a5011e5add0458299cd1a7e31c66019",
+      "src/logging_setup.py": "e5dbb9dec462eeb8fd6412401a3356ccd991b725af9d74f732d487e7caa0c64f",
+      "src/main.py": "2325760d1fa300370113aaf2da844ed725a58942fc8adc1e920b47cbd7e1da89",
+      "src/memory.py": "1ecaf1cb21fd713e41846955a7f04905dff5286dbad6fdf656dae5acbcd9c6e2",
+      "src/utils.py": "556fa05b3c8184f2008b4e25fa3ea1d3e548e28055a6d71e289bd98b6ce036fa"
+    },
+    "tree": "10b3807b12e2284e74dab5c21435014153e6290d"
+  }
+}
