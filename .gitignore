@@ -18,3 +18,9 @@ data/processed/
 # Pinned upstream clone. Clone separately at 0e2fc8ff27552845ae743e3373351120a96e216b;
 # see scripts/verify_agentmental_baseline.py.
 AgentMental/
+
+# DAIC-WOZ dataset and its label splits: authorized locally, never committed.
+data/
+data.zip
+.DS_Store
+.venv-legacy/
