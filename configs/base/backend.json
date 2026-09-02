@@ -1,0 +1,8 @@
+{
+    "backend": "legacy-autogen",
+    "max_tokens": 2048,
+    "model": "qwen2.5-72b",
+    "temperature": 0.0,
+    "timeout_seconds": 60.0,
+    "use_backend_abstraction": true
+}
