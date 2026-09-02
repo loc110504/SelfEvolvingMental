@@ -1,0 +1,733 @@
+{
+  "Participant_ID": "301",
+  "real_interview": [
+    {
+      "roleName": "Ellie",
+      "content": "hi i'm ellie thanks for coming in today i was created to talk to people in a safe and secure environment"
+    },
+    {
+      "roleName": "Participant",
+      "content": "thank you"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "think of me as a friend i don't judge i can't i'm a computer"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mmm k"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "i'm here to learn about people and would love to learn about you i'll ask a few questions to get us started and please feel free to tell me anything your answers are totally confidential"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how are you doing today"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm doing good thank you"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "that's good"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "where are you from originally"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm from los angeles"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "really me too"
+    },
+    {
+      "roleName": "Participant",
+      "content": "oh great"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "where do you live"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i live in west los angeles the west side"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "nice"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how do you like your living situation"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's alright"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i xxx"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "do you have roommates"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no i live alone so"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "that's great"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how do you like l_a"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i love it i'm from here so i grew up here it's natural"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are some things you really like about l_a"
+    },
+    {
+      "roleName": "Participant",
+      "content": "the weather um well the weather"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's always good it's never it's never bad uh um there's always something to do it's rarely a dull moment"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "<laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mhm"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are some things you don't really like about l_a"
+    },
+    {
+      "roleName": "Participant",
+      "content": "the traffic"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "i see what you mean"
+    },
+    {
+      "roleName": "Participant",
+      "content": "the traffic is horrible well probably traffic is horrible in almost any major city but i hate the traffic"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "do you travel a lot"
+    },
+    {
+      "roleName": "Participant",
+      "content": "not really i mean i have enough things going on here so if i travel it's usually somewhere that's within driving distance"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "aw okay"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what'd you study at school"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i studied uh business"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i did"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "are you still doing that"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no i've i've been done for a few years so i haven't gone to school for a while"
+    },
+    {
+      "roleName": "Participant",
+      "content": "one of these days i'll go back to graduate school but"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "awesome"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what's your dream job"
+    },
+    {
+      "roleName": "Participant",
+      "content": "my dream job would be to just work for myself and making lots of money um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know i don't really have a dream job just something that i can"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i can work under my own terms and get paid decently and and be in a creative creative environment"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mhm"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how hard is that"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know i think it's just a matter of finding the right situation so right now eh it's been people are a little conservative about what they want so and how they want it so it's a little tougher than it seems <se> it should be but i don't know i think when the situation's right i don't think it's too difficult"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "it can be tough to find a good job these days"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yep"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what do you do now"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i work as an assistant <as> administrative assistant through a temp agency so"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's just basically i get sent out to do uh"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "cool"
+    },
+    {
+      "roleName": "Participant",
+      "content": "to do desk jobs"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "are you happy you did that"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um yes and no i mean i feel like i feel like i could do more but you know it works so"
+    },
+    {
+      "roleName": "Participant",
+      "content": "you know yeah"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how close are you to your family"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm pretty close i mean they're around so"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "hmm"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are some things that make you really mad"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um god really mad"
+    },
+    {
+      "roleName": "Participant",
+      "content": "stupid people just basically doing just doing anything to annoy me"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "that's basically <ba> that's the big thing just just irritating stupid people <laughter> who just do things just to provoke provoke me for no reason at all"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mhm"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "can you give me an example of that"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um what's a good example"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just random people who who think it's funny to just sit there and get a rise out of me just it doesn't have to be one any specific"
+    },
+    {
+      "roleName": "Participant",
+      "content": "situation it's just people who just think it's funny to i think they're just generally sadistic and they just think it's it's funny to to just prod you like it's like poking a stick at an angry dog knowing that they know how to they just wanna push your buttons for no reason so"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "right"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "when was the last time that happened"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh god"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't remember i with those situations i usually try not to remember <laughter> when when it happens i just i just let it go and just like the past is the past i just tend not to look back"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "i understand"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "do you consider yourself an introvert"
+    },
+    {
+      "roleName": "Participant",
+      "content": "what do you mean"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "let's come back to that later"
+    },
+    {
+      "roleName": "Participant",
+      "content": "okay"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what do you do to relax"
+    },
+    {
+      "roleName": "Participant",
+      "content": "god what do i do to relax i like to run i like to go to the gym"
+    },
+    {
+      "roleName": "Participant",
+      "content": "listen to music i have a lot of musician friends so i just so i'm usually around musicians so"
+    },
+    {
+      "roleName": "Participant",
+      "content": "anything of that sort i like"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i like everything from punk rock art to tattoos to just anything that's that's generally art and creative"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "awesome"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "who's someone that's been a positive influence in your life"
+    },
+    {
+      "roleName": "Participant",
+      "content": "who's been a positive <pos>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i think it's just friends in general who who seem to who seem to do well and i think they they're very inspiring and"
+    },
+    {
+      "roleName": "Participant",
+      "content": "which is sometimes a a bit tough in in a town like los angeles where i think everybody's on the go trying to accomplish their own goals so they don't"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mhm"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's sometimes hard to find someone who's gonna be uplifting or try to be inspiring so"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't really have anybody in particular but people have kind of brought up things here and there"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "like what"
+    },
+    {
+      "roleName": "Participant",
+      "content": "you know just like hey instead of instead of doing this how about doing that or hey you're good at this why aren't you doing that or something like that just you know i'm always looking for new opportunities so they always point out things that maybe i might i could do differently"
+    },
+    {
+      "roleName": "Participant",
+      "content": "instead of just being negative saying hey don't do that that's no that's why are you doing that it's a waste of time"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mmm"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "that's good"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how are you at controlling your temper"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i guess it depends on who you talk to"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "<laughter>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm i'm okay at it i could probably work at that"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know i mean i can i i think i can do better at it"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "can you give me an example of that"
+    },
+    {
+      "roleName": "Participant",
+      "content": "well back to the point about people provoking me so i mean i try not to blow steam and let them get under my skin so i just usually try not to let it get to me"
+    },
+    {
+      "roleName": "Participant",
+      "content": "but i don't know i guess with temper i guess it depends on how i handle my stress"
+    },
+    {
+      "roleName": "Participant",
+      "content": "lately i've been better at it just because i think my situation's been a little bit better"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "that's good"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "have you been diagnosed with depression"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "have you ever been diagnosed with p_t_s_d"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "have you ever served in the military"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "is there anything you regret"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "nothing major"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i mean maybe when i was younger i could've traveled more or i could've worked towards something that paid better job-wise but i mean"
+    },
+    {
+      "roleName": "Participant",
+      "content": "those are all things that i think at any point in life you always think like well i coulda shoulda would've done but you know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "but then again i think that's natural for anybody i mean i could i could've become a banker or i could've become a lawyer or a doctor and made about ten times the money that i make now but"
+    },
+    {
+      "roleName": "Participant",
+      "content": "but then again i don't like the law and i don't like medicine so so i'm it wasn't meant to be so"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "right"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "there are always trade offs in life aren't there"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yeah"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what made you decide to do that"
+    },
+    {
+      "roleName": "Participant",
+      "content": "so"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i think"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i think my"
+    },
+    {
+      "roleName": "Participant",
+      "content": "in my life i knew that"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i there's a lot of things i have <ha> there's more dislikes <laughter> than likes so i kinda narrowed it down to what am i good at and what am i not good at and what am i gonna work well or who who am i gonna work well with and who will i not work well with"
+    },
+    {
+      "roleName": "Participant",
+      "content": "so i kind of i kinda sorted out and then the list kind of"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mmm kind of answered itself so"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "that sounds really hard"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no it i don't think it was hard but it was just but i think it was a real reality check and i think it it's kind of a good thing 'cause sometimes trying to conform to doing things that doesn't really fit you doesn't make sense"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's like trying to shove a a round peg into a square a square hole and it's like it just no matter how you try to shove it in it's not gonna go in so sometimes it's just might as well go down a path that seems to work better for you"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "right"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "that makes sense"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what's one of your most memorable experiences"
+    },
+    {
+      "roleName": "Participant",
+      "content": "memorable experiences um hmm"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i think it's just i don't really have like any one in particular i think i think every day is almost like a memorable experience whether it's positive or negative i think it's just everything from getting it just just the fact that"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i got a job and i can i can take care of myself is already almost like a memorable experience maybe for the average person it it sounds stupid but you know i think just the fact that i'm able"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm able to get this far in life without like completely self-destructing is already an accomplishment so i feel like"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i've gotten somewhere"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "that's great"
+    },
+    {
+      "roleName": "Participant",
+      "content": "maybe not to not maybe not to the point to the average person they might think like well why aren't you a millionaire but you know what not everybody can be a millionaire"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "i see what you mean"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yeah"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "when was the last time you felt really happy"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "when was the last time i really felt happy"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know i'm not really someone who's like"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't have any real high highs or low lows i mean i haven't hit any lows so i mean i"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know i'm usually pretty i feel like i'm a level person and i'm pretty happy <ha> every day i feel like if i accomplish one thing then i'm pretty happy so"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i guess to answer the question probably"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mmm probably yesterday i just feel like if i if i'm able to accomplish something then then hey i'm happy"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "that's great"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how would your best friend describe you"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know i don't really have a best friend but i mean i well to answer the question generally friends"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i think they would say that i'm very <ver> pretty outgoing i'm pretty"
+    },
+    {
+      "roleName": "Participant",
+      "content": "determined"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm trying you know i try to you know i try to interact as much as possible i'm always out networking as much as possible"
+    },
+    {
+      "roleName": "Participant",
+      "content": "so"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know i guess that's basically what i think they would describe me as"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay i think i've asked everything i need to"
+    },
+    {
+      "roleName": "Participant",
+      "content": "okay"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "thanks for sharing your thoughts with me"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no problem"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "goodbye"
+    },
+    {
+      "roleName": "Participant",
+      "content": "alright"
+    },
+    {
+      "roleName": "Participant",
+      "content": "bye"
+    }
+  ],
+  "phq8_scores": {
+    "PHQ8_Score": 3,
+    "PHQ8_Binary": 0
+  }
+}

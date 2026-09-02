@@ -1,0 +1,855 @@
+{
+  "Participant_ID": "395",
+  "real_interview": [
+    {
+      "roleName": "Participant",
+      "content": "<synch>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "IntroV4Confirmation (hi i'm ellie thanks for coming in today i was created to talk to people in a safe and secure environment i'm not a therapist but i'm here to learn about people and would love to learn about you i'll ask a few questions to get us started and please feel free to tell me anything your answers are totally confidential are you ok with this)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yes"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay_confirm (okay)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how_doingV (so how are you doing today)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm doing fine"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "thats_good (that's good)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "where_originally (where are you from originally)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "california here in los angeles"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "really (really)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mhm"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "like_about_LA (what are some things you really like about l_a)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i love being near the beach um i love the beach"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i love um living in a big city"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mhm (mhm)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and i love the fact that i have lots of friends and family here"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "dont_like_LA (what are some things you don't really like about l_a)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mm traffic"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just so many sometimes too many people"
+    },
+    {
+      "roleName": "Participant",
+      "content": "but apart from that i i'm generally happy here"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay_confirm (okay)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "study (what did you study at school)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "photography and language studies"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "sounds_interesting (that sounds interesting)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mhm"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "hard_decision (how did you decide to do that)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i love photography"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i was always interested in it and studied it in high school as well so i wanted to continue to learn more about it"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and with languages i come from a mixed background so i wanted to learn the languages of my ethnic background"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "difficult (how hard is that)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's um it wasn't hard it was a passion so i enjoyed it"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "still_working_on_X (are you still working in that)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm not no"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "dream_job (what's your dream job)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um to do photography full time and also to do some of the things that i'm passionate about um more creatively more creative things"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "like_what (like what)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i have an idea i'd like to do um some <s> make some robe <r> ah like a robe line um women's robes and things like that"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "awesome (awesome)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mhm"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "travel_shoes (i'm sure you can tell by my shoes i'm not much of a world explorer do you travel a lot)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i have i've traveled quite a bit and i enjoy <en> i love travel"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "travel_changed (what do you enjoy about traveling)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um seeing different cultures different countries um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "meeting new people all of that"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "travel_trips (i'd love to hear about one of your trips)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and the language"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i lived in greece for um <tisk>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "over a year i taught english there and um <sniffle> i moved around to different parts of greece and uh really had a great time"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "memorableB (what's one of your most memorable experiences)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i think um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just having my group of friends that i met there and going through with the experience with them"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i think one of my most memorable experiences was going to elafonisos in a car with everybody and um and having a just a fantastic time"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "great_situation (that sounds like a great situation)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yes it was"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "shyoutgoing (do you consider yourself more shy or outgoing)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i think i'm shy to begin with and um and as i get to know people then i'm much more outgoing"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "uh_huh (uh huh)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "study (what did you study at school)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "photography and language studies"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "relax_fishtank (sometimes when i'm feeling tense i turn on the fish tank screensaver hey i know it's not hawaii but it's the best i've got what do you do to relax)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<laughter>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<deep breath> um i just stay at home uh maybe watch a movie um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "rest in bed"
+    },
+    {
+      "roleName": "Participant",
+      "content": "watching a movie in bed that's probably one of the things that i like to do to relax"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay_confirm (okay)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "control_temper (how are you at controlling your temper)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i think very good <laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "thats_good (that's good)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "last_argument (when was the last time you argued with someone and what was it about)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<deep breath>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um it was probably with my boyfriend um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh regarding money issues"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "feelguilty (what's something you feel guilty about)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i need to i feel guilty about not generating as much income as i need to right now"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "tell_about_that (can you tell me about that)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm having some struggles in my career right now"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and um financially it's becoming very difficult"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "im_sorry (i'm sorry)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "been_hard (that sounds really hard)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yeah it has been it's been difficult but i've been working very hard to um to remedy that <sigh>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "Ellie17Dec2012_04 (that's great)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "Ellie17Dec2012_04 (that's great)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "give_example (can you give me an example of that)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "so well i'm here and um i'm doing this this focus study i'm doing um many things to generate more money working harder but looking for other ways to generate money outside of my my career"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mhm (mhm)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "memory_erase (tell me about an event or something that you wish you could erase from your memory)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "probably being raped"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "ptsd_diagnosed (have you ever been diagnosed with p_t_s_d)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "depression_diagnosed (have you been diagnosed with depression)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "disturbing_thoughts (do you have disturbing thoughts)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "sometimes"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "trigger (are they triggered by something)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um not that i'm aware of"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "feel_lately (how have you been feeling lately)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<deep breath> um i been feeling stressed <sigh> um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i been feeling um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<deep breath> been feeling stressed and and worried"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "easy_sleep (how easy is it for you to get a good night's sleep)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't seem to have any problem with it <laughter> i seem to get a good night's sleep almost every night"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "thats_good (that's good)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mhm"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "sleep_affects (what are you like when you don't sleep well)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um grumpy and and lethargic and um in the morning"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "situation_handled (tell me about a situation that you wish you had handled differently)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "hmm a situation i wish i would handle differently"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i really can't think of one right now"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay_confirm (okay)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "hard_decisionB (tell me about the hardest decision you've ever had to make)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<laughter> the hardest decision um that i've ever had to make"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it was probably um deciding to not have a a child"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "tell_about_that (can you tell me about that)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "well um i was pregnant um and um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "wasn't sure <sigh> whether or not i should continue the pregancy um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and that was also due to financial burden and um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "the father who i was involved with did not want the child so i made that very very difficult decision"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah_downer (yeah)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "happy_lasttime (tell me about the last time you felt really happy)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "hmm"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<deep breath> really really happy <sigh>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i know when i went to um cancun um on a holiday um over the new year um new year period new year holiday"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "describe_felt (how did you feel in that moment)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<deep breath> i felt <sigh> absolutely fantastic i felt happy i felt relaxed um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i felt like i didn't have a care in the world temporarily"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "eh free"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "thats_great (that's great)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "self_change (what are some things you wish you could change about yourself)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<deep breath>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i wish i could um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "be a little bit stronger and more assertive"
+    },
+    {
+      "roleName": "Participant",
+      "content": "definitely more assertive"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "Ellie17Dec2012_07 (what would you say are some of your best qualities)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i would say i'm a wonderful wonderful friend"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mm i when i love somebody you know i love them very deeply friends family um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "boyfriend"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um so i think that's good i'm very loyal as a friend"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i'm honest i care about people"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm fun to be with so i think those are some of my best qualities"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mm (mm)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "family_relationship (tell me about your relationship with your family)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<deep breath> um my relationship with my family um with my father is not so great"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um my parents were divorced when i was young and he's sort of been in and out of my life you know forever"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh mostly out"
+    },
+    {
+      "roleName": "Participant",
+      "content": "so that's um it's not fantastic but um but it's something that i'm used to so it's not"
+    },
+    {
+      "roleName": "Participant",
+      "content": "as painful as it would be had he been there and then i lost him but it's it's still it's still um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's still not the best situation i mean i still wish that could be um remedied somehow"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah_downer (yeah)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "scrubbed_entry"
+    },
+    {
+      "roleName": "Participant",
+      "content": "so there's good and and bad relationships in my family"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "influence_positive (who's someone that's been a positive influence in your life)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "scrubbed_entry"
+    },
+    {
+      "roleName": "Participant",
+      "content": "someone that's been there for me since i was very very young"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and has always been just incredible and i love her so much"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "aw (aw)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "advice_back (what advice would you give to yourself ten or twenty years ago)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<deep breath> um ten or twenty years ago um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i would've told myself to work harder then and not have so much fun so i don't have to work so hard now"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay_confirm (okay)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "regret (is there anything you regret)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i i regret exactly that i regret um not taking my career seriously earlier on"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um because now it's it's been um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's been much harder"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "Ellie17Dec2012_10 (tell me about something you did recently that you really enjoyed)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i think it was taking the kids to the pier um and spending some wonderful time with them"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and making them happy"
+    },
+    {
+      "roleName": "Participant",
+      "content": "that was probably a great time um one of the best times in the last few weeks"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "kids_elaborate (tell me about your kids)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "scrubbed_entry"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and uh"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and they're they're great kids"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "easy_parent (do you find it easy to be a parent)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um no i think the they're it's challenging"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um it is more difficult because they're stepchildren so there are some um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "times when i'm not sure exactly how much um to get involved and how much not to get involved"
+    },
+    {
+      "roleName": "Participant",
+      "content": "but i'm we're very lucky because they are really good kids they do tend to fight a lot but um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "but i but it's not as difficult as um as i think some other parents have it"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "thats_good (that's good)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mhm"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "parent_differences (what are some ways that you're different as a parent than your parents)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<deep breath>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i made it make a make a conscious effort"
+    },
+    {
+      "roleName": "Participant",
+      "content": "not to um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<laughter> not to punish them um or over-punish them"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i make a conscious decision not to um scream at them the way that i was screamed at i was screamed at a lot as a child"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and um it was really it was really difficult so i make sure not to do that"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "Ellie17Dec2012_08 (what are you most proud of in your life)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i think i'm most proud of the fact that i've um been able to"
+    },
+    {
+      "roleName": "Participant",
+      "content": "travel the world um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and live in other places many many other places um around the country and around the world"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "the fact that um i learned several languages"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and the fact that i've been able to maintain um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "really long long long relationships with my friends"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mhm (mhm)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "asked_everything (okay i think i have asked everything i need to)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "appreciate_open (thanks for sharing your thoughts with me)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "thank you"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "bye (goodbye)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "goodbye"
+    }
+  ],
+  "phq8_scores": {
+    "PHQ8_Score": 7,
+    "PHQ8_Binary": 0,
+    "items": {
+      "PHQ8_NoInterest": 1,
+      "PHQ8_Depressed": 1,
+      "PHQ8_Sleep": 2,
+      "PHQ8_Tired": 1,
+      "PHQ8_Appetite": 0,
+      "PHQ8_Failure": 2,
+      "PHQ8_Concentrating": 0,
+      "PHQ8_Moving": 0
+    }
+  }
+}

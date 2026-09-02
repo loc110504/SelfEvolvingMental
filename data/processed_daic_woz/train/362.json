@@ -1,0 +1,535 @@
+{
+  "Participant_ID": "362",
+  "real_interview": [
+    {
+      "roleName": "Ellie",
+      "content": "hi i'm ellie thanks for coming in today"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "i was created to talk to people in a safe and secure environment"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "i'm not a therapist but i'm here to learn about people and would love to learn about you i'll ask a few questions to get us started"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "and please feel free to tell me anything your answers are totally confidential"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "are you okay with this"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yes"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "so how are you doing today"
+    },
+    {
+      "roleName": "Participant",
+      "content": "good"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "where are you from originally"
+    },
+    {
+      "roleName": "Participant",
+      "content": "from california"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are some things you really like about l_a"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i like the eh arts and entertainments i like"
+    },
+    {
+      "roleName": "Participant",
+      "content": "the uh"
+    },
+    {
+      "roleName": "Participant",
+      "content": "you have a lot of freedom to work in a lot of different fields um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i like the fact that the weather is great um i like the fact that all my roots are here all my family is here"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are some things you don't really like about l_a"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't like"
+    },
+    {
+      "roleName": "Participant",
+      "content": "how hard it is to get places anymore it's very hard there's so much traffic it takes a long time to get where you're going um it's expensive it's a lot more expensive than it used to be"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "do you travel a lot"
+    },
+    {
+      "roleName": "Participant",
+      "content": "not anymore"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what'd you study at school"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i studied journalism english music and special effects makeup"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "are you still working in that"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i am"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what do you do now"
+    },
+    {
+      "roleName": "Participant",
+      "content": "now i am managing a doggy day care facility"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what's your dream job"
+    },
+    {
+      "roleName": "Participant",
+      "content": "my dream job is to"
+    },
+    {
+      "roleName": "Participant",
+      "content": "own my own company again um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "probably working with animals"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "do you consider yourself an introvert"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what do you do to relax"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm i'm an artist i draw i paint i do tattoos"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i work a lot with animals"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i like outdoor activities biking hiking"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are some things that make you really mad"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um people that aren't fair people that are"
+    },
+    {
+      "roleName": "Participant",
+      "content": "angry and um people that are dishonest"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what do you do when you're annoyed"
+    },
+    {
+      "roleName": "Participant",
+      "content": "usually i will give myself like a ten second timeout and think about it before i speak or react"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how are you at controlling your temper"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm very good at controlling my temper"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "when was the last time you argued with someone and what was it about"
+    },
+    {
+      "roleName": "Participant",
+      "content": "probably my spouse um about something to do with our financial matters"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how close are you to your family"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm very close to my children and my father"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "tell me about your kids"
+    },
+    {
+      "roleName": "Participant",
+      "content": "scrubbed_entry"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "do you find it easy to be a parent"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no it's never easy it's the hardest job in the world but it's the best"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what's the hardest thing about being a parent"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "wanting to prevent your children from making the mistakes you've had but you realize that they have to do that"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just to learn how to live life um that's one of the hardest things is letting them make their own mistakes"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what's the best thing about being a parent"
+    },
+    {
+      "roleName": "Participant",
+      "content": "the uh unconditional love my boys have for me the"
+    },
+    {
+      "roleName": "Participant",
+      "content": "everything that being a parent has made me a better person it's made me a better everything a better employee um i've"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i think being having my children made me"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um much better person every day"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what's one of your most memorable experiences"
+    },
+    {
+      "roleName": "Participant",
+      "content": "probably i have a lot i've had a very full life"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i would be really hard to say to narrow that down i've had so many"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how would your best friend describe you"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm a good friend i'm a true friend i'm honest i'm real"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm dependable"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and i don't play games i'm very i'm no <n> i'm no drama"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "have you ever served in the military"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "have you ever been diagnosed with p_t_s_d"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yes i have"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how long ago were you diagnosed"
+    },
+    {
+      "roleName": "Participant",
+      "content": "in um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "february of two thousand eleven"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what got you to seek help"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i was attacked by a stalker and almost killed in november of two thousand nine he broke into my apartment and laid in wait for me and attacked me when i came in the door and tried to kill me"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "do you still go to therapy now"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i do"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "do you feel like therapy's useful"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i think therapy has helped me tremendously i don't think i'd be able to hold a job and be responsible and"
+    },
+    {
+      "roleName": "Participant",
+      "content": "be"
+    },
+    {
+      "roleName": "Participant",
+      "content": "a productive member of society <s> of society without therapy"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what sort of changes have you noticed since you've been going to therapy"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm able to handle things better i don't get so um emotionally upset um a lot more rational i try to stay more rational than emotional more rational and logical"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how have you been feeling lately"
+    },
+    {
+      "roleName": "Participant",
+      "content": "so-so i've been sick and i've been uh run down a little stressed out"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "have you noticed any changes in your behavior or thoughts lately"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i have yes i have"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how do you cope with them"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i use the resources <res> draw on the resources that i've learned and i reach out to other people i try not to isolate"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i try to um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "use the tools that have been given to me in therapy um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't use medication anymore so it's mainly just proactive treatment where i have to uh do something about it"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how easy is it for you to get a good night's sleep"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's not it's never easy it's always bad"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are you like when you don't sleep well"
+    },
+    {
+      "roleName": "Participant",
+      "content": "tired lethargic"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um it's hard to keep my thoughts in order it's hard just to do the basics during the day"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "are they triggered by something"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mm no"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "when was the last time you felt really happy"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i can't remember"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "tell me about something you did recently that you really enjoyed"
+    },
+    {
+      "roleName": "Participant",
+      "content": "oh i went to the beach with my oldest son and his best friend and we rode three real three-wheel bikes and that was a lot of fun"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are you most proud of in your life"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's hard to say right now i haven't decided i'm very proud of my children i would say that's probably it they're really good boys"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "is there anything you regret"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i have too many regrets right now"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what advice would you give yourself ten or twenty years ago"
+    },
+    {
+      "roleName": "Participant",
+      "content": "to finish school"
+    },
+    {
+      "roleName": "Participant",
+      "content": "to um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "stay focused to not"
+    },
+    {
+      "roleName": "Participant",
+      "content": "let myself get distracted um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "to focus more on long-term goals than short-term goals"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "who's someone that's been a positive influence in your life"
+    },
+    {
+      "roleName": "Participant",
+      "content": "my father"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what would you say are some of your best qualities"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm very honest i'm very calm"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't get angry easily it takes a lot to provoke me"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm uh reliable if i say i'm gonna do something i do it"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and i'm uh i'm not i'm basically what you see is what you get i don't i don't pull any punches with people"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are some things that usually put you in a good mood"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um anything to do with animals i love animals i always smile around animals any kind big small"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i like older people elderly people i like to help them and be around them"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i like children"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay i think i've asked everything i need to"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "thanks for sharing your thoughts with me"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "goodbye"
+    }
+  ],
+  "phq8_scores": {
+    "PHQ8_Score": 20,
+    "PHQ8_Binary": 1,
+    "items": {
+      "PHQ8_NoInterest": 2,
+      "PHQ8_Depressed": 2,
+      "PHQ8_Sleep": 3,
+      "PHQ8_Tired": 3,
+      "PHQ8_Appetite": 3,
+      "PHQ8_Failure": 3,
+      "PHQ8_Concentrating": 3,
+      "PHQ8_Moving": 1
+    }
+  }
+}

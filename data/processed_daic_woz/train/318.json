@@ -1,0 +1,571 @@
+{
+  "Participant_ID": "318",
+  "real_interview": [
+    {
+      "roleName": "Ellie",
+      "content": "hi i'm ellie thanks for coming in today"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "i was created to talk to people in a safe and secure environment"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "i'm not a therapist but i'm here to learn about people and would love to learn about you i'll ask a few questions to get us started"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "and please feel free to tell me anything your answers are totally confidential"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "are you okay with this"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yes"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "so how are you doing today"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm alright"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "that's good"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "where are you from originally"
+    },
+    {
+      "roleName": "Participant",
+      "content": "los angeles california"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "really"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yep"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are some things you really like about l_a"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um the lights big city it's always something going on"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mhm"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are some things you don't really like about l_a"
+    },
+    {
+      "roleName": "Participant",
+      "content": "the traffic and that's it"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what'd you study at school"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh business administration and business management"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "are you still doing that"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh not that i'm doing something else i'm doing networking at the moment"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what's your dream job"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "hmm"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh to open up a big clothing line and just supply the whole world with clothing <laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "that sounds interesting"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yeah"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "do you consider yourself an introvert"
+    },
+    {
+      "roleName": "Participant",
+      "content": "definitely"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "why"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh"
+    },
+    {
+      "roleName": "Participant",
+      "content": "'cause i'm all about myself it's all about me <laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "do you feel that way often"
+    },
+    {
+      "roleName": "Participant",
+      "content": "not often but more times than not yeah"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are some things that make you really mad"
+    },
+    {
+      "roleName": "Participant",
+      "content": "being lied to and i guess when people think you're dumber than you than what you are <laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "i understand"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what do you do when you're annoyed"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh try to get away from everything go into my own space"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how are you at controlling your temper"
+    },
+    {
+      "roleName": "Participant",
+      "content": "very well i'm great at controlling my temper"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "that's good"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "when was the last time you argued with someone and what was it about"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i um probably like two days ago <laughter> and it was probably just over some sports it wasn't a real argument"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "<laughter> okay"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "do you travel a lot"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sharp inhaling> not a lot but i travel enough"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what do you enjoy about traveling"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just being able to see <s> to get a change of pace see somebody new see new faces new environment"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "i'd love to hear about one of your trips"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mm let me see the last trip i had was vegas you know how vegas goes it was pretty fun it was a lotta"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "<laughter>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "lotta drinking and a lot of partying going on <laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "nice"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what would you say are some of your best qualities"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "pretty open-minded i'm kind to pretty much everybody i'm a"
+    },
+    {
+      "roleName": "Participant",
+      "content": "pretty even-keel guy"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how do you like your living situation"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's alright it could be better"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "do you have roommates"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "that's good"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "have you ever served in the military"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no ma'am"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "have you ever been diagnosed with p_t_s_d"
+    },
+    {
+      "roleName": "Participant",
+      "content": "nope"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "have you been diagnosed with depression"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how easy is it for you to get a good night's sleep"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh lately it's been pretty tough i guess because i've been staying up so late but"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh that's my fault <laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "why"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know i guess i'm a night owl all of a sudden i'm turning into an owl"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are you like when you don't sleep well"
+    },
+    {
+      "roleName": "Participant",
+      "content": "sluggish and tired all day if i don't sleep well all day i'm just laying around"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mm"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "have you noticed any changes in your behavior or thoughts lately"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no not too much"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "is there anything you regret"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mm no <laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what advice would you give yourself ten or twenty years ago"
+    },
+    {
+      "roleName": "Participant",
+      "content": "oh stay focused and listen to the adults <laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "could you have done anything to avoid it"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yeah"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "tell me more about that"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i mean it's self-explanatory i could've just listened to parents or other adults that tried to steer you in the right way and"
+    },
+    {
+      "roleName": "Participant",
+      "content": "you know you're being a stubborn kid at that uh at those ages so it's like"
+    },
+    {
+      "roleName": "Participant",
+      "content": "what what are you talking about i this is my life i can do what i want i don't have to listen to you but now i see that <laughter> what they were telling me was correct"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how would your best friend describe you"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "hilarious"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how close are you to your family"
+    },
+    {
+      "roleName": "Participant",
+      "content": "pretty close"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "who's someone that's been a positive influence in your life"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh both my parents mother and father"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "that's great"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "tell me about something you did recently that you really enjoyed"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mm recently what did i do"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um new year's eve party i had i had the time of my life it was so fun"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "i'd love to hear all about it"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh this new year's eve i went to a party at a friend's house in baldwin hills area"
+    },
+    {
+      "roleName": "Participant",
+      "content": "he had it at a a pretty nice house it's a three story house and it was like"
+    },
+    {
+      "roleName": "Participant",
+      "content": "three hundred and fifty people in there it was pretty fun but it was also not that fun because there was so many people and you couldn't really move so"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "wow"
+    },
+    {
+      "roleName": "Participant",
+      "content": "that was the only downfall but besides that i brought my new year in great with tons of friends and"
+    },
+    {
+      "roleName": "Participant",
+      "content": "that's how it's supposed to be done"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "awesome"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are some things that usually put you in a good mood"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i'm generally in a good mood every day i mean waking up puts me in a good mood i i guess you could say that but"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know a good a good meal <laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "that's so good to hear"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what's one of your most memorable experiences"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<makes clicking sounds with mouth> ooh one of my most memorable experiences were probably"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh when i was younger i was in the boy scouts and we used to go camping all the time and one year we went to"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yellowstone or yosemite one of those places and we had to work on a mountain biking merit badge and"
+    },
+    {
+      "roleName": "Participant",
+      "content": "of course being from the city i'm like a mountain biking i can ride a mountain bike but"
+    },
+    {
+      "roleName": "Participant",
+      "content": "once we got in the real mountains on got on real mountain bikes"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i gained a new respect for the mountain bikers it was pretty it was fun and pretty intense going downhill doing about forty five miles an hour in dirt on a bicycle was pretty intense and that was i'll i'll never forget that"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "what are you most proud of in your life"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mm i don't know that's a tough one to to answer what am i most proud of"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know honestly"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay i think i've asked everything i need to"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "thanks for sharing your thoughts with me"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "goodbye"
+    },
+    {
+      "roleName": "Participant",
+      "content": "bye"
+    }
+  ],
+  "phq8_scores": {
+    "PHQ8_Score": 3,
+    "PHQ8_Binary": 0,
+    "items": {
+      "PHQ8_NoInterest": 0,
+      "PHQ8_Depressed": 0,
+      "PHQ8_Sleep": 1,
+      "PHQ8_Tired": 1,
+      "PHQ8_Appetite": 1,
+      "PHQ8_Failure": 0,
+      "PHQ8_Concentrating": 0,
+      "PHQ8_Moving": 0
+    }
+  }
+}

@@ -1,0 +1,1883 @@
+{
+  "Participant_ID": "483",
+  "real_interview": [
+    {
+      "roleName": "Participant",
+      "content": "<synch>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "IntroV4Confirmation (hi i'm ellie thanks for coming in today i was created to talk to people in a safe and secure environment i'm not a therapist but i'm here to learn about people and would love to learn about you i'll ask a few questions to get us started and please feel free to tell me anything your answers are totally confidential are you ok with this)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "sure"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay_confirm (okay)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "how_doingV (so how are you doing today)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<laughter>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mm"
+    },
+    {
+      "roleName": "Participant",
+      "content": "good i guess"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "where_originally (where are you from originally)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "new orleans louisiana"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "really (really)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "when_LA (when did you move to l_a)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh two thousand five"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "often_backB (how often do you go back to your hometown)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i used to go back often but not much anymore"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "why2 (why)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh just things happened"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay_confirm (okay)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "why_LA (why did you move to l_a)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh <laughter>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh well"
+    },
+    {
+      "roleName": "Participant",
+      "content": "guess you're not programmed with this knowledge but uh katrina happened in two thousand five"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "Ellie17Dec2012_06 (wow)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "adapted_LA (how easy was it for you to get used to living in l_a)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "not really"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "tell_about_that (can you tell me about that)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "hmm where to begin"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh just l_a's different culturally"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i have a different culture out here"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's just a different place"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mhm (mhm)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "like_about_LA (what are some things you really like about l_a)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um it's it's bike friendly"
+    },
+    {
+      "roleName": "Participant",
+      "content": "louisiana isn't"
+    },
+    {
+      "roleName": "Participant",
+      "content": "new orleans for that matter really isn't"
+    },
+    {
+      "roleName": "Participant",
+      "content": "now they're trying to be but it just it isn't that successful"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "dont_like_LA (what are some things you don't really like about l_a)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh> the drivers they're crazy"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "wild_laughter3 ((laughter))"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "see_mean (i see what you mean)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "travel_shoes (i'm sure you can tell by my shoes i'm not much of a world explorer do you travel a lot)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mm not really kind of but not much anymore"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "why2 (why)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "don't have the money kinda broke <laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "understand (i understand)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "travel_changed (what do you enjoy about traveling)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just being able to go on an adventure"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "travel_trips (i'd love to hear about one of your trips)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "let's see i once went to comic con on a on a bicycle like on a a three wheel bike"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um and that that was pretty fun"
+    },
+    {
+      "roleName": "Participant",
+      "content": "kinda scary and dangerous"
+    },
+    {
+      "roleName": "Participant",
+      "content": "nearly got killed <laughter> it was scary <laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "memorableB (what's one of your most memorable experiences)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "traveling or just in general"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mind (whatever comes to your mind)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "hmm"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i gotta say"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i gotta say we were"
+    },
+    {
+      "roleName": "Participant",
+      "content": "we were heading out of um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "we were"
+    },
+    {
+      "roleName": "Participant",
+      "content": "heading off the p_c_h and going into um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "laguna"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and laguna has this really steep hill and on sundays it's full of traffic"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and i i remember going down"
+    },
+    {
+      "roleName": "Participant",
+      "content": "the the hill and my brakes weren't working and i was trying to hit my brakes and trying to hit my brakes and they just they wouldn't click"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and i was like oh god"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and i'm i'm on a three wheel bike so i'm larger than most bikes and i'm like zipping in between like gridlock traffic"
+    },
+    {
+      "roleName": "Participant",
+      "content": "going down a hill"
+    },
+    {
+      "roleName": "Participant",
+      "content": "unable to brake"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and i'm going down"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and suddenly"
+    },
+    {
+      "roleName": "Participant",
+      "content": "there's this car that veers right into mm essentially where i'm trying to go so i"
+    },
+    {
+      "roleName": "Participant",
+      "content": "turn"
+    },
+    {
+      "roleName": "Participant",
+      "content": "sharply"
+    },
+    {
+      "roleName": "Participant",
+      "content": "in front of between this bus and this truck and literally end up going sideways through traffic through oncoming traffic"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and then <laughter> looping back through oncoming traffic back into the right traffic still without any brakes"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and like not managing to keep my bike from"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "wild_laughter3 ((laughter))"
+    },
+    {
+      "roleName": "Participant",
+      "content": "rolling which is painful when your bike roles kinda hurts a lot"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "oh_my_gosh (oh my gosh)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "so yeah"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yeah that's it"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay_confirm (okay)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "study (what did you study at school)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "various different things uh anthropology visual effects"
+    },
+    {
+      "roleName": "Participant",
+      "content": "kinda weird but yeah"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "sounds_interesting (that sounds interesting)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "hard_decision (how did you decide to do that)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i just i've always had a fascination with film"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i i think the way people do things and go about things is fascinating"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just as like the the mob mentality of people"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah3 (yeah)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "especially"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "dream_job (what's your dream job)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "ooh dream job"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "huh"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i have no idea"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just a job i guess"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay_confirm (okay)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "shyoutgoing (do you consider yourself more shy or outgoing)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i consider myself more outgoing"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "why2 (why)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "you know i i've never been afraid of what people think of me"
+    },
+    {
+      "roleName": "Participant",
+      "content": "like people xxx i i i like people i don't know"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mhm (mhm)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm not"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm not afraid of what they think"
+    },
+    {
+      "roleName": "Participant",
+      "content": "eh i'm more concerned with like the people i know and what they think of me"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i guess so being outgoing just doesn't really"
+    },
+    {
+      "roleName": "Participant",
+      "content": "affect me"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "see_mean (i see what you mean)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "eh"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "relax_fishtank (sometimes when i'm feeling tense i turn on the fish tank screensaver hey i know it's not hawaii but it's the best i've got what do you do to relax)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<deep breath> <mumbling> <sigh> uh i play video games listen to music"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yeah read books i like reading books and drawing"
+    },
+    {
+      "roleName": "Participant",
+      "content": "reading books drawing playing video games"
+    },
+    {
+      "roleName": "Participant",
+      "content": "did i think of anything did i forget anything sleeping"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "uh_huh (uh huh)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i like sleeping it's fun"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "control_temper (how are you at controlling your temper)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh <mumbling> not good"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "landed_trouble (has that gotten you in trouble)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<laughter> frequently <laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "tell_about_that (can you tell me about that)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh"
+    },
+    {
+      "roleName": "Participant",
+      "content": "in high school i i shoved somebody's head through a locker"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yeah"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yeah that that's not good don't ever shove someone's head into a locker"
+    },
+    {
+      "roleName": "Participant",
+      "content": "that's a great way to get suspended"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yeah things like that just"
+    },
+    {
+      "roleName": "Participant",
+      "content": "getting into fights"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "last_argument (when was the last time you argued with someone and what was it about)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "like a serious argument"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mind (whatever comes to your mind)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um <sigh>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i guess like"
+    },
+    {
+      "roleName": "Participant",
+      "content": "xxx"
+    },
+    {
+      "roleName": "Participant",
+      "content": "argument over"
+    },
+    {
+      "roleName": "Participant",
+      "content": "over"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh i guess over like uh like viewpoints on like gun control"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and gun control laws"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i mean"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "uh_huh (uh huh)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it was like"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yesterday evening"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "describe_felt (how did you feel in that moment)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "eh it was"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it it was an argument about you know gun control regulation i mean it doesn't really affect me personally"
+    },
+    {
+      "roleName": "Participant",
+      "content": "but that was like the last argument i got into"
+    },
+    {
+      "roleName": "Participant",
+      "content": "that that's kinda what you specified i think"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay_confirm (okay)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "situation_handled (tell me about a situation that you wish you had handled differently)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "ooh"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh my entire life um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<laughter> uh <mumbling> <sigh>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i have"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "about"
+    },
+    {
+      "roleName": "Participant",
+      "content": "two years ago i broke up"
+    },
+    {
+      "roleName": "Participant",
+      "content": "with like as everyone calls her my evil ex"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yeah it was just it was bad the whole the whole thing went down bad i mean"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh"
+    },
+    {
+      "roleName": "Participant",
+      "content": "eh"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh> uh i think i've calmed down a lot since then"
+    },
+    {
+      "roleName": "Participant",
+      "content": "like just as a person as a whole"
+    },
+    {
+      "roleName": "Participant",
+      "content": "but i mean i was angry and stuff i think i like went riding my bike for like"
+    },
+    {
+      "roleName": "Participant",
+      "content": "a hundreds plus miles in a singular day"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "hmm_downer (hmm)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and i was in a ton of pain"
+    },
+    {
+      "roleName": "Participant",
+      "content": "like"
+    },
+    {
+      "roleName": "Participant",
+      "content": "later in the evening i got home i was like oh god"
+    },
+    {
+      "roleName": "Participant",
+      "content": "like i could barely walk um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and yeah i i think running off and"
+    },
+    {
+      "roleName": "Participant",
+      "content": "like going on a like extreme cycling spree was not good but it was better than like"
+    },
+    {
+      "roleName": "Participant",
+      "content": "eating too much and like"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just"
+    },
+    {
+      "roleName": "Participant",
+      "content": "overeating 'cause i was depressed"
+    },
+    {
+      "roleName": "Participant",
+      "content": "but yeah like we we fought and screamed and it was it was not good like i we didn't physically fight it was more like a screaming match of death"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah_downer (yeah)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "hard_decisionB (tell me about the hardest decision you've ever had to make)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<deep breath> <sigh> hmm"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't think i've had a singular hard decision"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i've had ever had to make"
+    },
+    {
+      "roleName": "Participant",
+      "content": "because"
+    },
+    {
+      "roleName": "Participant",
+      "content": "my my biggest thing"
+    },
+    {
+      "roleName": "Participant",
+      "content": "in life"
+    },
+    {
+      "roleName": "Participant",
+      "content": "is don't you know don't regret"
+    },
+    {
+      "roleName": "Participant",
+      "content": "don't regret"
+    },
+    {
+      "roleName": "Participant",
+      "content": "the the the things you do"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just regret the opportunites you've missed and that's like had to come with me"
+    },
+    {
+      "roleName": "Participant",
+      "content": "that's like had to i've had to like learn that in the past like two years"
+    },
+    {
+      "roleName": "Participant",
+      "content": "like two years ago i totally just could not grasp that concept"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mm (mm)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and to answer your question"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i think thinking about it"
+    },
+    {
+      "roleName": "Participant",
+      "content": "the hardest decision i've had to make"
+    },
+    {
+      "roleName": "Participant",
+      "content": "is"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'd say"
+    },
+    {
+      "roleName": "Participant",
+      "content": "probably"
+    },
+    {
+      "roleName": "Participant",
+      "content": "probably to break up with my ex probably"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "change_directions (what made you decide to do that)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "xxx <sigh> ooh"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um <sigh> where do i begin"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "my ex was not a good person just in any way shape or form of the word"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um she did some things that i wasn't entirely comfortable with"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um just to the the people around her and to me"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<deep breath>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<laughter> you know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "they say you're supposed to give forgive people"
+    },
+    {
+      "roleName": "Participant",
+      "content": "for making mistakes or doing things"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and i just i think there are some things you can't forgive people for"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no matter how hard you try"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and i think there are some things that once done"
+    },
+    {
+      "roleName": "Participant",
+      "content": "that that can't be"
+    },
+    {
+      "roleName": "Participant",
+      "content": "undone they just they're they're the way that they are"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and i think"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i think after what she did"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i i like i just xxx"
+    },
+    {
+      "roleName": "Participant",
+      "content": "eh"
+    },
+    {
+      "roleName": "Participant",
+      "content": "things just fell apart after that it just it it we"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mm despite us trying"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it just it didn't work out"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i mean"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i i i don't know i don't really wanna talk about exactly what happened"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay_confirm (okay)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "memory_erase (tell me about an event or something that you wish you could erase from your memory)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "oh geez"
+    },
+    {
+      "roleName": "Participant",
+      "content": "oh man"
+    },
+    {
+      "roleName": "Participant",
+      "content": "erase from my memory or just erase from ever happening"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "huh i don't <sigh> you know that's hard"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "katrina"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just the experience of katrina for starters"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um <laughter> my <m> my ex"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i i guess between those two it's it's kinda hard i'd i'd actually rather lean towards uh katrina"
+    },
+    {
+      "roleName": "Participant",
+      "content": "'cause that was just that that was not"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i mean i i guess you don't exactly know about it but um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "in two thousand five um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh this giant storm hit"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh"
+    },
+    {
+      "roleName": "Participant",
+      "content": "new orleans louisiana um killed a whole bunch of people"
+    },
+    {
+      "roleName": "Participant",
+      "content": "leveled the town"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i i lost a lot of friends during the storm"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i mean i'm kind of i'm getting over it"
+    },
+    {
+      "roleName": "Participant",
+      "content": "but"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's still"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's it's still there"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and i think"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh i i don't know i mean"
+    },
+    {
+      "roleName": "Participant",
+      "content": "you can try and look at you can try your best to try and find something positive"
+    },
+    {
+      "roleName": "Participant",
+      "content": "in that but there's just there's nothing the only"
+    },
+    {
+      "roleName": "Participant",
+      "content": "thing you can do"
+    },
+    {
+      "roleName": "Participant",
+      "content": "is <i> is"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just think that that was like a freak accident and it'll never happen again"
+    },
+    {
+      "roleName": "Participant",
+      "content": "though <laughter> i live in l_a and you know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<laughter> earthquakes"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<laughter> they could happen <laughter> and i just think oh i'd rather"
+    },
+    {
+      "roleName": "Participant",
+      "content": "rather know that it's coming than not know it's coming"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah_downer (yeah)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "ptsd_diagnosed (have you ever been diagnosed with p_t_s_d)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yes"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "depression_diagnosed (have you been diagnosed with depression)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<laughter> yeah"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "when_diagnosed (how long ago were you diagnosed)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh> um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mm depression it's reoccurred multiple times"
+    },
+    {
+      "roleName": "Participant",
+      "content": "that's no surprise"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um first time i was diagnosed was in middle school"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um which would've been"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh> ten well twelve <twel> ten between ten twelve years ago"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know xxx"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know whenever i was in the sixth grade that's"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's when i first was told that i was depressed"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mhm (mhm)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "as far as p_t_s_d goes"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um post katrina"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and then"
+    },
+    {
+      "roleName": "Participant",
+      "content": "you know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh just"
+    },
+    {
+      "roleName": "Participant",
+      "content": "post katrina mostly <laughter> that was the big thing"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "why_seek_help (what got you to seek help)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i guess having been diagnosed previously as being depressed and still being in high school"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it kinda wasn't i wasn't really seeking help it's kind of i got i kinda got into my high school"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and they were like here's help 'cause we know you're gonna need it"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um and i was like oh well thanks i didn't really ask for it but okay i'll take it"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "you know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just kinda happened"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "therapy_going (do you still go to therapy now)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "no not not anymore"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "stop_going (why did you stop)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "eh"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<laughter> that's a good question um <laughter>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh geez uh you know i really don't know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i guess it just kinda stopped just kinda was like well i'm not gonna do this anymore"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "therapy_useful (do you feel like therapy is useful)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh sometimes"
+    },
+    {
+      "roleName": "Participant",
+      "content": "sometimes it's a lot of like how are you feeling today"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and stuff and"
+    },
+    {
+      "roleName": "Participant",
+      "content": "you know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's kind of well i'm feeling fine right now but"
+    },
+    {
+      "roleName": "Participant",
+      "content": "ask me in two hours and who knows"
+    },
+    {
+      "roleName": "Participant",
+      "content": "you know"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "right2 (right)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "therapist_affect (how has seeing a therapist affected you)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i guess"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it it's helped me understand that some of the things that just happen just happen"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and to just get on and move along with your life"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mm essentially just"
+    },
+    {
+      "roleName": "Participant",
+      "content": "mm like carry on you know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "things will happen carry on"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah_downer (yeah)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "happy_lasttime (tell me about the last time you felt really happy)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "wow <laughter> um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh i was um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i was hanging out with my girlfriend just"
+    },
+    {
+      "roleName": "Participant",
+      "content": "hanging out"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "good_hear (that's so good to hear)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "self_change (what are some things you wish you could change about yourself)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "well for starters i mean"
+    },
+    {
+      "roleName": "Participant",
+      "content": "you <y> you can't"
+    },
+    {
+      "roleName": "Participant",
+      "content": "see when i walked in but i'm walking with a cane right now 'cause i i got hit by a car recently"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and uh i'd i'd make my leg better"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "let's see cane's over there"
+    },
+    {
+      "roleName": "Participant",
+      "content": "that way but anyway um <sigh>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh make myself less fat"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<laughter>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'd make it so i don't feel the incessant need to sleep fourteen hours a day"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um 'cause when you sleep like more than ten hours a day it's just it's unproductive you waste too much time"
+    },
+    {
+      "roleName": "Participant",
+      "content": "like i have friends who are like oh you know i feel rejuvenated after six hours and i'm like how do you do that"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i have to sleep like twelve hours to feel good"
+    },
+    {
+      "roleName": "Participant",
+      "content": "like you can sleep six"
+    },
+    {
+      "roleName": "Participant",
+      "content": "you know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "like in in in crunch time you know you can get away with four i have to get away with"
+    },
+    {
+      "roleName": "Participant",
+      "content": "seven"
+    },
+    {
+      "roleName": "Participant",
+      "content": "or eight"
+    },
+    {
+      "roleName": "Participant",
+      "content": "you know"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah3 (yeah)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "like"
+    },
+    {
+      "roleName": "Participant",
+      "content": "that that's my crunch time sleep schedule eight hours"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's just"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know i oversleep but i like sleeping too"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "see_mean (i see what you mean)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i mean"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yeah it's just the oversleeping part i don't like so much"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay_confirm (okay)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "BF_describe (how would your best friend describe you)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "utterly insane in a good way"
+    },
+    {
+      "roleName": "Participant",
+      "content": "utterly insane in a good way"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "wild_laughter3 ((laughter))"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh i guess"
+    },
+    {
+      "roleName": "Participant",
+      "content": "like they they would also"
+    },
+    {
+      "roleName": "Participant",
+      "content": "say like you know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "there <the> there are times where i might seem like an asshole and i'm i'm not really an asshole i just"
+    },
+    {
+      "roleName": "Participant",
+      "content": "you know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i i just have issues like everybody else"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um specifically i have"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh asperger's so that's a form of autism"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um that just kinda makes life awesome"
+    },
+    {
+      "roleName": "Participant",
+      "content": "they'd also say i'm flamboyant and eccentric"
+    },
+    {
+      "roleName": "Participant",
+      "content": "'cause i totally am"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i just"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i i don't know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i figure i'm still alive so i should live because i'm still alive"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and you know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "who knows how long i'm gonna be alive for"
+    },
+    {
+      "roleName": "Participant",
+      "content": "so i should you know"
+    },
+    {
+      "roleName": "Participant",
+      "content": "live while i'm alive and just"
+    },
+    {
+      "roleName": "Participant",
+      "content": "go out and do stuff and not"
+    },
+    {
+      "roleName": "Participant",
+      "content": "not sit and be calm"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah3 (yeah)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "except when i'm reading"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and i like reading"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay_confirm (okay)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "advice_back (what advice would you give to yourself ten or twenty years ago)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh>"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh stop fucking up um no uh that's kinda messed up"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i think"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i would've told myself at the time"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "'cause <ca> 'cause i i i've known"
+    },
+    {
+      "roleName": "Participant",
+      "content": "my my evil ex"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um i've known her since like i was like six and she was five"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i think ten years ago i would've grabbed myself by the shoulders and say you see that girl whatever you do do not date that girl"
+    },
+    {
+      "roleName": "Participant",
+      "content": "don't trust her she can't be trusted"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um and more importantly"
+    },
+    {
+      "roleName": "Participant",
+      "content": "don't"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<deep breath> don't let your guard down around her 'cause she'll she'll exploit that"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "mm (mm)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "and i mean like physically let your guard down not mentally"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yeah don't don't date her just don't do it it's not worth it <laughter> it's not worth the trouble it's not worth the pain"
+    },
+    {
+      "roleName": "Participant",
+      "content": "it's not worth it"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "okay_confirm (okay)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "Ellie17Dec2012_08 (what are you most proud of in your life)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "<sigh> um the fact that i'm still alive"
+    },
+    {
+      "roleName": "Participant",
+      "content": "maybe"
+    },
+    {
+      "roleName": "Participant",
+      "content": "yeah"
+    },
+    {
+      "roleName": "Participant",
+      "content": "uh i don't know cycling to comic con i was pretty proud of that pretty proud that i managed to do it"
+    },
+    {
+      "roleName": "Participant",
+      "content": "um"
+    },
+    {
+      "roleName": "Participant",
+      "content": "just"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't you know i don't really know i don't really use the term pride"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't really feel pride"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i'm just it's it's more of like the fact that i'm still alive i'm proud to be alive <laughter>"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah3 (yeah)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "i don't know if that makes me humble or just insane"
+    },
+    {
+      "roleName": "Participant",
+      "content": "who knows"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "asked_everything (okay i think i have asked everything i need to)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "appreciate_open (thanks for sharing your thoughts with me)"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "bye (goodbye)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "do i press the button now"
+    },
+    {
+      "roleName": "Participant",
+      "content": "oh bye"
+    },
+    {
+      "roleName": "Ellie",
+      "content": "yeah3 (yeah)"
+    },
+    {
+      "roleName": "Participant",
+      "content": "okay"
+    }
+  ],
+  "phq8_scores": {
+    "PHQ8_Score": 15,
+    "PHQ8_Binary": 1,
+    "items": {
+      "PHQ8_NoInterest": 0,
+      "PHQ8_Depressed": 1,
+      "PHQ8_Sleep": 3,
+      "PHQ8_Tired": 3,
+      "PHQ8_Appetite": 3,
+      "PHQ8_Failure": 2,
+      "PHQ8_Concentrating": 3,
+      "PHQ8_Moving": 0
+    }
+  }
+}
