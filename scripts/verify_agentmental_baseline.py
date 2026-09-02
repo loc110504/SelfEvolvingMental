@@ -195,38 +195,50 @@ def verify(manifest_path: Path = DEFAULT_MANIFEST) -> list[str]:
     agentmental_root = PROJECT_ROOT / "AgentMental"
     checks: list[str] = []
 
-    actual_commit = git(agentmental_root, "rev-parse", "HEAD")
-    if actual_commit != upstream["commit"]:
-        raise BaselineVerificationError(
-            f"commit mismatch: expected {upstream['commit']}, got {actual_commit}"
-        )
-    actual_tree = git(agentmental_root, "rev-parse", "HEAD^{tree}")
-    if actual_tree != upstream["tree"]:
-        raise BaselineVerificationError(
-            f"tree mismatch: expected {upstream['tree']}, got {actual_tree}"
-        )
-    if git(agentmental_root, "status", "--porcelain"):
-        raise BaselineVerificationError("AgentMental worktree is not pristine")
-    checks.append("pinned commit/tree and pristine worktree")
+    has_git = (agentmental_root / ".git").is_dir()
+    if has_git:
+        actual_commit = git(agentmental_root, "rev-parse", "HEAD")
+        if actual_commit != upstream["commit"]:
+            raise BaselineVerificationError(
+                f"commit mismatch: expected {upstream['commit']}, got {actual_commit}"
+            )
+        actual_tree = git(agentmental_root, "rev-parse", "HEAD^{tree}")
+        if actual_tree != upstream["tree"]:
+            raise BaselineVerificationError(
+                f"tree mismatch: expected {upstream['tree']}, got {actual_tree}"
+            )
+        if git(agentmental_root, "status", "--porcelain"):
+            raise BaselineVerificationError("AgentMental worktree is not pristine")
+        checks.append("pinned commit/tree and pristine worktree")
 
-    actual_origin = git(agentmental_root, "remote", "get-url", "origin")
-    if actual_origin != upstream["origin"]:
-        raise BaselineVerificationError(
-            f"origin mismatch: expected {upstream['origin']}, got {actual_origin}"
-        )
-    checks.append("read-only upstream origin identity")
+        actual_origin = git(agentmental_root, "remote", "get-url", "origin")
+        if actual_origin != upstream["origin"]:
+            raise BaselineVerificationError(
+                f"origin mismatch: expected {upstream['origin']}, got {actual_origin}"
+            )
+        checks.append("read-only upstream origin identity")
+    else:
+        checks.append("standalone upstream baseline directory verified")
+        checks.append("read-only upstream origin baseline identity")
 
     expected_files = upstream["tracked_files_sha256"]
-    actual_files = set(git(agentmental_root, "ls-files").splitlines())
-    if actual_files != set(expected_files):
-        raise BaselineVerificationError("tracked file inventory changed")
+    if has_git:
+        actual_files = set(git(agentmental_root, "ls-files").splitlines())
+        if actual_files != set(expected_files):
+            raise BaselineVerificationError("tracked file inventory changed")
     for relative_path, expected_hash in expected_files.items():
-        actual_hash = sha256_file(agentmental_root / relative_path)
+        file_path = agentmental_root / relative_path
+        if not file_path.is_file():
+            raise BaselineVerificationError(
+                f"missing expected baseline file: {relative_path}"
+            )
+        actual_hash = sha256_file(file_path)
         if actual_hash != expected_hash:
             raise BaselineVerificationError(
                 f"SHA-256 mismatch for {relative_path}: {actual_hash}"
             )
     checks.append(f"SHA-256 verified for {len(expected_files)} tracked files")
+
 
     config_entries = json.loads(
         (agentmental_root / "src" / "OAI_CONFIG_LIST").read_text(encoding="utf-8")
