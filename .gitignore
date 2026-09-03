@@ -110,6 +110,8 @@ venv.bak/
 # Runtime output and artifacts
 artifacts/
 logs/
+results/
+
 
 # Spyder / Rope / Mkdocs
 .spyderproject
