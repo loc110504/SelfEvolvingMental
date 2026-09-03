@@ -167,9 +167,8 @@ def main() -> None:
         type=float,
         default=1.0,
         help=(
-            "Multiply every max_new_tokens budget by this factor. Reasoning models "
-            "(Qwen3.x, R1, QwQ) need >= 8 or the chain-of-thought eats the budget and "
-            "the answer is truncated. Auto-set to 8 for detected reasoning models."
+            "Multiply every max_new_tokens budget by this factor (default: 1.0; "
+            "auto-set to 2.0 for detected reasoning models like Qwen3.x)."
         ),
     )
     parser.add_argument(

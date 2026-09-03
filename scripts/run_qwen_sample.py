@@ -95,7 +95,7 @@ class QwenInferenceEngine:
             if enable_thinking is None:
                 self.enable_thinking = False
             if token_scale <= 1.0:
-                self.token_scale = 8.0
+                self.token_scale = 2.0
             logger.warning(
                 "'%s' looks like a reasoning model: enable_thinking=%s, "
                 "token_scale=%.1f (chain-of-thought would otherwise consume the "
@@ -144,7 +144,7 @@ class QwenInferenceEngine:
         self,
         system_prompt: str,
         user_prompt: str,
-        max_new_tokens: int = 120,
+        max_new_tokens: int = 512,
         temperature: float = 0.2,
     ) -> str:
         messages = [
@@ -301,7 +301,7 @@ Keep your answer concise (under 40 words)."""
             f"The interviewer asks:\n'{initial_question}'\n"
             "Provide your age, gender, and occupation based on the context in the format 'Age: <age>, Gender: <gender>, Occupation: <occupation>'."
         ),
-        max_new_tokens=40,
+        max_new_tokens=256,
         temperature=0.1,
     )
     client_demographics = strip_reasoning(demographics_raw)
@@ -343,7 +343,7 @@ Keep your answer concise (under 40 words)."""
             client_reply_raw = engine.generate(
                 system_prompt=client_system_prompt,
                 user_prompt=client_prompt,
-                max_new_tokens=50,
+                max_new_tokens=256,
                 temperature=0.2,
             )
             client_reply = strip_reasoning(client_reply_raw)
@@ -370,7 +370,7 @@ Return only the single number 0, 1, or 2."""
             necessity_resp = engine.generate(
                 system_prompt="You are a clinical assessment evaluator. Return only 0, 1, or 2.",
                 user_prompt=necessity_prompt,
-                max_new_tokens=5,
+                max_new_tokens=128,
                 temperature=0.0,
             )
             necessity_parse = parse_necessity_score(necessity_resp)
@@ -394,7 +394,7 @@ Ask a short clinical follow-up question to clarify the frequency or severity ove
             followup_raw = engine.generate(
                 system_prompt="You are an empathetic psychological interviewer. Generate a short clinical follow-up question.",
                 user_prompt=followup_prompt,
-                max_new_tokens=40,
+                max_new_tokens=256,
                 temperature=0.3,
             )
             followup_question = strip_reasoning(followup_raw)
@@ -423,7 +423,7 @@ Score this topic from 0 to 3 based on the standard. Output JSON:
         scorer_resp = engine.generate(
             system_prompt="You are a professional psychological scale scorer. Output valid JSON only.",
             user_prompt=scorer_prompt,
-            max_new_tokens=60,
+            max_new_tokens=512,
             temperature=0.0,
         )
         score_parse = parse_score_and_summary(scorer_resp)
@@ -488,7 +488,7 @@ Output strictly in JSON format:
                 "Review the full consultation history and adjust topic scores if needed. Output JSON only."
             ),
             user_prompt=memory_prompt,
-            max_new_tokens=350,
+            max_new_tokens=2048,
             temperature=0.0,
         )
         updater_parse = parse_summary_and_updated_scores(
@@ -644,9 +644,8 @@ def main() -> None:
         type=float,
         default=1.0,
         help=(
-            "Multiply every max_new_tokens budget by this factor. Reasoning models "
-            "(Qwen3.x, R1, QwQ) need >= 8 or the chain-of-thought eats the budget and "
-            "the answer is truncated. Auto-set to 8 for detected reasoning models."
+            "Multiply every max_new_tokens budget by this factor (default: 1.0; "
+            "auto-set to 2.0 for detected reasoning models like Qwen3.x)."
         ),
     )
     parser.add_argument(
