@@ -1,32 +1,218 @@
-# SelfEvolvingMental
+# SelfEvolvingMental: PsyVEC Implementation
 
-Offline-research implementation of PsyVEC built from the characterized
-AgentMental baseline. The project is not a clinical diagnostic system and must
-not learn autonomously from live patients.
+Offline-research implementation of **PsyVEC** (Self-Evolving Mental Health Assessment Agent) built from the characterized AgentMental baseline. 
 
-Implementation follows the gated Phase 0-8 roadmap in
-[`plan.md`](plan.md) and [`docs/implementation/`](docs/implementation/).
+> **Safety Notice:** This project is an offline research benchmark and is not an autonomous diagnostic system for live clinical use.
 
-## Current status
+---
 
-Phase 0 static baseline freeze and offline characterization are implemented.
-The end-to-end Phase 0 gate remains blocked until an approved model endpoint,
-compatible legacy environment, and authorized or approved synthetic data
-fixture are available. See
-[`PHASE_0_BASELINE_REPORT.md`](docs/implementation/PHASE_0_BASELINE_REPORT.md).
+## 📑 Mục lục
+1. [Cài đặt & Môi trường](#1-cài-đặt--môi-trường)
+2. [Cơ chế Tự tiến hóa (Self-Evolution) & Tùy chọn Turn ON / OFF](#2-cơ-chế-tự-tiến-hóa-self-evolution--tùy-chọn-turn-on--off)
+3. [Hướng dẫn chạy Đơn mẫu (Single Sample Assessment)](#3-hướng-dẫn-chạy-đơn-mẫu-single-sample-assessment)
+4. [Hướng dẫn chạy Hàng loạt (Full Batch Evaluation)](#4-hướng-dẫn-chạy-hàng-loạt-full-batch-evaluation)
+5. [Cấu hình Model: HuggingFace, vLLM, Ollama, API](#5-cấu-hình-model-huggingface-vllm-ollama-api)
+6. [Offline Verification & Testing](#6-offline-verification--testing)
 
-Phase 1 has started with offline backend contracts, legacy compatibility
-adapters, layered secret-safe configuration, and contract tests. Runtime
-integration/parity remains blocked by the Phase 0 gate. See
-[`PHASE_1_BACKEND_REPORT.md`](docs/implementation/PHASE_1_BACKEND_REPORT.md).
+---
 
-## Offline checks
+## 1. Cài đặt & Môi trường
 
-These commands do not call a model or access participant data:
+Yêu cầu: **Python 3.10+** (hỗ trợ macOS Apple Silicon `mps`, Linux `cuda`, CPU).
 
-```sh
-python3 scripts/verify_agentmental_baseline.py
+```bash
+# Clone repository
+git clone git@github.com:loc110504/SelfEvolvingMental.git
+cd SelfEvolvingMental
+
+# Tạo và kích hoạt môi trường ảo
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Cài đặt toàn bộ dependencies cần thiết
+pip install -r requirements.txt
+
+# (Tùy chọn) Cài đặt package dưới dạng editable
+pip install -e ".[all]"
+```
+
+---
+
+## 2. Cơ chế Tự tiến hóa (Self-Evolution) & Tùy chọn Turn ON / OFF
+
+PsyVEC thiết kế quá trình tự tiến hóa theo 2 trục hoàn toàn độc lập (Decoupled):
+
+1. **Fast-Path (Lesson Memory / In-Context Update)**:
+   - Module: `src/psyvec/lessons/core.py` (`LessonStore`).
+   - Đúc kết các bài học hành vi quy trình (`do`, `avoid`, `trigger`, `criterion`) từ các ca phỏng vấn trước và tiêm vào prompt của agent ở các ca sau. **Không thay đổi trọng số mô hình**.
+2. **Slow-Path (Parametric Model Update / LoRA)**:
+   - Module: `src/psyvec/training/` và `src/psyvec/policy/`.
+   - Huấn luyện lại trọng số mô hình (LoRA adapters) cho từng vai trò (`interviewer`, `scorer`, `updater`, `reporter`) qua các cặp dữ liệu tương phản (Preference pairs / DPO).
+
+### Ma trận 4 chế độ thí nghiệm (Ablation / ON-OFF Study)
+
+Trong `src/psyvec/evaluation/onoff.py`, hệ thống định nghĩa 4 cấu hình để đo lường hiệu quả độc lập:
+
+| Cấu hình (Arm) | Lesson Update (Fast-Path) | Model Update (Slow-Path) | Mô tả |
+|---|:---:|:---:|---|
+| **`Initial-OFF`** (Zero-shot Baseline) | ❌ **OFF** | ❌ **OFF** | Mô hình gốc thuần túy, không dùng bài học, không adapter. |
+| **`Initial-ON`** (Memory-only) |  **ON** | ❌ **OFF** | Mô hình gốc + tiêm bài học kinh nghiệm ngữ cảnh vào prompt. |
+| **`Evolved-OFF`** (Model-only) | ❌ **OFF** |  **ON** | Mô hình đã tinh chỉnh trọng số (LoRA Adapter), tắt kho bài học. |
+| **`Evolved-ON`** (Full PsyVEC) |  **ON** |  **ON** | Chạy đầy đủ cả 2: Mô hình đã cập nhật LoRA + Truy xuất bài học. |
+
+---
+
+## 3. Hướng dẫn chạy Đơn mẫu (Single Sample Assessment)
+
+Script [`scripts/run_qwen_sample.py`](scripts/run_qwen_sample.py) chạy trọn vẹn quy trình đánh giá 1 bệnh nhân qua 8 chủ đề của thang đo **PHQ-8**:
+1. Thu thập thông tin nhân khẩu học (tuổi, giới tính, nghề nghiệp).
+2. Phỏng vấn qua đủ 8 chủ đề PHQ-8, tự động hỏi thêm hoặc dừng theo tiêu chí `necessity`.
+3. Chấm điểm từng mục (0–3), viết cơ sở tóm tắt.
+4. Tổng hợp điểm PHQ-8 (0–24), xếp loại mức độ trầm cảm, đối chiếu trực tiếp với Ground Truth và lưu báo cáo JSON.
+
+### Lệnh chạy:
+```bash
+# Chạy mẫu mặc định (Participant 302 trong tập dev)
+python3 scripts/run_qwen_sample.py
+
+# Chỉ định mẫu bệnh nhân cụ thể:
+python3 scripts/run_qwen_sample.py --sample-path data/processed_daic_woz/dev/307.json
+python3 scripts/run_qwen_sample.py --sample-path data/processed_daic_woz/train/300.json
+
+# Đổi model HuggingFace khác:
+python3 scripts/run_qwen_sample.py --model-name Qwen/Qwen2.5-7B-Instruct
+```
+
+### Danh sách tham số CLI của `run_qwen_sample.py`:
+- `--sample-path` (Path): Đường dẫn tới file JSON mẫu DAIC-WOZ (mặc định: `data/processed_daic_woz/dev/302.json`).
+- `--model-name` (str): Tên mô hình HuggingFace, checkpoint local, hoặc tên model trên server (mặc định: `Qwen/Qwen2.5-0.5B-Instruct`).
+- `--api-base-url` (str): URL server tương thích OpenAI (vLLM, Ollama, v.v.).
+- `--api-key` (str): API key (nếu server yêu cầu).
+- `--output-dir` (Path): Thư mục lưu file JSON đánh giá (mặc định: `results/evaluations/`).
+
+---
+
+## 4. Hướng dẫn chạy Hàng loạt (Full Batch Evaluation)
+
+Script [`scripts/run_batch_eval.py`](scripts/run_batch_eval.py) dùng để đánh giá tự động trên toàn bộ tập dữ liệu mẫu:
+- **Tối ưu**: Nạp mô hình một lần duy nhất vào bộ nhớ để đánh giá liên tục nhiều mẫu.
+- **Tính toán chỉ số tự động**:
+  - MAE (Mean Absolute Error)
+  - RMSE (Root Mean Squared Error)
+  - Pearson Correlation ($r$)
+  - Binary Classification (ngưỡng PHQ-8 $\ge 10$): Accuracy, Precision, Recall, Macro/Binary F1-Score, Confusion Matrix.
+- **Lưu trữ**: Xuất bảng tổng kết ra màn hình, đồng thời lưu file chi tiết từng mẫu + file tổng hợp `batch_summary_<timestamp>.json` và `batch_summary_<timestamp>.csv`.
+
+### Lệnh chạy mẫu:
+
+```bash
+# 1. Chạy thử 3 mẫu đầu tiên tập dev:
+python3 scripts/run_batch_eval.py --num-samples 3 --data-dir data/processed_daic_woz/dev
+
+# 2. Chạy full cả tập Development (35 mẫu), tự động bỏ qua mẫu đã có kết quả:
+python3 scripts/run_batch_eval.py --data-dir data/processed_daic_woz/dev --skip-existing
+
+# 3. Chạy full cả tập Training (107 mẫu):
+python3 scripts/run_batch_eval.py --data-dir data/processed_daic_woz/train --skip-existing
+
+# 4. Bật hiển thị chi tiết từng câu hỏi/đáp của các lượt phỏng vấn:
+python3 scripts/run_batch_eval.py --data-dir data/processed_daic_woz/dev --num-samples 2 --verbose
+```
+
+### Danh sách tham số CLI của `run_batch_eval.py`:
+- `--data-dir` (Path): Thư mục chứa các file JSON processed (mặc định: `data/processed_daic_woz/dev`).
+- `--num-samples` (int): Số lượng mẫu tối đa muốn chạy (mặc định: chạy toàn bộ file trong thư mục).
+- `--skip-existing` (flag): Bỏ qua mẫu nếu file kết quả `<id>_evaluation.json` đã tồn tại trong thư mục output (rất hữu ích khi tiếp tục chạy sau khi bị ngắt quãng).
+- `--verbose` (flag): In toàn bộ hội thoại từng lượt ra màn hình terminal.
+- `--model-name` (str): Model name (mặc định: `Qwen/Qwen2.5-0.5B-Instruct`).
+- `--api-base-url` (str): URL endpoint OpenAI-compatible (vLLM/Ollama).
+- `--api-key` (str): API key (nếu cần).
+- `--output-dir` (Path): Thư mục lưu kết quả (mặc định: `results/evaluations/batch/`).
+
+---
+
+## 5. Cấu hình Model: HuggingFace, vLLM, Ollama, API
+
+Hệ thống hỗ trợ 4 phương thức cấp phát mô hình LLM linh hoạt:
+
+### A. Tải trực tiếp qua HuggingFace / PyTorch (Local)
+Mặc định hệ thống tự động nhận diện thiết bị (`mps` cho Apple Silicon Mac, `cuda` cho GPU NVIDIA, hoặc `cpu`):
+
+```bash
+# Chạy với model siêu nhẹ (mặc định, 0.5B parameters)
+python3 scripts/run_batch_eval.py --model-name Qwen/Qwen2.5-0.5B-Instruct
+
+# Chạy với model lớn hơn (cần GPU có VRAM phù hợp)
+python3 scripts/run_batch_eval.py --model-name Qwen/Qwen2.5-7B-Instruct
+python3 scripts/run_batch_eval.py --model-name meta-llama/Llama-3.2-3B-Instruct
+
+# Chạy với thư mục checkpoint local trên máy
+python3 scripts/run_batch_eval.py --model-name /path/to/local/qwen_weights
+```
+
+---
+
+### B. Kết nối với vLLM (Tối ưu tốc độ cao & Multi-GPU)
+
+Nếu bạn có server GPU và muốn inference với throughput tối đa, hãy khởi chạy vLLM trước:
+
+```bash
+# 1. Khởi động vLLM server
+vllm serve Qwen/Qwen2.5-7B-Instruct --port 8000 --dtype bfloat16
+
+# 2. Chạy evaluation kết nối qua vLLM endpoint
+python3 scripts/run_batch_eval.py \
+    --api-base-url http://localhost:8000/v1 \
+    --model-name Qwen/Qwen2.5-7B-Instruct \
+    --data-dir data/processed_daic_woz/dev
+```
+
+---
+
+### C. Kết nối với Ollama (Chạy local trên máy cá nhân)
+
+Ollama tích hợp sẵn OpenAI-compatible endpoint tại port `11434`:
+
+```bash
+# 1. Tải và chạy model trong Ollama
+ollama run qwen2.5:7b
+
+# 2. Chạy evaluation kết nối trực tiếp đến Ollama
+python3 scripts/run_batch_eval.py \
+    --api-base-url http://localhost:11434/v1 \
+    --model-name qwen2.5:7b \
+    --data-dir data/processed_daic_woz/dev
+```
+
+---
+
+### D. Kết nối qua API Cloud bên ngoài (OpenAI, DeepSeek, OpenRouter)
+
+```bash
+# Ví dụ chạy với DeepSeek API:
+python3 scripts/run_batch_eval.py \
+    --api-base-url https://api.deepseek.com/v1 \
+    --api-key sk-your-deepseek-api-key \
+    --model-name deepseek-chat \
+    --data-dir data/processed_daic_woz/dev --num-samples 5
+```
+
+---
+
+## 6. Offline Verification & Testing
+
+Đảm bảo mã nguồn PsyVEC vượt qua toàn bộ 164 bài kiểm thử và kiểm tra tĩnh:
+
+```bash
+# Chạy bộ unit và integration test (164 tests)
 python3 -m unittest discover -s tests -p 'test_*.py'
+
+# Hoặc dùng pytest
+pytest
+
+# Kiểm tra linting và style code
 ruff check src tests/unit
+
+# Kiểm tra type hinting nghiêm ngặt
 mypy --strict src/psyvec
 ```

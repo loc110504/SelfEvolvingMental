@@ -142,6 +142,18 @@ def main() -> None:
         help="HuggingFace model name or local path",
     )
     parser.add_argument(
+        "--api-base-url",
+        type=str,
+        default=None,
+        help="Optional OpenAI-compatible API base URL (e.g. http://localhost:8000/v1 for vLLM, http://localhost:11434/v1 for Ollama)",
+    )
+    parser.add_argument(
+        "--api-key",
+        type=str,
+        default=None,
+        help="Optional API key for OpenAI-compatible endpoint",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=PROJECT_ROOT / "results" / "evaluations" / "batch",
@@ -191,7 +203,11 @@ def main() -> None:
 
     # Preload engine once to avoid reloading model per sample
     logger.info("Initializing Qwen Inference Engine once for batch run...")
-    engine = QwenInferenceEngine(model_name=args.model_name)
+    engine = QwenInferenceEngine(
+        model_name=args.model_name,
+        api_base_url=args.api_base_url,
+        api_key=args.api_key,
+    )
 
     records: list[dict[str, Any]] = []
     overall_start = time.time()

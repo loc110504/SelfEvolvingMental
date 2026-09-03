@@ -52,18 +52,43 @@ def categorize_score(total_score: int) -> str:
 
 
 class QwenInferenceEngine:
-    def __init__(self, model_name: str = "Qwen/Qwen2.5-0.5B-Instruct", device: str | None = None) -> None:
-        if device is None:
-            self.device = "mps" if torch.backends.mps.is_available() else "cpu"
-        else:
-            self.device = device
+    def __init__(
+        self,
+        model_name: str = "Qwen/Qwen2.5-0.5B-Instruct",
+        device: str | None = None,
+        api_base_url: str | None = None,
+        api_key: str | None = None,
+    ) -> None:
+        self.model_name = model_name
+        self.api_base_url = api_base_url
+        self.client = None
 
-        logger.info("Loading %s on device '%s'...", model_name, self.device)
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        dtype = torch.float32 if self.device == "mps" else torch.bfloat16
-        self.model = AutoModelForCausalLM.from_pretrained(model_name, dtype=dtype).to(self.device)
-        self.model.eval()
-        logger.info("Model loaded successfully!")
+        if api_base_url:
+            from openai import OpenAI
+
+            self.client = OpenAI(
+                base_url=api_base_url,
+                api_key=api_key or "EMPTY",
+            )
+            logger.info(
+                "Connected to OpenAI-compatible endpoint (%s) with model '%s'",
+                api_base_url,
+                model_name,
+            )
+        else:
+            if device is None:
+                self.device = "mps" if torch.backends.mps.is_available() else "cpu"
+            else:
+                self.device = device
+
+            logger.info("Loading %s on device '%s'...", model_name, self.device)
+            self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+            dtype = torch.float32 if self.device == "mps" else torch.bfloat16
+            self.model = AutoModelForCausalLM.from_pretrained(model_name, dtype=dtype).to(
+                self.device
+            )
+            self.model.eval()
+            logger.info("Model loaded successfully!")
 
     def generate(
         self,
@@ -76,7 +101,24 @@ class QwenInferenceEngine:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
         ]
-        text = self.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+        if self.client is not None:
+            kwargs: dict[str, Any] = {
+                "model": self.model_name,
+                "messages": messages,
+                "max_tokens": max_new_tokens,
+            }
+            if temperature > 0.0:
+                kwargs["temperature"] = temperature
+            else:
+                kwargs["temperature"] = 0.0
+
+            resp = self.client.chat.completions.create(**kwargs)
+            content = resp.choices[0].message.content or ""
+            return content.strip()
+
+        text = self.tokenizer.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True
+        )
         model_inputs = self.tokenizer([text], return_tensors="pt").to(self.device)
 
         with torch.no_grad():
@@ -145,6 +187,8 @@ def run_full_sample_assessment(
     scale_file: Path = DEFAULT_SCALE_FILE,
     standards_file: Path = DEFAULT_STANDARDS_FILE,
     engine: QwenInferenceEngine | None = None,
+    api_base_url: str | None = None,
+    api_key: str | None = None,
     verbose: bool = True,
 ) -> dict[str, Any]:
     def vprint(*args: Any, **kwargs: Any) -> None:
@@ -182,7 +226,11 @@ Keep your answer concise (under 40 words)."""
 
     # 3. Initialize Engine
     if engine is None:
-        engine = QwenInferenceEngine(model_name=model_name)
+        engine = QwenInferenceEngine(
+            model_name=model_name,
+            api_base_url=api_base_url,
+            api_key=api_key,
+        )
 
     # Step 1: Basic Information Gathering
     vprint("\n" + "=" * 50)
@@ -360,6 +408,18 @@ def main() -> None:
         help="HuggingFace model name or local path",
     )
     parser.add_argument(
+        "--api-base-url",
+        type=str,
+        default=None,
+        help="Optional OpenAI-compatible API base URL (e.g. http://localhost:8000/v1 for vLLM, http://localhost:11434/v1 for Ollama)",
+    )
+    parser.add_argument(
+        "--api-key",
+        type=str,
+        default=None,
+        help="Optional API key for OpenAI-compatible endpoint",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=PROJECT_ROOT / "results" / "evaluations",
@@ -368,7 +428,12 @@ def main() -> None:
     args = parser.parse_args()
 
     start_time = time.time()
-    result = run_full_sample_assessment(sample_path=args.sample_path, model_name=args.model_name)
+    result = run_full_sample_assessment(
+        sample_path=args.sample_path,
+        model_name=args.model_name,
+        api_base_url=args.api_base_url,
+        api_key=args.api_key,
+    )
     elapsed = time.time() - start_time
 
     # Save to output file
