@@ -6,7 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
-import re
+import math
 import sys
 import time
 from pathlib import Path
@@ -16,6 +16,14 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
+
+from psyvec.evaluation.response_parsing import (  # noqa: E402
+    parse_necessity_score,
+    parse_score_and_summary,
+    parse_summary_and_updated_scores,
+    strip_reasoning,
+)
 
 # Setup logging
 logging.basicConfig(
@@ -38,6 +46,10 @@ TOPIC_TO_ITEM_KEY = {
 }
 
 
+def _fmt_total(total: int | None) -> str:
+    return "UNSCORED (parse failure)" if total is None else f"{total}/24"
+
+
 def categorize_score(total_score: int) -> str:
     if total_score <= 4:
         return "None / Minimal depression (0-4)"
@@ -51,6 +63,15 @@ def categorize_score(total_score: int) -> str:
         return "Severe depression (20-24)"
 
 
+REASONING_MODEL_HINTS = ("qwen3", "r1", "deepseek-r1", "qwq", "thinking", "reason")
+
+
+def looks_like_reasoning_model(model_name: str) -> bool:
+    """Heuristic: does this model emit chain-of-thought before answering?"""
+    lowered = model_name.lower()
+    return any(hint in lowered for hint in REASONING_MODEL_HINTS)
+
+
 class QwenInferenceEngine:
     def __init__(
         self,
@@ -58,10 +79,31 @@ class QwenInferenceEngine:
         device: str | None = None,
         api_base_url: str | None = None,
         api_key: str | None = None,
+        token_scale: float = 1.0,
+        enable_thinking: bool | None = None,
     ) -> None:
         self.model_name = model_name
         self.api_base_url = api_base_url
         self.client = None
+        self.token_scale = max(1.0, float(token_scale))
+        self.enable_thinking = enable_thinking
+        # Set by every generate() call so callers can detect budget truncation.
+        self.last_truncated = False
+        self.truncation_count = 0
+
+        if looks_like_reasoning_model(model_name):
+            if enable_thinking is None:
+                self.enable_thinking = False
+            if token_scale <= 1.0:
+                self.token_scale = 8.0
+            logger.warning(
+                "'%s' looks like a reasoning model: enable_thinking=%s, "
+                "token_scale=%.1f (chain-of-thought would otherwise consume the "
+                "whole token budget and truncate the answer).",
+                model_name,
+                self.enable_thinking,
+                self.token_scale,
+            )
 
         if api_base_url:
             from openai import OpenAI
@@ -90,6 +132,14 @@ class QwenInferenceEngine:
             self.model.eval()
             logger.info("Model loaded successfully!")
 
+    def _budget(self, max_new_tokens: int) -> int:
+        return max(1, int(math.ceil(max_new_tokens * self.token_scale)))
+
+    def _record_truncation(self, truncated: bool) -> None:
+        self.last_truncated = truncated
+        if truncated:
+            self.truncation_count += 1
+
     def generate(
         self,
         system_prompt: str,
@@ -101,30 +151,50 @@ class QwenInferenceEngine:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt},
         ]
+        budget = self._budget(max_new_tokens)
+
         if self.client is not None:
             kwargs: dict[str, Any] = {
                 "model": self.model_name,
                 "messages": messages,
-                "max_tokens": max_new_tokens,
+                "max_tokens": budget,
             }
             if temperature > 0.0:
                 kwargs["temperature"] = temperature
             else:
                 kwargs["temperature"] = 0.0
+            if self.enable_thinking is not None:
+                kwargs["extra_body"] = {
+                    "chat_template_kwargs": {"enable_thinking": self.enable_thinking}
+                }
 
             resp = self.client.chat.completions.create(**kwargs)
-            content = resp.choices[0].message.content or ""
+            choice = resp.choices[0]
+            content = choice.message.content or ""
+            self._record_truncation(getattr(choice, "finish_reason", None) == "length")
             return content.strip()
 
-        text = self.tokenizer.apply_chat_template(
-            messages, tokenize=False, add_generation_prompt=True
-        )
+        template_kwargs: dict[str, Any] = {}
+        if self.enable_thinking is not None:
+            template_kwargs["enable_thinking"] = self.enable_thinking
+        try:
+            text = self.tokenizer.apply_chat_template(
+                messages,
+                tokenize=False,
+                add_generation_prompt=True,
+                **template_kwargs,
+            )
+        except TypeError:
+            # Chat template does not support the thinking switch.
+            text = self.tokenizer.apply_chat_template(
+                messages, tokenize=False, add_generation_prompt=True
+            )
         model_inputs = self.tokenizer([text], return_tensors="pt").to(self.device)
 
         with torch.no_grad():
             generated_ids = self.model.generate(
                 **model_inputs,
-                max_new_tokens=max_new_tokens,
+                max_new_tokens=budget,
                 do_sample=temperature > 0.0,
                 temperature=temperature if temperature > 0.0 else None,
                 top_p=0.9 if temperature > 0.0 else None,
@@ -132,83 +202,9 @@ class QwenInferenceEngine:
             )
 
         new_tokens = generated_ids[:, model_inputs.input_ids.shape[1] :]
+        self._record_truncation(int(new_tokens.shape[1]) >= budget)
         response = self.tokenizer.batch_decode(new_tokens, skip_special_tokens=True)[0].strip()
         return response
-
-
-def parse_score_and_summary(raw_text: str) -> tuple[int, str]:
-    """Extract integer score (0-3) and summary from LLM response."""
-    # Try JSON block
-    json_match = re.search(r"\{.*?\}", raw_text, re.DOTALL)
-    if json_match:
-        try:
-            data = json.loads(json_match.group(0))
-            score = int(data.get("score", 0))
-            score = max(0, min(3, score))
-            summary = str(data.get("summary", "")).strip()
-            return score, summary
-        except Exception:
-            pass
-
-    # Regex fallback
-    score_match = re.search(r'"?score"?\s*:\s*(\d+)', raw_text, re.IGNORECASE)
-    if score_match:
-        score = max(0, min(3, int(score_match.group(1))))
-    else:
-        num_match = re.search(r"\b([0-3])\b", raw_text)
-        score = int(num_match.group(1)) if num_match else 0
-
-    return score, raw_text.strip()
-
-
-def parse_necessity_score(raw_text: str) -> int:
-    """Extract necessity score (0, 1, or 2)."""
-    match = re.search(r"\b([0-2])\b", raw_text)
-    if match:
-        return int(match.group(1))
-    return 0
-
-
-def parse_summary_and_updated_scores(
-    raw_text: str,
-    valid_topics: list[str],
-) -> tuple[str, dict[str, dict[str, Any]]]:
-    """Extract overall summary and score adjustments from Updater / SummaryAgent."""
-    cleaned = raw_text.strip()
-    if cleaned.startswith("```json"):
-        cleaned = cleaned[len("```json") :].strip()
-    elif cleaned.startswith("```"):
-        cleaned = cleaned[len("```") :].strip()
-    if cleaned.endswith("```"):
-        cleaned = cleaned[: -len("```")].strip()
-
-    try:
-        data = json.loads(cleaned)
-        summary = str(data.get("summary", "")).strip()
-        updated = data.get("updated_scores", {})
-        valid_updates: dict[str, dict[str, Any]] = {}
-        for topic, score_data in updated.items():
-            if topic in valid_topics and isinstance(score_data, dict):
-                score = score_data.get("score")
-                reason = score_data.get("reason", "")
-                if isinstance(score, int) and 0 <= score <= 3:
-                    valid_updates[topic] = {"score": score, "reason": str(reason)}
-        return summary, valid_updates
-    except Exception:
-        pass
-
-    # Regex fallback if JSON is loosely formatted
-    valid_updates = {}
-    for topic in valid_topics:
-        pattern = rf'"{re.escape(topic)}"\s*:\s*\{{[^}}]*"score"\s*:\s*([0-3])'
-        match = re.search(pattern, raw_text, re.IGNORECASE)
-        if match:
-            valid_updates[topic] = {
-                "score": int(match.group(1)),
-                "reason": "Extracted via regex fallback",
-            }
-
-    return "", valid_updates
 
 
 DEFAULT_SCALE_FILE = (
@@ -232,11 +228,20 @@ def run_full_sample_assessment(
     api_base_url: str | None = None,
     api_key: str | None = None,
     enable_memory_update: bool = False,
+    token_scale: float = 1.0,
+    enable_thinking: bool | None = None,
     verbose: bool = True,
 ) -> dict[str, Any]:
     def vprint(*args: Any, **kwargs: Any) -> None:
         if verbose:
             print(*args, **kwargs)
+
+    parse_failures: list[dict[str, str]] = []
+
+    def record_failure(stage: str, reason: str, raw_text: str) -> None:
+        """Log a parse failure loudly instead of silently defaulting."""
+        parse_failures.append({"stage": stage, "reason": reason, "raw_response": raw_text})
+        logger.warning("PARSE FAILURE [%s]: %s", stage, reason)
 
     logger.info("=" * 60)
     logger.info("Starting Full Sample Assessment with %s", model_name)
@@ -273,7 +278,11 @@ Keep your answer concise (under 40 words)."""
             model_name=model_name,
             api_base_url=api_base_url,
             api_key=api_key,
+            token_scale=token_scale,
+            enable_thinking=enable_thinking,
         )
+
+    truncation_baseline = engine.truncation_count
 
     # Step 1: Basic Information Gathering
     vprint("\n" + "=" * 50)
@@ -286,7 +295,7 @@ Keep your answer concise (under 40 words)."""
     )
     vprint(f"[Interviewer]: {initial_question}")
 
-    client_demographics = engine.generate(
+    demographics_raw = engine.generate(
         system_prompt=client_system_prompt,
         user_prompt=(
             f"The interviewer asks:\n'{initial_question}'\n"
@@ -295,6 +304,13 @@ Keep your answer concise (under 40 words)."""
         max_new_tokens=40,
         temperature=0.1,
     )
+    client_demographics = strip_reasoning(demographics_raw)
+    if not client_demographics:
+        record_failure(
+            "demographics",
+            "reasoning-only response (likely truncated before the answer)",
+            demographics_raw,
+        )
     vprint(f"[Participant {participant_id}]: {client_demographics}")
 
     # Step 2: Assessment across 8 PHQ-8 Topics
@@ -324,12 +340,19 @@ Keep your answer concise (under 40 words)."""
                 f"Question: {question}\n"
                 "Answer concisely (1-2 sentences) reflecting your symptoms or state over the past two weeks."
             )
-            client_reply = engine.generate(
+            client_reply_raw = engine.generate(
                 system_prompt=client_system_prompt,
                 user_prompt=client_prompt,
                 max_new_tokens=50,
                 temperature=0.2,
             )
+            client_reply = strip_reasoning(client_reply_raw)
+            if not client_reply:
+                record_failure(
+                    f"client_reply[{topic_name}]",
+                    "reasoning-only response (likely truncated before the answer)",
+                    client_reply_raw,
+                )
             vprint(f"  [A{depth+1}]: {client_reply}")
 
             topic_history.append({"question": question, "answer": client_reply})
@@ -350,7 +373,15 @@ Return only the single number 0, 1, or 2."""
                 max_new_tokens=5,
                 temperature=0.0,
             )
-            necessity = parse_necessity_score(necessity_resp)
+            necessity_parse = parse_necessity_score(necessity_resp)
+            if not necessity_parse.ok:
+                record_failure(
+                    f"necessity[{topic_name}]",
+                    necessity_parse.failure_reason,
+                    necessity_resp,
+                )
+            # 0 = stop asking: the conservative default when unparseable.
+            necessity = necessity_parse.score if necessity_parse.score is not None else 0
             depth += 1
 
             if necessity == 0 or depth >= max_depth:
@@ -360,12 +391,21 @@ Return only the single number 0, 1, or 2."""
             followup_prompt = f"""Topic: {topic_name}
 Patient response: {client_reply}
 Ask a short clinical follow-up question to clarify the frequency or severity over the past two weeks."""
-            question = engine.generate(
+            followup_raw = engine.generate(
                 system_prompt="You are an empathetic psychological interviewer. Generate a short clinical follow-up question.",
                 user_prompt=followup_prompt,
                 max_new_tokens=40,
                 temperature=0.3,
             )
+            followup_question = strip_reasoning(followup_raw)
+            if not followup_question:
+                record_failure(
+                    f"followup_question[{topic_name}]",
+                    "reasoning-only response (likely truncated before the answer)",
+                    followup_raw,
+                )
+                break
+            question = followup_question
             vprint(f"  [Q{depth+1}]: {question}")
 
         # Scorer evaluates this topic
@@ -386,17 +426,30 @@ Score this topic from 0 to 3 based on the standard. Output JSON:
             max_new_tokens=60,
             temperature=0.0,
         )
-        score, summary = parse_score_and_summary(scorer_resp)
-        vprint(f"  --> Assigned Score: {score} | Reason: {summary}")
+        score_parse = parse_score_and_summary(scorer_resp)
+        if not score_parse.ok:
+            record_failure(f"scorer[{topic_name}]", score_parse.failure_reason, scorer_resp)
+            vprint(f"  --> SCORE PARSE FAILED: {score_parse.failure_reason}")
+        else:
+            vprint(
+                f"  --> Assigned Score: {score_parse.score} | Reason: {score_parse.summary}"
+            )
 
         assessed_topics[topic_name] = {
-            "score": score,
-            "summary": summary,
+            "score": score_parse.score,
+            "summary": score_parse.summary,
+            "parse_failed": not score_parse.ok,
             "rounds": depth,
             "item_key": TOPIC_TO_ITEM_KEY.get(topic_name, ""),
         }
+        if not score_parse.ok:
+            assessed_topics[topic_name]["raw_response"] = scorer_resp
 
-    initial_total_score = sum(t["score"] for t in assessed_topics.values())
+    scored_topics = [t for t in assessed_topics.values() if t["score"] is not None]
+    all_topics_scored = len(scored_topics) == len(assessed_topics)
+    initial_total_score = (
+        sum(int(t["score"]) for t in scored_topics) if all_topics_scored else None
+    )
     updated_scores: dict[str, dict[str, Any]] = {}
     overall_summary = ""
 
@@ -411,7 +464,8 @@ Score this topic from 0 to 3 based on the standard. Output JSON:
             for turn in dialogue_transcript
         )
         initial_scores_str = "\n".join(
-            f"- {t}: {info['score']} pts (Reason: {info['summary']})"
+            f"- {t}: {info['score'] if info['score'] is not None else 'UNPARSED'} pts "
+            f"(Reason: {info['summary']})"
             for t, info in assessed_topics.items()
         )
         memory_prompt = f"""Full Consultation Dialogue:
@@ -437,14 +491,20 @@ Output strictly in JSON format:
             max_new_tokens=350,
             temperature=0.0,
         )
-        overall_summary, updated_scores = parse_summary_and_updated_scores(
+        updater_parse = parse_summary_and_updated_scores(
             updater_resp, list(topics_dict.keys())
         )
+        if not updater_parse.ok:
+            record_failure("memory_update", updater_parse.failure_reason, updater_resp)
+            vprint(f"  [Memory Update] PARSE FAILED: {updater_parse.failure_reason}")
+        overall_summary = updater_parse.summary
+        updated_scores = updater_parse.updated_scores
 
         if updated_scores:
             vprint("  [Memory Update Adjustments]:")
             for topic, update_info in updated_scores.items():
                 old_score = assessed_topics[topic]["score"]
+                assessed_topics[topic]["parse_failed"] = False
                 new_score = update_info["score"]
                 assessed_topics[topic]["initial_score"] = old_score
                 assessed_topics[topic]["updated_score"] = new_score
@@ -458,8 +518,13 @@ Output strictly in JSON format:
             vprint("  [Memory Update]: Initial scores confirmed without changes.")
 
     # Step 3: Compute Summary Report
-    final_total_score = sum(t["score"] for t in assessed_topics.values())
-    category = categorize_score(final_total_score)
+    scored_topics = [t for t in assessed_topics.values() if t["score"] is not None]
+    all_topics_scored = len(scored_topics) == len(assessed_topics)
+    final_total_score = (
+        sum(int(t["score"]) for t in scored_topics) if all_topics_scored else None
+    )
+    category = categorize_score(final_total_score) if all_topics_scored else "UNSCORED"
+    assessment_valid = all_topics_scored
 
     vprint("\n" + "=" * 50)
     vprint("STEP 3: Summary Report & Comparison")
@@ -478,23 +543,46 @@ Output strictly in JSON format:
             gt_item_score = gt_items.get(item_key, "-")
             init_s = info.get("initial_score", info["score"])
             final_s = info["score"]
+            init_str = "FAIL" if init_s is None else str(init_s)
+            final_str = "FAIL" if final_s is None else str(final_s)
             vprint(
-                f"{topic_name:<30} | {init_s:<6} | {final_s:<6} | {str(gt_item_score):<6} | {info['summary']}"
+                f"{topic_name:<30} | {init_str:<6} | {final_str:<6} | {str(gt_item_score):<6} | {info['summary']}"
             )
         vprint("-" * 85)
-        vprint(f"INITIAL PHQ-8 SCORE: {initial_total_score}/24")
-        vprint(f"FINAL PHQ-8 SCORE:   {final_total_score}/24 (Memory Update Applied)")
+        vprint(f"INITIAL PHQ-8 SCORE: {_fmt_total(initial_total_score)}")
+        vprint(f"FINAL PHQ-8 SCORE:   {_fmt_total(final_total_score)} (Memory Update Applied)")
     else:
         vprint(f"{'Topic Name':<30} | {'Pred Score':<10} | {'GT Score':<10} | Summary Basis")
         vprint("-" * 80)
         for topic_name, info in assessed_topics.items():
             item_key = info["item_key"]
             gt_item_score = gt_items.get(item_key, "-")
-            vprint(f"{topic_name:<30} | {info['score']:<10} | {str(gt_item_score):<10} | {info['summary']}")
+            score_str = "FAIL" if info["score"] is None else str(info["score"])
+            vprint(f"{topic_name:<30} | {score_str:<10} | {str(gt_item_score):<10} | {info['summary']}")
         vprint("-" * 80)
-        vprint(f"TOTAL PHQ-8 SCORE: Predicted = {final_total_score}/24 | Ground Truth = {gt_total}/24")
+        vprint(
+            f"TOTAL PHQ-8 SCORE: Predicted = {_fmt_total(final_total_score)} "
+            f"| Ground Truth = {gt_total}/24"
+        )
 
     vprint(f"Depression Severity: {category}")
+    if parse_failures:
+        vprint("")
+        vprint(f"!! {len(parse_failures)} PARSE FAILURE(S) — RESULT IS NOT USABLE:")
+        for failure in parse_failures:
+            vprint(f"   - [{failure['stage']}] {failure['reason']}")
+        logger.error(
+            "Participant %s: %d parse failure(s); assessment_valid=%s",
+            participant_id,
+            len(parse_failures),
+            assessment_valid,
+        )
+    sample_truncations = engine.truncation_count - truncation_baseline
+    if sample_truncations:
+        vprint(
+            f"!! {sample_truncations} generation(s) hit the token budget "
+            "(raise --token-scale)."
+        )
     vprint("=" * 80)
 
     result_data = {
@@ -508,6 +596,10 @@ Output strictly in JSON format:
         "total_predicted_score": final_total_score,
         "ground_truth_total": gt_total,
         "predicted_category": category,
+        "assessment_valid": assessment_valid,
+        "parse_failure_count": len(parse_failures),
+        "parse_failures": parse_failures,
+        "truncated_generations": sample_truncations,
         "overall_summary": overall_summary,
         "updated_scores": updated_scores,
         "topics": assessed_topics,
@@ -548,6 +640,29 @@ def main() -> None:
         help="Enable global Memory Update (SummaryAgent/Updater) to adjust initial topic scores based on full dialogue memory without LoRA",
     )
     parser.add_argument(
+        "--token-scale",
+        type=float,
+        default=1.0,
+        help=(
+            "Multiply every max_new_tokens budget by this factor. Reasoning models "
+            "(Qwen3.x, R1, QwQ) need >= 8 or the chain-of-thought eats the budget and "
+            "the answer is truncated. Auto-set to 8 for detected reasoning models."
+        ),
+    )
+    parser.add_argument(
+        "--enable-thinking",
+        dest="enable_thinking",
+        action="store_true",
+        default=None,
+        help="Force chain-of-thought ON in the chat template (Qwen3-style models).",
+    )
+    parser.add_argument(
+        "--disable-thinking",
+        dest="enable_thinking",
+        action="store_false",
+        help="Force chain-of-thought OFF in the chat template (Qwen3-style models).",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=PROJECT_ROOT / "results" / "evaluations",
@@ -562,6 +677,8 @@ def main() -> None:
         api_base_url=args.api_base_url,
         api_key=args.api_key,
         enable_memory_update=args.enable_memory_update,
+        token_scale=args.token_scale,
+        enable_thinking=args.enable_thinking,
     )
     elapsed = time.time() - start_time
 
@@ -573,6 +690,14 @@ def main() -> None:
 
     print(f"\nExecution finished in {elapsed:.2f} seconds.")
     print(f"📁 Output JSON saved to: {output_file.resolve()}")
+
+    if not result["assessment_valid"]:
+        print(
+            f"\nFAILED: {result['parse_failure_count']} parse failure(s); "
+            "no usable PHQ-8 total was produced. "
+            "Inspect 'parse_failures[].raw_response' in the output JSON."
+        )
+        sys.exit(2)
 
 
 if __name__ == "__main__":

@@ -55,6 +55,15 @@ def compute_pearson_r(x: list[float], y: list[float]) -> float:
     return float(cov / denominator)
 
 
+def is_valid_record(record: dict[str, Any]) -> bool:
+    """A record counts only if every topic parsed into a real score."""
+    if not record.get("assessment_valid", True):
+        return False
+    pred = record.get("total_predicted_score")
+    gt = record.get("ground_truth_total")
+    return isinstance(pred, (int, float)) and isinstance(gt, (int, float))
+
+
 def compute_metrics(
     records: list[dict[str, Any]],
     cutoff: int = 10,
@@ -154,6 +163,29 @@ def main() -> None:
         help="Optional API key for OpenAI-compatible endpoint",
     )
     parser.add_argument(
+        "--token-scale",
+        type=float,
+        default=1.0,
+        help=(
+            "Multiply every max_new_tokens budget by this factor. Reasoning models "
+            "(Qwen3.x, R1, QwQ) need >= 8 or the chain-of-thought eats the budget and "
+            "the answer is truncated. Auto-set to 8 for detected reasoning models."
+        ),
+    )
+    parser.add_argument(
+        "--enable-thinking",
+        dest="enable_thinking",
+        action="store_true",
+        default=None,
+        help="Force chain-of-thought ON in the chat template (Qwen3-style models).",
+    )
+    parser.add_argument(
+        "--disable-thinking",
+        dest="enable_thinking",
+        action="store_false",
+        help="Force chain-of-thought OFF in the chat template (Qwen3-style models).",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=PROJECT_ROOT / "results" / "evaluations" / "batch",
@@ -216,6 +248,8 @@ def main() -> None:
         model_name=args.model_name,
         api_base_url=args.api_base_url,
         api_key=args.api_key,
+        token_scale=args.token_scale,
+        enable_thinking=args.enable_thinking,
     )
 
     records: list[dict[str, Any]] = []
@@ -252,6 +286,8 @@ def main() -> None:
                 standards_file=DEFAULT_STANDARDS_FILE,
                 engine=engine,
                 enable_memory_update=args.enable_memory_update,
+                token_scale=args.token_scale,
+                enable_thinking=args.enable_thinking,
                 verbose=args.verbose,
             )
             sample_time = time.time() - sample_start
@@ -264,7 +300,21 @@ def main() -> None:
 
             pred = result["total_predicted_score"]
             gt = result["ground_truth_total"]
-            diff = abs(pred - gt) if isinstance(gt, (int, float)) else "N/A"
+            if not is_valid_record(result):
+                logger.error(
+                    "  ✗ Participant %s UNSCORED after %.2fs: %d parse failure(s). "
+                    "First: %s",
+                    participant_id,
+                    sample_time,
+                    result.get("parse_failure_count", 0),
+                    (result.get("parse_failures") or [{"reason": "unknown"}])[0]["reason"],
+                )
+                continue
+            diff = (
+                abs(pred - gt)
+                if isinstance(gt, (int, float)) and isinstance(pred, (int, float))
+                else "N/A"
+            )
             if args.enable_memory_update:
                 init_s = result.get("initial_total_score", pred)
                 logger.info(
@@ -303,8 +353,39 @@ def main() -> None:
         logger.warning("No completed records to summarize.")
         return
 
-    # Compute metrics
-    metrics = compute_metrics(records, cutoff=10)
+    valid_records = [r for r in records if is_valid_record(r)]
+    invalid_records = [r for r in records if not is_valid_record(r)]
+
+    if invalid_records:
+        logger.error("=" * 70)
+        logger.error(
+            "%d/%d sample(s) produced NO usable score (parse failures) and are "
+            "EXCLUDED from all metrics below:",
+            len(invalid_records),
+            len(records),
+        )
+        for r in invalid_records:
+            failures = r.get("parse_failures") or []
+            stages = ", ".join(sorted({str(f.get("stage", "?")) for f in failures}))
+            logger.error(
+                "  - Participant %s: %d failure(s) [%s]",
+                r.get("participant_id", "N/A"),
+                r.get("parse_failure_count", len(failures)),
+                stages or "unknown",
+            )
+        logger.error("=" * 70)
+
+    if not valid_records:
+        logger.error(
+            "ABORT: every sample failed to parse. No metrics computed. "
+            "Check the model's output format (reasoning models need --token-scale "
+            "and/or --disable-thinking)."
+        )
+        sys.exit(3)
+
+    # Compute metrics over usable records only
+    records = valid_records
+    metrics = compute_metrics(valid_records, cutoff=10)
 
     # Print summary table
     if args.enable_memory_update:
@@ -346,6 +427,10 @@ def main() -> None:
         print("-" * 80)
 
     print("OVERALL METRICS SUMMARY:")
+    print(
+        f"  • Samples scored: {len(valid_records)}/{completed_count} "
+        f"({len(invalid_records)} excluded for parse failure)"
+    )
     print(f"  • MAE (Mean Absolute Error): {metrics['mae']}")
     print(f"  • RMSE (Root Mean Squared):  {metrics['rmse']}")
     print(f"  • Pearson Correlation (r):  {metrics['pearson_r']}")
@@ -369,6 +454,11 @@ def main() -> None:
         "memory_update_enabled": args.enable_memory_update,
         "total_samples": total_count,
         "completed_samples": completed_count,
+        "scored_samples": len(valid_records),
+        "unscored_samples": len(invalid_records),
+        "unscored_participant_ids": [
+            r.get("participant_id") for r in invalid_records
+        ],
         "overall_elapsed_seconds": round(overall_elapsed, 2),
         "metrics": metrics,
         "records": [

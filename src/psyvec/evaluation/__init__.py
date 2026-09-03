@@ -19,6 +19,16 @@ from psyvec.evaluation.onoff import (
     internalization_verdict,
     internalized_action_rate,
 )
+from psyvec.evaluation.response_parsing import (
+    NecessityParse,
+    ScoreParse,
+    UpdaterParse,
+    extract_json_objects,
+    parse_necessity_score,
+    parse_score_and_summary,
+    parse_summary_and_updated_scores,
+    strip_reasoning,
+)
 
 __all__ = [
     "InternalizationVerdict",
@@ -34,4 +44,12 @@ __all__ = [
     "paired_bootstrap",
     "paired_permutation_test",
     "total_score_mae",
+    "NecessityParse",
+    "ScoreParse",
+    "UpdaterParse",
+    "extract_json_objects",
+    "parse_necessity_score",
+    "parse_score_and_summary",
+    "parse_summary_and_updated_scores",
+    "strip_reasoning",
 ]
