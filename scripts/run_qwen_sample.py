@@ -144,7 +144,7 @@ class QwenInferenceEngine:
         self,
         system_prompt: str,
         user_prompt: str,
-        max_new_tokens: int = 512,
+        max_new_tokens: int = 2560,
         temperature: float = 0.2,
     ) -> str:
         messages = [
@@ -301,7 +301,7 @@ Keep your answer concise (under 40 words)."""
             f"The interviewer asks:\n'{initial_question}'\n"
             "Provide your age, gender, and occupation based on the context in the format 'Age: <age>, Gender: <gender>, Occupation: <occupation>'."
         ),
-        max_new_tokens=256,
+        max_new_tokens=1280,
         temperature=0.1,
     )
     client_demographics = strip_reasoning(demographics_raw)
@@ -343,7 +343,7 @@ Keep your answer concise (under 40 words)."""
             client_reply_raw = engine.generate(
                 system_prompt=client_system_prompt,
                 user_prompt=client_prompt,
-                max_new_tokens=256,
+                max_new_tokens=1280,
                 temperature=0.2,
             )
             client_reply = strip_reasoning(client_reply_raw)
@@ -370,7 +370,7 @@ Return only the single number 0, 1, or 2."""
             necessity_resp = engine.generate(
                 system_prompt="You are a clinical assessment evaluator. Return only 0, 1, or 2.",
                 user_prompt=necessity_prompt,
-                max_new_tokens=128,
+                max_new_tokens=640,
                 temperature=0.0,
             )
             necessity_parse = parse_necessity_score(necessity_resp)
@@ -394,7 +394,7 @@ Ask a short clinical follow-up question to clarify the frequency or severity ove
             followup_raw = engine.generate(
                 system_prompt="You are an empathetic psychological interviewer. Generate a short clinical follow-up question.",
                 user_prompt=followup_prompt,
-                max_new_tokens=256,
+                max_new_tokens=1280,
                 temperature=0.3,
             )
             followup_question = strip_reasoning(followup_raw)
@@ -423,7 +423,7 @@ Score this topic from 0 to 3 based on the standard. Output JSON:
         scorer_resp = engine.generate(
             system_prompt="You are a professional psychological scale scorer. Output valid JSON only.",
             user_prompt=scorer_prompt,
-            max_new_tokens=512,
+            max_new_tokens=2560,
             temperature=0.0,
         )
         score_parse = parse_score_and_summary(scorer_resp)
@@ -488,7 +488,7 @@ Output strictly in JSON format:
                 "Review the full consultation history and adjust topic scores if needed. Output JSON only."
             ),
             user_prompt=memory_prompt,
-            max_new_tokens=2048,
+            max_new_tokens=10240,
             temperature=0.0,
         )
         updater_parse = parse_summary_and_updated_scores(
