@@ -127,12 +127,30 @@ def parse_necessity_score(raw_text: str) -> int:
     return 0
 
 
+DEFAULT_SCALE_FILE = (
+    PROJECT_ROOT / "configs" / "scales" / "PHQ-8.json"
+    if (PROJECT_ROOT / "configs" / "scales" / "PHQ-8.json").is_file()
+    else PROJECT_ROOT / "AgentMental" / "scales" / "PHQ-8.json"
+)
+DEFAULT_STANDARDS_FILE = (
+    PROJECT_ROOT / "configs" / "scales" / "scoring_standards.json"
+    if (PROJECT_ROOT / "configs" / "scales" / "scoring_standards.json").is_file()
+    else PROJECT_ROOT / "AgentMental" / "scales" / "scoring_standards.json"
+)
+
+
 def run_full_sample_assessment(
     sample_path: Path,
     model_name: str = "Qwen/Qwen2.5-0.5B-Instruct",
-    scale_file: Path = PROJECT_ROOT / "AgentMental" / "scales" / "PHQ-8.json",
-    standards_file: Path = PROJECT_ROOT / "AgentMental" / "scales" / "scoring_standards.json",
+    scale_file: Path = DEFAULT_SCALE_FILE,
+    standards_file: Path = DEFAULT_STANDARDS_FILE,
+    engine: QwenInferenceEngine | None = None,
+    verbose: bool = True,
 ) -> dict[str, Any]:
+    def vprint(*args: Any, **kwargs: Any) -> None:
+        if verbose:
+            print(*args, **kwargs)
+
     logger.info("=" * 60)
     logger.info("Starting Full Sample Assessment with %s", model_name)
     logger.info("Sample File: %s", sample_path)
@@ -163,18 +181,19 @@ Please respond truthfully and reasonably in the first person (I, me) as this par
 Keep your answer concise (under 40 words)."""
 
     # 3. Initialize Engine
-    engine = QwenInferenceEngine(model_name=model_name)
+    if engine is None:
+        engine = QwenInferenceEngine(model_name=model_name)
 
     # Step 1: Basic Information Gathering
-    print("\n" + "=" * 50)
-    print("STEP 1: Basic Information Collection")
-    print("=" * 50)
+    vprint("\n" + "=" * 50)
+    vprint("STEP 1: Basic Information Collection")
+    vprint("=" * 50)
 
     initial_question = (
         "Hello, I am your dedicated psychological assistant. Before we begin the PHQ-8 assessment, "
         "could you please tell me your basic information: age, gender, and occupation?"
     )
-    print(f"[Interviewer]: {initial_question}")
+    vprint(f"[Interviewer]: {initial_question}")
 
     client_demographics = engine.generate(
         system_prompt=client_system_prompt,
@@ -185,18 +204,18 @@ Keep your answer concise (under 40 words)."""
         max_new_tokens=40,
         temperature=0.1,
     )
-    print(f"[Participant {participant_id}]: {client_demographics}")
+    vprint(f"[Participant {participant_id}]: {client_demographics}")
 
     # Step 2: Assessment across 8 PHQ-8 Topics
-    print("\n" + "=" * 50)
-    print("STEP 2: PHQ-8 Topic-by-Topic Assessment (8 Topics)")
-    print("=" * 50)
+    vprint("\n" + "=" * 50)
+    vprint("STEP 2: PHQ-8 Topic-by-Topic Assessment (8 Topics)")
+    vprint("=" * 50)
 
     assessed_topics: dict[str, dict[str, Any]] = {}
     dialogue_transcript: list[dict[str, str]] = []
 
     for topic_idx, (topic_name, example_questions) in enumerate(topics_dict.items(), 1):
-        print(f"\n>>> Topic {topic_idx}/8: [{topic_name}]")
+        vprint(f"\n>>> Topic {topic_idx}/8: [{topic_name}]")
         standard_text = json.dumps(scoring_standards.get(topic_name, {}), indent=2)
 
         topic_history = []
@@ -205,7 +224,7 @@ Keep your answer concise (under 40 words)."""
 
         # Initial topic question
         question = example_questions[0]
-        print(f"  [Q1]: {question}")
+        vprint(f"  [Q1]: {question}")
 
         while depth < max_depth:
             # Client answers
@@ -220,7 +239,7 @@ Keep your answer concise (under 40 words)."""
                 max_new_tokens=50,
                 temperature=0.2,
             )
-            print(f"  [A{depth+1}]: {client_reply}")
+            vprint(f"  [A{depth+1}]: {client_reply}")
 
             topic_history.append({"question": question, "answer": client_reply})
             dialogue_transcript.append({"role": "interviewer", "topic": topic_name, "content": question})
@@ -256,7 +275,7 @@ Ask a short clinical follow-up question to clarify the frequency or severity ove
                 max_new_tokens=40,
                 temperature=0.3,
             )
-            print(f"  [Q{depth+1}]: {question}")
+            vprint(f"  [Q{depth+1}]: {question}")
 
         # Scorer evaluates this topic
         history_str = "\n".join([f"Q: {h['question']}\nA: {h['answer']}" for h in topic_history])
@@ -277,7 +296,7 @@ Score this topic from 0 to 3 based on the standard. Output JSON:
             temperature=0.0,
         )
         score, summary = parse_score_and_summary(scorer_resp)
-        print(f"  --> Assigned Score: {score} | Reason: {summary}")
+        vprint(f"  --> Assigned Score: {score} | Reason: {summary}")
 
         assessed_topics[topic_name] = {
             "score": score,
@@ -290,26 +309,26 @@ Score this topic from 0 to 3 based on the standard. Output JSON:
     total_score = sum(t["score"] for t in assessed_topics.values())
     category = categorize_score(total_score)
 
-    print("\n" + "=" * 50)
-    print("STEP 3: Summary Report & Comparison")
-    print("=" * 50)
+    vprint("\n" + "=" * 50)
+    vprint("STEP 3: Summary Report & Comparison")
+    vprint("=" * 50)
 
     gt_total = ground_truth.get("PHQ8_Score", "N/A")
     gt_items = ground_truth.get("items", {})
 
-    print(f"Participant ID: {participant_id}")
-    print(f"Demographics:   {client_demographics}\n")
-    print(f"{'Topic Name':<30} | {'Pred Score':<10} | {'GT Score':<10} | Summary Basis")
-    print("-" * 80)
+    vprint(f"Participant ID: {participant_id}")
+    vprint(f"Demographics:   {client_demographics}\n")
+    vprint(f"{'Topic Name':<30} | {'Pred Score':<10} | {'GT Score':<10} | Summary Basis")
+    vprint("-" * 80)
     for topic_name, info in assessed_topics.items():
         item_key = info["item_key"]
         gt_item_score = gt_items.get(item_key, "-")
-        print(f"{topic_name:<30} | {info['score']:<10} | {str(gt_item_score):<10} | {info['summary']}")
+        vprint(f"{topic_name:<30} | {info['score']:<10} | {str(gt_item_score):<10} | {info['summary']}")
 
-    print("-" * 80)
-    print(f"TOTAL PHQ-8 SCORE: Predicted = {total_score}/24 | Ground Truth = {gt_total}/24")
-    print(f"Depression Severity: {category}")
-    print("=" * 80)
+    vprint("-" * 80)
+    vprint(f"TOTAL PHQ-8 SCORE: Predicted = {total_score}/24 | Ground Truth = {gt_total}/24")
+    vprint(f"Depression Severity: {category}")
+    vprint("=" * 80)
 
     result_data = {
         "participant_id": participant_id,

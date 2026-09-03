@@ -9,6 +9,37 @@ description = "Offline-research PsyVEC implementation over AgentMental"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Research source; see AgentMental/LICENSE for upstream terms" }
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.12.0",
+    "mypy>=1.17.0",
+]
+eval = [
+    "torch>=2.0.0",
+    "transformers>=4.40.0",
+    "accelerate>=0.26.0",
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "pandas>=2.0.0",
+    "scikit-learn>=1.3.0",
+    "openai>=1.0.0",
+]
+all = [
+    "pytest>=8.0.0",
+    "ruff>=0.12.0",
+    "mypy>=1.17.0",
+    "torch>=2.0.0",
+    "transformers>=4.40.0",
+    "accelerate>=0.26.0",
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "pandas>=2.0.0",
+    "scikit-learn>=1.3.0",
+    "openai>=1.0.0",
+]
 
 [tool.setuptools]
 package-dir = { "" = "src" }

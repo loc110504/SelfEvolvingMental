@@ -38,6 +38,11 @@ def load_upstream_functions(*function_names: str) -> dict[str, object]:
 
 
 class BaselineIdentityTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        if not (PROJECT_ROOT / "AgentMental").is_dir():
+            raise unittest.SkipTest("AgentMental baseline directory not present")
+
     def test_pinned_upstream_and_static_smoke_checks(self) -> None:
         checks = verify(DEFAULT_MANIFEST)
         self.assertGreaterEqual(len(checks), 8)
@@ -58,6 +63,8 @@ class BaselineIdentityTests(unittest.TestCase):
 class UpstreamBehaviorCharacterizationTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
+        if not (PROJECT_ROOT / "AgentMental").is_dir():
+            raise unittest.SkipTest("AgentMental baseline directory not present")
         cls.fixture = json.loads(DEFAULT_MANIFEST.read_text(encoding="utf-8"))[
             "characterization"
         ]
