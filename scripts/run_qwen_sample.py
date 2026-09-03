@@ -169,6 +169,48 @@ def parse_necessity_score(raw_text: str) -> int:
     return 0
 
 
+def parse_summary_and_updated_scores(
+    raw_text: str,
+    valid_topics: list[str],
+) -> tuple[str, dict[str, dict[str, Any]]]:
+    """Extract overall summary and score adjustments from Updater / SummaryAgent."""
+    cleaned = raw_text.strip()
+    if cleaned.startswith("```json"):
+        cleaned = cleaned[len("```json") :].strip()
+    elif cleaned.startswith("```"):
+        cleaned = cleaned[len("```") :].strip()
+    if cleaned.endswith("```"):
+        cleaned = cleaned[: -len("```")].strip()
+
+    try:
+        data = json.loads(cleaned)
+        summary = str(data.get("summary", "")).strip()
+        updated = data.get("updated_scores", {})
+        valid_updates: dict[str, dict[str, Any]] = {}
+        for topic, score_data in updated.items():
+            if topic in valid_topics and isinstance(score_data, dict):
+                score = score_data.get("score")
+                reason = score_data.get("reason", "")
+                if isinstance(score, int) and 0 <= score <= 3:
+                    valid_updates[topic] = {"score": score, "reason": str(reason)}
+        return summary, valid_updates
+    except Exception:
+        pass
+
+    # Regex fallback if JSON is loosely formatted
+    valid_updates = {}
+    for topic in valid_topics:
+        pattern = rf'"{re.escape(topic)}"\s*:\s*\{{[^}}]*"score"\s*:\s*([0-3])'
+        match = re.search(pattern, raw_text, re.IGNORECASE)
+        if match:
+            valid_updates[topic] = {
+                "score": int(match.group(1)),
+                "reason": "Extracted via regex fallback",
+            }
+
+    return "", valid_updates
+
+
 DEFAULT_SCALE_FILE = (
     PROJECT_ROOT / "configs" / "scales" / "PHQ-8.json"
     if (PROJECT_ROOT / "configs" / "scales" / "PHQ-8.json").is_file()
@@ -189,6 +231,7 @@ def run_full_sample_assessment(
     engine: QwenInferenceEngine | None = None,
     api_base_url: str | None = None,
     api_key: str | None = None,
+    enable_memory_update: bool = False,
     verbose: bool = True,
 ) -> dict[str, Any]:
     def vprint(*args: Any, **kwargs: Any) -> None:
@@ -353,9 +396,70 @@ Score this topic from 0 to 3 based on the standard. Output JSON:
             "item_key": TOPIC_TO_ITEM_KEY.get(topic_name, ""),
         }
 
+    initial_total_score = sum(t["score"] for t in assessed_topics.values())
+    updated_scores: dict[str, dict[str, Any]] = {}
+    overall_summary = ""
+
+    # Optional Memory Update (Updater / SummaryAgent step)
+    if enable_memory_update:
+        vprint("\n" + "=" * 50)
+        vprint("STEP 2.5: Global Memory Update (Updater / SummaryAgent)")
+        vprint("=" * 50)
+
+        history_str = "\n".join(
+            f"{turn['role'].capitalize()}: {turn['content']}"
+            for turn in dialogue_transcript
+        )
+        initial_scores_str = "\n".join(
+            f"- {t}: {info['score']} pts (Reason: {info['summary']})"
+            for t, info in assessed_topics.items()
+        )
+        memory_prompt = f"""Full Consultation Dialogue:
+{history_str}
+
+Initial Topic Scores:
+{initial_scores_str}
+
+Analyze the complete dialogue history and memory across all topics. Make reasonable minor adjustments to the initial topic scores (0-3) if warranted by the overall clinical picture.
+Output strictly in JSON format:
+{{
+  "summary": "<overall assessment summary>",
+  "updated_scores": {{
+    "<Topic Name>": {{"score": <0, 1, 2, or 3>, "reason": "<clinical adjustment basis>"}}
+  }}
+}}"""
+        updater_resp = engine.generate(
+            system_prompt=(
+                "You are an expert clinical psychological supervisor and diagnostic updater. "
+                "Review the full consultation history and adjust topic scores if needed. Output JSON only."
+            ),
+            user_prompt=memory_prompt,
+            max_new_tokens=350,
+            temperature=0.0,
+        )
+        overall_summary, updated_scores = parse_summary_and_updated_scores(
+            updater_resp, list(topics_dict.keys())
+        )
+
+        if updated_scores:
+            vprint("  [Memory Update Adjustments]:")
+            for topic, update_info in updated_scores.items():
+                old_score = assessed_topics[topic]["score"]
+                new_score = update_info["score"]
+                assessed_topics[topic]["initial_score"] = old_score
+                assessed_topics[topic]["updated_score"] = new_score
+                assessed_topics[topic]["score"] = new_score
+                assessed_topics[topic]["update_reason"] = update_info["reason"]
+                vprint(
+                    f"    • {topic}: {old_score} -> {new_score} "
+                    f"({update_info['reason']})"
+                )
+        else:
+            vprint("  [Memory Update]: Initial scores confirmed without changes.")
+
     # Step 3: Compute Summary Report
-    total_score = sum(t["score"] for t in assessed_topics.values())
-    category = categorize_score(total_score)
+    final_total_score = sum(t["score"] for t in assessed_topics.values())
+    category = categorize_score(final_total_score)
 
     vprint("\n" + "=" * 50)
     vprint("STEP 3: Summary Report & Comparison")
@@ -366,15 +470,30 @@ Score this topic from 0 to 3 based on the standard. Output JSON:
 
     vprint(f"Participant ID: {participant_id}")
     vprint(f"Demographics:   {client_demographics}\n")
-    vprint(f"{'Topic Name':<30} | {'Pred Score':<10} | {'GT Score':<10} | Summary Basis")
-    vprint("-" * 80)
-    for topic_name, info in assessed_topics.items():
-        item_key = info["item_key"]
-        gt_item_score = gt_items.get(item_key, "-")
-        vprint(f"{topic_name:<30} | {info['score']:<10} | {str(gt_item_score):<10} | {info['summary']}")
+    if enable_memory_update:
+        vprint(f"{'Topic Name':<30} | {'Init':<6} | {'Final':<6} | {'GT':<6} | Summary Basis")
+        vprint("-" * 85)
+        for topic_name, info in assessed_topics.items():
+            item_key = info["item_key"]
+            gt_item_score = gt_items.get(item_key, "-")
+            init_s = info.get("initial_score", info["score"])
+            final_s = info["score"]
+            vprint(
+                f"{topic_name:<30} | {init_s:<6} | {final_s:<6} | {str(gt_item_score):<6} | {info['summary']}"
+            )
+        vprint("-" * 85)
+        vprint(f"INITIAL PHQ-8 SCORE: {initial_total_score}/24")
+        vprint(f"FINAL PHQ-8 SCORE:   {final_total_score}/24 (Memory Update Applied)")
+    else:
+        vprint(f"{'Topic Name':<30} | {'Pred Score':<10} | {'GT Score':<10} | Summary Basis")
+        vprint("-" * 80)
+        for topic_name, info in assessed_topics.items():
+            item_key = info["item_key"]
+            gt_item_score = gt_items.get(item_key, "-")
+            vprint(f"{topic_name:<30} | {info['score']:<10} | {str(gt_item_score):<10} | {info['summary']}")
+        vprint("-" * 80)
+        vprint(f"TOTAL PHQ-8 SCORE: Predicted = {final_total_score}/24 | Ground Truth = {gt_total}/24")
 
-    vprint("-" * 80)
-    vprint(f"TOTAL PHQ-8 SCORE: Predicted = {total_score}/24 | Ground Truth = {gt_total}/24")
     vprint(f"Depression Severity: {category}")
     vprint("=" * 80)
 
@@ -384,9 +503,13 @@ Score this topic from 0 to 3 based on the standard. Output JSON:
         "model_name": model_name,
         "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
         "demographics": client_demographics,
-        "total_predicted_score": total_score,
+        "memory_update_enabled": enable_memory_update,
+        "initial_total_score": initial_total_score,
+        "total_predicted_score": final_total_score,
         "ground_truth_total": gt_total,
         "predicted_category": category,
+        "overall_summary": overall_summary,
+        "updated_scores": updated_scores,
         "topics": assessed_topics,
         "dialogue_transcript": dialogue_transcript,
     }
@@ -420,6 +543,11 @@ def main() -> None:
         help="Optional API key for OpenAI-compatible endpoint",
     )
     parser.add_argument(
+        "--enable-memory-update",
+        action="store_true",
+        help="Enable global Memory Update (SummaryAgent/Updater) to adjust initial topic scores based on full dialogue memory without LoRA",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=PROJECT_ROOT / "results" / "evaluations",
@@ -433,6 +561,7 @@ def main() -> None:
         model_name=args.model_name,
         api_base_url=args.api_base_url,
         api_key=args.api_key,
+        enable_memory_update=args.enable_memory_update,
     )
     elapsed = time.time() - start_time
 

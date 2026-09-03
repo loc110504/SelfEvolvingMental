@@ -166,6 +166,11 @@ def main() -> None:
         help="Maximum number of samples to process (default: all)",
     )
     parser.add_argument(
+        "--enable-memory-update",
+        action="store_true",
+        help="Enable global Memory Update (SummaryAgent/Updater) adjusting initial topic scores based on full dialogue memory without LoRA",
+    )
+    parser.add_argument(
         "--skip-existing",
         action="store_true",
         help="Skip samples if their output JSON already exists in output-dir",
@@ -198,6 +203,10 @@ def main() -> None:
     logger.info("Found %d samples to evaluate from: %s", total_count, data_dir)
     logger.info("Target Model: %s", args.model_name)
     logger.info("Output Directory: %s", args.output_dir)
+    logger.info(
+        "Memory Update: %s",
+        "ENABLED (Memory-only ablation)" if args.enable_memory_update else "DISABLED (Zero-shot Baseline)",
+    )
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -242,6 +251,7 @@ def main() -> None:
                 scale_file=DEFAULT_SCALE_FILE,
                 standards_file=DEFAULT_STANDARDS_FILE,
                 engine=engine,
+                enable_memory_update=args.enable_memory_update,
                 verbose=args.verbose,
             )
             sample_time = time.time() - sample_start
@@ -255,13 +265,24 @@ def main() -> None:
             pred = result["total_predicted_score"]
             gt = result["ground_truth_total"]
             diff = abs(pred - gt) if isinstance(gt, (int, float)) else "N/A"
-            logger.info(
-                "  ✓ Done in %.2fs | Pred: %s/24 | GT: %s/24 | |Diff|: %s",
-                sample_time,
-                pred,
-                gt,
-                diff,
-            )
+            if args.enable_memory_update:
+                init_s = result.get("initial_total_score", pred)
+                logger.info(
+                    "  ✓ Done in %.2fs | Init: %s/24 -> Updated: %s/24 | GT: %s/24 | |Diff|: %s",
+                    sample_time,
+                    init_s,
+                    pred,
+                    gt,
+                    diff,
+                )
+            else:
+                logger.info(
+                    "  ✓ Done in %.2fs | Pred: %s/24 | GT: %s/24 | |Diff|: %s",
+                    sample_time,
+                    pred,
+                    gt,
+                    diff,
+                )
         except Exception as e:
             logger.error("  ✗ Failed on %s: %s", sample_path.name, e, exc_info=True)
 
@@ -286,24 +307,44 @@ def main() -> None:
     metrics = compute_metrics(records, cutoff=10)
 
     # Print summary table
-    print("\n" + "=" * 80)
-    print(
-        f"{'Participant':<12} | {'Pred PHQ-8':<12} | {'GT PHQ-8':<12} | {'Abs Diff':<10} | {'Pred Class':<10} | {'GT Class':<10}"
-    )
-    print("-" * 80)
-    for r in records:
-        pid = str(r.get("participant_id", "N/A"))
-        pred = int(r.get("total_predicted_score", 0))
-        gt = r.get("ground_truth_total", 0)
-        gt_val = int(gt) if isinstance(gt, (int, float)) else 0
-        diff = abs(pred - gt_val)
-        pred_class = "Depressed" if pred >= 10 else "Non-Dep"
-        gt_class = "Depressed" if gt_val >= 10 else "Non-Dep"
+    if args.enable_memory_update:
+        print("\n" + "=" * 95)
         print(
-            f"{pid:<12} | {pred:<12} | {gt_val:<12} | {diff:<10} | {pred_class:<10} | {gt_class:<10}"
+            f"{'Participant':<12} | {'Init PHQ-8':<10} | {'Final PHQ-8':<11} | {'GT PHQ-8':<10} | {'Abs Diff':<10} | {'Pred Class':<10} | {'GT Class':<10}"
         )
+        print("-" * 95)
+        for r in records:
+            pid = str(r.get("participant_id", "N/A"))
+            init_s = int(r.get("initial_total_score", r.get("total_predicted_score", 0)))
+            pred = int(r.get("total_predicted_score", 0))
+            gt = r.get("ground_truth_total", 0)
+            gt_val = int(gt) if isinstance(gt, (int, float)) else 0
+            diff = abs(pred - gt_val)
+            pred_class = "Depressed" if pred >= 10 else "Non-Dep"
+            gt_class = "Depressed" if gt_val >= 10 else "Non-Dep"
+            print(
+                f"{pid:<12} | {init_s:<10} | {pred:<11} | {gt_val:<10} | {diff:<10} | {pred_class:<10} | {gt_class:<10}"
+            )
+        print("-" * 95)
+    else:
+        print("\n" + "=" * 80)
+        print(
+            f"{'Participant':<12} | {'Pred PHQ-8':<12} | {'GT PHQ-8':<12} | {'Abs Diff':<10} | {'Pred Class':<10} | {'GT Class':<10}"
+        )
+        print("-" * 80)
+        for r in records:
+            pid = str(r.get("participant_id", "N/A"))
+            pred = int(r.get("total_predicted_score", 0))
+            gt = r.get("ground_truth_total", 0)
+            gt_val = int(gt) if isinstance(gt, (int, float)) else 0
+            diff = abs(pred - gt_val)
+            pred_class = "Depressed" if pred >= 10 else "Non-Dep"
+            gt_class = "Depressed" if gt_val >= 10 else "Non-Dep"
+            print(
+                f"{pid:<12} | {pred:<12} | {gt_val:<12} | {diff:<10} | {pred_class:<10} | {gt_class:<10}"
+            )
+        print("-" * 80)
 
-    print("-" * 80)
     print("OVERALL METRICS SUMMARY:")
     print(f"  • MAE (Mean Absolute Error): {metrics['mae']}")
     print(f"  • RMSE (Root Mean Squared):  {metrics['rmse']}")
@@ -325,6 +366,7 @@ def main() -> None:
         "timestamp": timestamp,
         "model_name": args.model_name,
         "data_dir": str(data_dir),
+        "memory_update_enabled": args.enable_memory_update,
         "total_samples": total_count,
         "completed_samples": completed_count,
         "overall_elapsed_seconds": round(overall_elapsed, 2),
@@ -332,6 +374,7 @@ def main() -> None:
         "records": [
             {
                 "participant_id": r.get("participant_id"),
+                "initial_total_score": r.get("initial_total_score"),
                 "total_predicted_score": r.get("total_predicted_score"),
                 "ground_truth_total": r.get("ground_truth_total"),
                 "predicted_category": r.get("predicted_category"),
@@ -348,31 +391,47 @@ def main() -> None:
     summary_csv_path = args.output_dir / f"batch_summary_{timestamp}.csv"
     with open(summary_csv_path, "w", newline="", encoding="utf-8") as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(
-            [
-                "Participant_ID",
-                "Pred_Score",
-                "GT_Score",
-                "Abs_Diff",
-                "Pred_Binary",
-                "GT_Binary",
-            ]
-        )
+        headers = [
+            "Participant_ID",
+            "Init_Score" if args.enable_memory_update else "Pred_Score",
+            "Final_Score" if args.enable_memory_update else "GT_Score",
+        ]
+        if args.enable_memory_update:
+            headers.extend(["GT_Score", "Abs_Diff", "Pred_Binary", "GT_Binary"])
+        else:
+            headers.extend(["Abs_Diff", "Pred_Binary", "GT_Binary"])
+        writer.writerow(headers)
+
         for r in records:
             pid = r.get("participant_id")
             pred = int(r.get("total_predicted_score", 0))
             gt = r.get("ground_truth_total", 0)
             gt_val = int(gt) if isinstance(gt, (int, float)) else 0
-            writer.writerow(
-                [
-                    pid,
-                    pred,
-                    gt_val,
-                    abs(pred - gt_val),
-                    1 if pred >= 10 else 0,
-                    1 if gt_val >= 10 else 0,
-                ]
-            )
+            diff = abs(pred - gt_val)
+            if args.enable_memory_update:
+                init_s = int(r.get("initial_total_score", pred))
+                writer.writerow(
+                    [
+                        pid,
+                        init_s,
+                        pred,
+                        gt_val,
+                        diff,
+                        1 if pred >= 10 else 0,
+                        1 if gt_val >= 10 else 0,
+                    ]
+                )
+            else:
+                writer.writerow(
+                    [
+                        pid,
+                        pred,
+                        gt_val,
+                        diff,
+                        1 if pred >= 10 else 0,
+                        1 if gt_val >= 10 else 0,
+                    ]
+                )
 
     logger.info("📁 Batch summary JSON saved to: %s", summary_json_path.resolve())
     logger.info("📊 Batch summary CSV saved to:  %s", summary_csv_path.resolve())
