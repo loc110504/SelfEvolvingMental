@@ -12,7 +12,8 @@ Offline-research implementation of **PsyVEC** (Self-Evolving Mental Health Asses
 3. [Hướng dẫn chạy Đơn mẫu (Single Sample Assessment)](#3-hướng-dẫn-chạy-đơn-mẫu-single-sample-assessment)
 4. [Hướng dẫn chạy Hàng loạt (Full Batch Evaluation)](#4-hướng-dẫn-chạy-hàng-loạt-full-batch-evaluation)
 5. [Cấu hình Model: HuggingFace, vLLM, Ollama, API](#5-cấu-hình-model-huggingface-vllm-ollama-api)
-6. [Offline Verification & Testing](#6-offline-verification--testing)
+6. [Evidence-Grounded Retrieval (Grounded Interview Loop)](#6-evidence-grounded-retrieval-grounded-interview-loop)
+7. [Offline Verification & Testing](#7-offline-verification--testing)
 
 ---
 
@@ -65,10 +66,11 @@ Trong `src/psyvec/evaluation/onoff.py`, hệ thống định nghĩa 4 cấu hìn
 ## 3. Hướng dẫn chạy Đơn mẫu (Single Sample Assessment)
 
 Script [`scripts/run_qwen_sample.py`](scripts/run_qwen_sample.py) chạy trọn vẹn quy trình đánh giá 1 bệnh nhân qua 8 chủ đề của thang đo **PHQ-8**:
-1. Thu thập thông tin nhân khẩu học (tuổi, giới tính, nghề nghiệp).
-2. Phỏng vấn qua đủ 8 chủ đề PHQ-8, tự động hỏi thêm hoặc dừng theo tiêu chí `necessity`.
-3. Chấm điểm từng mục (0–3), viết cơ sở tóm tắt.
-4. Tổng hợp điểm PHQ-8 (0–24), xếp loại mức độ trầm cảm, đối chiếu trực tiếp với Ground Truth và lưu báo cáo JSON.
+1. Thu thập thông tin nhân khẩu học (tuổi) bằng regex trực tiếp trên transcript thật — không còn gọi LLM cho bước này (tránh bịa thông tin không có căn cứ).
+2. **Truy xuất bằng chứng (evidence retrieval)** cho từng chủ đề từ **toàn bộ** `real_interview` (không giới hạn 50 lượt đầu như trước) — xem [mục 6](#6-evidence-grounded-retrieval-grounded-interview-loop).
+3. Phỏng vấn qua đủ 8 chủ đề PHQ-8 (vẫn giữ nguyên cơ chế hỏi-đáp nhiều vòng để khai thác sắc thái cảm xúc/mức độ), nhưng "bệnh nhân ảo" giờ trả lời dựa trên bằng chứng thật đã truy xuất ở bước 2 thay vì tự do tưởng tượng; tự động hỏi thêm hoặc dừng theo tiêu chí `necessity` (mặc định khi không parse được giờ phụ thuộc bằng chứng có sẵn hay không, không còn là hằng số cố định).
+4. Chấm điểm từng mục (0–3), viết cơ sở tóm tắt, kèm trích dẫn `evidence_turn_ids` về đúng lượt thoại thật đã dùng để chấm.
+5. Tổng hợp điểm PHQ-8 (0–24), xếp loại mức độ trầm cảm, đối chiếu trực tiếp với Ground Truth và lưu báo cáo JSON (kèm `evidence_diagnostics` cho từng mẫu).
 
 ### Lệnh chạy:
 ```bash
@@ -101,6 +103,7 @@ Script [`scripts/run_batch_eval.py`](scripts/run_batch_eval.py) dùng để đá
   - RMSE (Root Mean Squared Error)
   - Pearson Correlation ($r$)
   - Binary Classification (ngưỡng PHQ-8 $\ge 10$): Accuracy, Precision, Recall, Macro/Binary F1-Score, Confusion Matrix.
+  - **Evidence diagnostics** (mới): Evidence coverage rate (% chủ đề có bằng chứng thật tìm được), Citation-mismatch rate (% lần model trích dẫn `turn_id` không có thật), Low-faithfulness rate (% hội thoại có dấu hiệu lệch khỏi bằng chứng đã cấp) — xem [mục 6](#6-evidence-grounded-retrieval-grounded-interview-loop).
 - **Lưu trữ**: Xuất bảng tổng kết ra màn hình, đồng thời lưu file chi tiết từng mẫu + file tổng hợp `batch_summary_<timestamp>.json` và `batch_summary_<timestamp>.csv`.
 
 ### Lệnh chạy mẫu:
@@ -199,12 +202,38 @@ python3 scripts/run_batch_eval.py \
 
 ---
 
-## 6. Offline Verification & Testing
+## 6. Evidence-Grounded Retrieval (Grounded Interview Loop)
 
-Đảm bảo mã nguồn PsyVEC vượt qua toàn bộ 164 bài kiểm thử và kiểm tra tĩnh:
+Trước đây, "bệnh nhân ảo" chỉ được cấp 50 lượt thoại đầu tiên của `real_interview` làm bối cảnh (thường toàn small-talk mở đầu), nên khi được hỏi về từng chủ đề PHQ-8, model phải **tự bịa** câu trả lời — không neo vào bất kỳ điều gì participant thật sự đã nói. Điều này đã được sửa (xem [`Plan_Improve.md`](Plan_Improve.md)):
+
+- **Retrieval layer** (`src/psyvec/evaluation/evidence_retrieval.py`) quét **toàn bộ** `real_interview` của từng participant, tìm bằng chứng thật cho mỗi chủ đề bằng 2 cơ chế:
+  1. **Tag-anchor**: Ellie (interviewer ảo trong DAIC-WOZ) đôi khi để lộ tag giao thức nội bộ dạng `easy_sleep (how easy is it...)` — các tag này được map thủ công sang 8 chủ đề PHQ-8 trong [`configs/scales/topic_tag_map.json`](configs/scales/topic_tag_map.json).
+  2. **Keyword fallback**: với 5/8 chủ đề không có tag trực tiếp (Loss of Interest, Fatigue, Appetite, Concentration, Psychomotor), quét từ khóa trong [`configs/scales/topic_keywords.json`](configs/scales/topic_keywords.json) trên toàn bộ lượt của Participant.
+  3. Các tag hỏi về tâm trạng/tiền sử chung (chẩn đoán trầm cảm, đi trị liệu...) được gom vào bucket `CROSS_CUTTING`, dùng làm "nền cảm xúc" khi một chủ đề không có bằng chứng riêng.
+- **Grounded Interview Loop** (`src/psyvec/evaluation/interview_policy.py`): system prompt của "bệnh nhân ảo", tiêu chí `necessity` mặc định, câu hỏi follow-up, và prompt của scorer/Memory-Update giờ đều được build từ bằng chứng đã truy xuất — vẫn giữ nguyên số vòng hỏi-đáp như trước, chỉ khác là mọi câu trả lời phải nhất quán với bằng chứng thật (hoặc, nếu không có bằng chứng riêng, phải trả lời thận trọng theo tâm trạng chung, không được bịa triệu chứng cụ thể mới).
+
+### Tinh chỉnh lexicon/tag-map (chỉ làm trên tập `train`, không tune trên `dev`/`test`)
 
 ```bash
-# Chạy bộ unit và integration test (164 tests)
+# Liệt kê toàn bộ tag Ellie tìm được trong 1 split (mặc định: train)
+python3 scripts/build_tag_inventory.py --data-dir data/processed_daic_woz/train
+
+# Xem từng dòng thoại thật mà 1 từ khóa trong topic_keywords.json khớp phải,
+# dùng để phát hiện từ khóa gây nhiễu (vd "down" khớp nhầm "downtown")
+python3 scripts/audit_keyword_lexicon.py --data-dir data/processed_daic_woz/train
+```
+
+Sau khi sửa `configs/scales/topic_tag_map.json` hoặc `topic_keywords.json`, chạy lại `scripts/run_batch_eval.py` trên `dev` và so 3 chỉ số evidence diagnostics (mục 4) với lần chạy trước để biết thay đổi có cải thiện độ bao phủ bằng chứng hay không.
+
+---
+
+## 7. Offline Verification & Testing
+
+Đảm bảo mã nguồn PsyVEC vượt qua toàn bộ 232 bài kiểm thử và kiểm tra tĩnh:
+
+```bash
+# Chạy bộ unit và integration test (232 tests, 6 bị skip do thiếu thư mục
+# baseline AgentMental — không liên quan lỗi code)
 python3 -m unittest discover -s tests -p 'test_*.py'
 
 # Hoặc dùng pytest

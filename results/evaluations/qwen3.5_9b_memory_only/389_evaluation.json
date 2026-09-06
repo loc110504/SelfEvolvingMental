@@ -2,63 +2,132 @@
   "participant_id": "389",
   "sample_path": "data/processed_daic_woz/dev/389.json",
   "model_name": "Qwen/Qwen3.5-9B",
-  "timestamp": "2026-09-03 10:44:55",
-  "demographics": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Ellie) in a psychological consultation.\n    *   **",
+  "timestamp": "2026-09-03 13:12:19",
+  "demographics": "Age: 26, Gender: Female, Occupation: Music student.",
   "memory_update_enabled": true,
-  "initial_total_score": 8,
-  "total_predicted_score": 8,
+  "initial_total_score": 12,
+  "total_predicted_score": 11,
   "ground_truth_total": 14,
-  "predicted_category": "Mild depression (5-9)",
-  "overall_summary": "",
-  "updated_scores": {},
-  "topics": {
+  "predicted_category": "Moderate depression (10-14)",
+  "assessment_valid": true,
+  "parse_failure_count": 0,
+  "parse_failures": [],
+  "truncated_generations": 0,
+  "overall_summary": "The participant presents with a clear clinical picture of Major Depressive Disorder based on the PHQ-9 criteria. They report significant depressive mood (10 days) and loss of interest (6 days), meeting the threshold for a diagnosis. While the initial score for 'Loss of Interest' was correctly identified as 1 based on the strict 2-6 day count, the participant's description of the symptom as 'significant' and the high interference level (7/10) combined with the presence of other severe symptoms (fatigue, sleep issues, low self-worth) confirm the severity. The initial scores for Depressed Mood, Fatigue, Low Self-Worth, and Concentration are accurate based on the 10-day frequency reported. Sleep problems (4 nights) and Psychomotor changes (none) are also correctly scored. No adjustments to the numerical scores are necessary as the initial analysis correctly applied the frequency-based rubric.",
+  "updated_scores": {
     "Loss of Interest": {
       "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as a professional psychological scale scorer.\n    *   **Task:** Score the topic \"Loss of Interest\" based on the provided dialogue history and scoring standard.\n    *   **",
-      "rounds": 2,
-      "item_key": "PHQ8_NoInterest"
+      "reason": "The participant reported the symptom was present for six days a week. According to the standard frequency rubric (2-6 days = Score 1), the score remains 1. The high interference level (7/10) and qualitative description ('significant') confirm the severity but do not alter the frequency-based score in this specific scoring system."
     },
     "Depressed Mood": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as a professional psychological scale scorer.\n    *   **Input:** A dialogue snippet (Topic: Depressed Mood) and a scoring standard (PHQ-2 or similar depression",
-      "rounds": 2,
-      "item_key": "PHQ8_Depressed"
+      "score": 2,
+      "reason": "The participant reported experiencing depressed mood for 10 days in the past two weeks. This falls within the 7-11 day range, corresponding to a score of 2."
     },
     "Sleep Problems": {
       "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as a professional psychological scale scorer.\n    *   **Input:** A dialogue snippet where the question is \"Over the past two weeks, have you had trouble falling or staying asleep?\"",
-      "rounds": 2,
-      "item_key": "PHQ8_Sleep"
+      "reason": "The participant reported sleep difficulties occurring approximately four nights per week. This aligns with the 'several days (2-6 days)' criterion for a score of 1."
     },
     "Fatigue or Low Energy": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as a professional psychological scale scorer.\n    *   **Input:** A dialogue snippet containing a question (\"Over the past two weeks, have you felt tired or lacked energy?\") and",
-      "rounds": 2,
-      "item_key": "PHQ8_Tired"
+      "score": 3,
+      "reason": "The participant reported feeling deep exhaustion nearly every single day for the past two weeks. This aligns with the criteria for a score of 3 (12-14 days)."
     },
     "Appetite or Weight Changes": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as a professional psychological scale scorer.\n    *   **Input:** A dialogue history snippet containing a question about appetite/weight changes and some internal \"Thinking Process\" logs that seem to",
-      "rounds": 2,
-      "item_key": "PHQ8_Appetite"
+      "score": 0,
+      "reason": "The participant explicitly stated that their appetite has been normal with no significant changes in eating habits or weight, aligning with the 'Not bothered at all' criterion."
     },
     "Low Self-Worth": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as a professional psychological scale scorer.\n    *   **Input:** A dialogue snippet containing a question (\"Over the past two weeks, have you felt bad about yourself or like a",
-      "rounds": 2,
-      "item_key": "PHQ8_Failure"
+      "score": 2,
+      "reason": "The participant reported feeling like a failure for approximately 10 days in the past two weeks. This falls within the 7-11 day range, corresponding to a score of 2."
     },
     "Concentration Difficulties": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as a professional psychological scale scorer.\n    *   **Input:** A dialogue snippet where a question is asked about concentration difficulties over the past two weeks.\n    *   **Task",
-      "rounds": 2,
-      "item_key": "PHQ8_Concentrating"
+      "score": 2,
+      "reason": "The participant reported difficulty concentrating for about 10 days in the past two weeks. This falls within the 7-11 day range, corresponding to a score of 2."
     },
     "Psychomotor Changes": {
+      "score": 0,
+      "reason": "The participant explicitly stated that movements and speech feel normal with no slowing down, aligning with the 'Not bothered at all' criterion."
+    }
+  },
+  "topics": {
+    "Loss of Interest": {
       "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as a professional psychological scale scorer.\n    *   **Task:** Score a specific topic (\"Psychomotor Changes\") based on provided dialogue history and scoring standards.\n    *",
+      "summary": "The respondent reports the symptom was present for six days a week, which falls within the 'several days' range (2-6 days) corresponding to a score of 1, but the high interference level (7/10) and the specific phrasing of the standard for score 2 ('more than half the days') suggests a need to re-evaluate the day count interpretation; however, strictly adhering to the provided standard where 2-6 days maps to score 1, the correct score is 1. Wait, let me re-read the standard carefully. Standard says: '1': 'several days (or 2-6 days)'. The user said 'six days a week'. This fits the 2-6 range exactly. Therefore, the score is 1. The interference level is secondary to the frequency count in this specific DSM-style scoring rubric provided.",
+      "parse_failed": false,
       "rounds": 2,
-      "item_key": "PHQ8_Moving"
+      "item_key": "PHQ8_NoInterest",
+      "initial_score": 2,
+      "updated_score": 1,
+      "update_reason": "The participant reported the symptom was present for six days a week. According to the standard frequency rubric (2-6 days = Score 1), the score remains 1. The high interference level (7/10) and qualitative description ('significant') confirm the severity but do not alter the frequency-based score in this specific scoring system."
+    },
+    "Depressed Mood": {
+      "score": 2,
+      "summary": "The respondent reports experiencing feelings of depression and hopelessness for approximately 10 days in the past two weeks, which falls within the 7-11 day range corresponding to a score of 2.",
+      "parse_failed": false,
+      "rounds": 2,
+      "item_key": "PHQ8_Depressed",
+      "initial_score": 2,
+      "updated_score": 2,
+      "update_reason": "The participant reported experiencing depressed mood for 10 days in the past two weeks. This falls within the 7-11 day range, corresponding to a score of 2."
+    },
+    "Sleep Problems": {
+      "score": 1,
+      "summary": "The respondent reports experiencing sleep difficulties approximately four nights per week over the past two weeks, which aligns with the 'several days (2-6 days)' criterion for a score of 1.",
+      "parse_failed": false,
+      "rounds": 2,
+      "item_key": "PHQ8_Sleep",
+      "initial_score": 1,
+      "updated_score": 1,
+      "update_reason": "The participant reported sleep difficulties occurring approximately four nights per week. This aligns with the 'several days (2-6 days)' criterion for a score of 1."
+    },
+    "Fatigue or Low Energy": {
+      "score": 3,
+      "summary": "The respondent reports feeling deep exhaustion nearly every single day for the past two weeks, which aligns with the criteria for a score of 3 (12-14 days).",
+      "parse_failed": false,
+      "rounds": 2,
+      "item_key": "PHQ8_Tired",
+      "initial_score": 3,
+      "updated_score": 3,
+      "update_reason": "The participant reported feeling deep exhaustion nearly every single day for the past two weeks. This aligns with the criteria for a score of 3 (12-14 days)."
+    },
+    "Appetite or Weight Changes": {
+      "score": 0,
+      "summary": "The respondent explicitly states that their appetite has been normal and they have not experienced any significant changes in eating habits or weight over the past two weeks, aligning with the 'Not bothered at all' criterion.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_Appetite",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "The participant explicitly stated that their appetite has been normal with no significant changes in eating habits or weight, aligning with the 'Not bothered at all' criterion."
+    },
+    "Low Self-Worth": {
+      "score": 2,
+      "summary": "The respondent reported feeling bad about themselves or like a failure for approximately 10 days in the past two weeks, which falls within the 7-11 day range corresponding to a score of 2.",
+      "parse_failed": false,
+      "rounds": 2,
+      "item_key": "PHQ8_Failure",
+      "initial_score": 2,
+      "updated_score": 2,
+      "update_reason": "The participant reported feeling like a failure for approximately 10 days in the past two weeks. This falls within the 7-11 day range, corresponding to a score of 2."
+    },
+    "Concentration Difficulties": {
+      "score": 2,
+      "summary": "The respondent reported difficulty concentrating on daily tasks for about 10 days in the past two weeks, which falls within the 7-11 day range corresponding to a score of 2.",
+      "parse_failed": false,
+      "rounds": 2,
+      "item_key": "PHQ8_Concentrating",
+      "initial_score": 2,
+      "updated_score": 2,
+      "update_reason": "The participant reported difficulty concentrating for about 10 days in the past two weeks. This falls within the 7-11 day range, corresponding to a score of 2."
+    },
+    "Psychomotor Changes": {
+      "score": 0,
+      "summary": "The respondent explicitly states that movements and speech feel normal with no slowing down, aligning with the 'Not bothered at all' criterion.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_Moving",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "The participant explicitly stated that movements and speech feel normal with no slowing down, aligning with the 'Not bothered at all' criterion."
     }
   },
   "dialogue_transcript": [
@@ -70,17 +139,17 @@
     {
       "role": "participant",
       "topic": "Loss of Interest",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Ellie) in a psychological consultation.\n    *   **Context:** I have a background dialogue provided (int"
+      "content": "Yes, over the past two weeks, I've felt a significant lack of interest in most activities, especially those I used to enjoy like music. Even thinking about my dream of singing at the opera feels distant and unappealing right now."
     },
     {
       "role": "interviewer",
       "topic": "Loss of Interest",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user wants me to act as an *empathetic psychological interviewer* (clinician)."
+      "content": "\"Given that you've noticed this shift over the past two weeks, could you tell me how many days a week this lack of interest has been present, and on a scale of 0 to 10, how much does it interfere with your daily functioning right now?\""
     },
     {
       "role": "participant",
       "topic": "Loss of Interest",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user wants me to act as an *empathetic psychological interviewer* (clinician).\n    *   **Task:** Answer the question \""
+      "content": "It's been present about six days a week. On a scale of 0 to 10, it's interfering with my daily functioning at a 7 right now."
     },
     {
       "role": "interviewer",
@@ -90,17 +159,17 @@
     {
       "role": "participant",
       "topic": "Depressed Mood",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Ellie) in a psychological consultation.\n    *   **Background:** I have a dialogue history provided (Ell"
+      "content": "Yes, I've felt down and hopeless recently. The prejudice I face in LA and the pressure of my music career have made me feel isolated and sad."
     },
     {
       "role": "interviewer",
       "topic": "Depressed Mood",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user is asking me to act as an *empathetic psychological interviewer* (clinician)."
+      "content": "\"Given those feelings of isolation and sadness, how many days in the past two weeks have you experienced them to this degree?\""
     },
     {
       "role": "participant",
       "topic": "Depressed Mood",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as the *participant* (Ellie) from the provided dialogue, NOT the interviewer. The prompt says \"You are acting as"
+      "content": "I've felt this level of isolation and sadness about 10 days in the past two weeks. It's been particularly heavy since moving to LA and feeling judged by the wealthy crowd."
     },
     {
       "role": "interviewer",
@@ -110,17 +179,17 @@
     {
       "role": "participant",
       "topic": "Sleep Problems",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Ellie) in a psychological consultation.\n    *   **Context:** I have a background dialogue provided (int"
+      "content": "Yes, I've had significant trouble falling asleep lately, often lying awake for hours worrying about my future. I also wake up frequently during the night and struggle to get back to sleep."
     },
     {
       "role": "interviewer",
       "topic": "Sleep Problems",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the *client* (Ellie) in a psychological consultation? Wait, looking"
+      "content": "\"Could you tell me how many nights per week this pattern has been occurring over the past two weeks, and how much it is impacting your daily functioning?\""
     },
     {
       "role": "participant",
       "topic": "Sleep Problems",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the *client* (Ellie) in a psychological consultation.\n    *   **Task:** Respond truthfully and reasonably in"
+      "content": "Over the past two weeks, I've struggled with sleep about four nights a week. This fatigue makes it hard to focus on my grad school work and feel motivated during the day."
     },
     {
       "role": "interviewer",
@@ -130,17 +199,17 @@
     {
       "role": "participant",
       "topic": "Fatigue or Low Energy",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Ellie) in a psychological consultation.\n    *   **Background:** I have a dialogue history provided (Ell"
+      "content": "Yes, I've felt quite tired and lacked energy over the past two weeks. The stress of adapting to LA and my struggles with prejudice have drained me significantly."
     },
     {
       "role": "interviewer",
       "topic": "Fatigue or Low Energy",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user wants me to act as an *empathetic psychological interviewer* (clinician)."
+      "content": "\"Could you describe a typical day during those past two weeks? On a scale of 0 to 10, how would you rate your energy level at your most drained moments, and how often did you feel this level of exhaustion?\""
     },
     {
       "role": "participant",
       "topic": "Fatigue or Low Energy",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user wants me to act as an *empathetic psychological interviewer* (clinician).\n    *   **Task:** Answer the question \""
+      "content": "My days feel heavy and slow, with energy levels dropping to a 2 or 3 by late afternoon. I've felt this deep exhaustion nearly every single day for the past two weeks."
     },
     {
       "role": "interviewer",
@@ -150,17 +219,7 @@
     {
       "role": "participant",
       "topic": "Appetite or Weight Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Ellie) in a psychological consultation.\n    *   **Background:** Based on the provided dialogue transcript. Ellie"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Appetite or Weight Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as the *client* (Ellie) in a psychological consultation? Wait,"
-    },
-    {
-      "role": "participant",
-      "topic": "Appetite or Weight Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as the *client* (Ellie) in a psychological consultation.\n    *   **Task:** Respond to a specific question"
+      "content": "No, my appetite has been normal over the past two weeks. I haven't experienced any significant changes in eating habits or weight."
     },
     {
       "role": "interviewer",
@@ -170,17 +229,17 @@
     {
       "role": "participant",
       "topic": "Low Self-Worth",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Ellie) in a psychological consultation.\n    *   **Background:** I have a dialogue history provided (Ell"
+      "content": "Yes, I've felt like a failure lately, especially when comparing my struggles to the wealthy people around me. The prejudice I face makes me question my worth constantly."
     },
     {
       "role": "interviewer",
       "topic": "Low Self-Worth",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the *interviewer* (psychological interviewer), NOT the client (Ell"
+      "content": "\"Given how often you've been feeling this way, could you tell me how many days in the past two weeks have you felt this level of failure and questioning of your worth?\""
     },
     {
       "role": "participant",
       "topic": "Low Self-Worth",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user prompt says \"You are acting as the client in a psychological consultation.\" at the very beginning. However, the specific instruction in the `<user"
+      "content": "I've felt this level of failure and questioning my worth about 10 days in the past two weeks. It's especially intense when I think about my dream job and how hard it seems to be."
     },
     {
       "role": "interviewer",
@@ -190,17 +249,17 @@
     {
       "role": "participant",
       "topic": "Concentration Difficulties",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Ellie) in a psychological consultation.\n    *   **Background:** Based on the provided dialogue transcript. Ellie"
+      "content": "Yes, I've struggled to focus on reading or work lately. My mind often wanders to thoughts about the prejudice I face and the pressure to achieve my dream of singing at the Met."
     },
     {
       "role": "interviewer",
       "topic": "Concentration Difficulties",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Ellie) in a psychological consultation? Wait, the prompt says"
+      "content": "\"Given those thoughts, how many days in the past two weeks have you found it difficult to concentrate on daily tasks like reading or working?\""
     },
     {
       "role": "participant",
       "topic": "Concentration Difficulties",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Ellie) in a psychological consultation.\n    *   **Task:** Respond truthfully and reasonably in the first"
+      "content": "I've found it difficult to concentrate on daily tasks like reading or working for about 10 days in the past two weeks. The constant noise and feeling of being judged in LA make it hard to focus."
     },
     {
       "role": "interviewer",
@@ -210,18 +269,8 @@
     {
       "role": "participant",
       "topic": "Psychomotor Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Ellie) in a psychological consultation.\n    *   **Context:** I have a background dialogue provided (int"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Psychomotor Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user is asking me to act as an *empathetic psychological interviewer* (clinician)."
-    },
-    {
-      "role": "participant",
-      "topic": "Psychomotor Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as the *participant* (Ellie) from the provided dialogue, not the interviewer. The prompt says \"You are acting as"
+      "content": "No, my movements and speech feel normal. I haven't noticed any slowing down in how I act or talk recently."
     }
   ],
-  "elapsed_seconds": 156.61
+  "elapsed_seconds": 161.55
 }

@@ -131,6 +131,26 @@ class ParseScoreAndSummaryTest(unittest.TestCase):
         self.assertFalse(result.ok)
         self.assertEqual(result.failure_reason, "empty response")
 
+    def test_extracts_evidence_turn_ids_when_present(self) -> None:
+        raw = (
+            '{"score": 2, "summary": "trouble sleeping", '
+            '"evidence_turn_ids": ["turn-142", "turn-145"]}'
+        )
+        result = parse_score_and_summary(raw)
+        self.assertTrue(result.ok)
+        self.assertEqual(result.evidence_turn_ids, ("turn-142", "turn-145"))
+
+    def test_evidence_turn_ids_empty_when_field_absent(self) -> None:
+        result = parse_score_and_summary('{"score": 1, "summary": "mild"}')
+        self.assertTrue(result.ok)
+        self.assertEqual(result.evidence_turn_ids, ())
+
+    def test_evidence_turn_ids_empty_when_field_malformed(self) -> None:
+        raw = '{"score": 1, "summary": "mild", "evidence_turn_ids": "turn-1"}'
+        result = parse_score_and_summary(raw)
+        self.assertTrue(result.ok)
+        self.assertEqual(result.evidence_turn_ids, ())
+
 
 class ParseNecessityScoreTest(unittest.TestCase):
     def test_bare_digit(self) -> None:
@@ -173,6 +193,30 @@ class ParseSummaryAndUpdatedScoresTest(unittest.TestCase):
         self.assertFalse(result.ok)
         self.assertEqual(result.updated_scores, {})
         self.assertEqual(result.summary, "")
+
+    def test_extracts_evidence_turn_ids_for_a_revision(self) -> None:
+        raw = (
+            '{"summary": "moderate", "updated_scores": '
+            '{"Loss of Interest": {"score": 2, "reason": "daily", '
+            '"evidence_turn_ids": ["turn-10"]}}}'
+        )
+        result = parse_summary_and_updated_scores(raw, TOPICS)
+        self.assertTrue(result.ok)
+        self.assertEqual(
+            result.updated_scores["Loss of Interest"]["evidence_turn_ids"],
+            ("turn-10",),
+        )
+
+    def test_evidence_turn_ids_empty_when_revision_cites_none(self) -> None:
+        raw = (
+            '{"summary": "moderate", "updated_scores": '
+            '{"Loss of Interest": {"score": 2, "reason": "daily"}}}'
+        )
+        result = parse_summary_and_updated_scores(raw, TOPICS)
+        self.assertTrue(result.ok)
+        self.assertEqual(
+            result.updated_scores["Loss of Interest"]["evidence_turn_ids"], ()
+        )
 
 
 if __name__ == "__main__":

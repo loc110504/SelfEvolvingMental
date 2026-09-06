@@ -176,13 +176,30 @@ def _coerce_score(value: Any, min_score: int, max_score: int) -> int | None:
 
 @dataclass(frozen=True)
 class ScoreParse:
-    """Outcome of parsing a scorer response."""
+    """Outcome of parsing a scorer response.
+
+    ``evidence_turn_ids`` is the scorer's own citation of which retrieved
+    transcript turns it based the score on (Plan_Improve.md Sec 2.5). It is
+    empty whenever the model's reply has no such field at all — expected from
+    smaller models that ignore the extra schema key — which callers should
+    treat as "unverified citation", not a parse failure. A caller wanting to
+    catch a *fabricated* citation (an id never actually sent to the model)
+    must check the ids against what it sent; this parser has no way to know
+    what was sent and never invalidates a score over it.
+    """
 
     score: int | None
     summary: str
     ok: bool
     failure_reason: str = ""
     raw_text: str = ""
+    evidence_turn_ids: tuple[str, ...] = ()
+
+
+def _coerce_turn_ids(value: Any) -> tuple[str, ...]:
+    if not isinstance(value, list):
+        return ()
+    return tuple(str(item) for item in value if isinstance(item, (str, int)))
 
 
 def parse_score_and_summary(
@@ -214,7 +231,8 @@ def parse_score_and_summary(
             if score is None:
                 continue
             summary = str(data.get("summary", "")).strip()
-            return ScoreParse(score, summary, True, "", raw_text)
+            evidence_turn_ids = _coerce_turn_ids(data.get("evidence_turn_ids"))
+            return ScoreParse(score, summary, True, "", raw_text, evidence_turn_ids)
         break
 
     if not cleaned:
@@ -331,6 +349,11 @@ def _valid_updates(
         updates[topic] = {
             "score": score,
             "reason": str(score_data.get("reason", "")),
+            # Empty when the updater cites no evidence for this revision — a
+            # caller enforcing "no revision without evidence" (Plan_Improve.md
+            # Sec 2.6 / psyvec.roles.updater) should reject those, not apply
+            # them just because a score and reason string were present.
+            "evidence_turn_ids": _coerce_turn_ids(score_data.get("evidence_turn_ids")),
         }
     return updates
 
@@ -369,6 +392,7 @@ def parse_summary_and_updated_scores(
             recovered[topic] = {
                 "score": int(match.group(1)),
                 "reason": "Extracted via regex fallback",
+                "evidence_turn_ids": (),
             }
     if recovered:
         summary_match = re.search(r'"summary"\s*:\s*"([^"]*)"', cleaned)

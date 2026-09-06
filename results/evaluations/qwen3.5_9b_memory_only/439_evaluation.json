@@ -2,63 +2,132 @@
   "participant_id": "439",
   "sample_path": "data/processed_daic_woz/dev/439.json",
   "model_name": "Qwen/Qwen3.5-9B",
-  "timestamp": "2026-09-03 11:16:23",
-  "demographics": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Context",
+  "timestamp": "2026-09-03 13:36:46",
+  "demographics": "Age: 72, Gender: Male, Occupation: Retired.",
   "memory_update_enabled": true,
-  "initial_total_score": 8,
-  "total_predicted_score": 8,
+  "initial_total_score": 0,
+  "total_predicted_score": 0,
   "ground_truth_total": 1,
-  "predicted_category": "Mild depression (5-9)",
-  "overall_summary": "",
-  "updated_scores": {},
-  "topics": {
+  "predicted_category": "None / Minimal depression (0-4)",
+  "assessment_valid": true,
+  "parse_failure_count": 0,
+  "parse_failures": [],
+  "truncated_generations": 0,
+  "overall_summary": "The participant consistently and explicitly denied all nine core symptoms of depression (anhedonia, depressed mood, sleep disturbance, fatigue, appetite change, low self-worth, concentration issues, and psychomotor retardation) over the past two weeks. The participant reported feeling content, energetic, and engaged in usual activities such as traveling. There is no clinical evidence to suggest any deviation from the initial assessment of no symptoms.",
+  "updated_scores": {
     "Loss of Interest": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as a professional psychological scale scorer.\n    *   **Input:** A dialogue history snippet containing a question (\"Over the past two weeks, have you felt little interest or pleasure in doing",
-      "rounds": 2,
-      "item_key": "PHQ8_NoInterest"
+      "score": 0,
+      "reason": "Participant explicitly denied any lack of interest or pleasure, stating they still enjoy activities like traveling and trying new cuisines."
     },
     "Depressed Mood": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am a professional psychological scale scorer.\n    *   **Task:** Score a specific topic (\"Depressed Mood\") based on a dialogue history and a provided scoring standard.\n    *   **",
-      "rounds": 2,
-      "item_key": "PHQ8_Depressed"
+      "score": 0,
+      "reason": "Participant explicitly stated they have not felt down, depressed, or hopeless and are doing fine."
     },
     "Sleep Problems": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am a professional psychological scale scorer.\n    *   **Task:** Score a specific topic (\"Sleep Problems\") based on provided dialogue history and scoring standards.\n    *   **Input:**",
-      "rounds": 2,
-      "item_key": "PHQ8_Sleep"
+      "score": 0,
+      "reason": "Participant reported restful, uninterrupted sleep with no trouble falling or staying asleep."
     },
     "Fatigue or Low Energy": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as a professional psychological scale scorer.\n    *   **Task:** Score a specific topic (\"Fatigue or Low Energy\") based on provided dialogue history and scoring standards.\n    *",
-      "rounds": 2,
-      "item_key": "PHQ8_Tired"
+      "score": 0,
+      "reason": "Participant denied feeling tired or lacking energy, noting they maintain usual activity levels."
     },
     "Appetite or Weight Changes": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as a professional psychological scale scorer.\n    *   **Input:** A dialogue snippet containing a question (\"Over the past two weeks, have you had a poor appetite or been overeating",
-      "rounds": 2,
-      "item_key": "PHQ8_Appetite"
+      "score": 0,
+      "reason": "Participant confirmed normal appetite with no changes in eating habits or weight."
     },
     "Low Self-Worth": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as a psychological scale scorer.\n    *   **Input:** A dialogue snippet containing a question (\"Over the past two weeks, have you felt bad about yourself or like a failure",
-      "rounds": 2,
-      "item_key": "PHQ8_Failure"
+      "score": 0,
+      "reason": "Participant explicitly denied feeling bad about themselves or like a failure, expressing contentment."
     },
     "Concentration Difficulties": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am a professional psychological scale scorer.\n    *   **Task:** Score a specific topic (\"Concentration Difficulties\") based on provided dialogue history and scoring standards.\n    *   **",
-      "rounds": 2,
-      "item_key": "PHQ8_Concentrating"
+      "score": 0,
+      "reason": "Participant reported no trouble concentrating on tasks and described their mind as clear."
     },
     "Psychomotor Changes": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as a professional psychological scale scorer.\n    *   **Input:** A dialogue history snippet where a question is asked (\"Over the past two weeks, have you felt slowed down in",
-      "rounds": 2,
-      "item_key": "PHQ8_Moving"
+      "score": 0,
+      "reason": "Participant denied feeling slowed down in movements or speech, reporting usual pace."
+    }
+  },
+  "topics": {
+    "Loss of Interest": {
+      "score": 0,
+      "summary": "The respondent explicitly denied feeling a lack of interest or pleasure over the past two weeks, indicating they were not bothered at all.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_NoInterest",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "Participant explicitly denied any lack of interest or pleasure, stating they still enjoy activities like traveling and trying new cuisines."
+    },
+    "Depressed Mood": {
+      "score": 0,
+      "summary": "The respondent explicitly states they have not felt down, depressed, or hopeless over the past two weeks, aligning with the 'Not bothered at all' criterion.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_Depressed",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "Participant explicitly stated they have not felt down, depressed, or hopeless and are doing fine."
+    },
+    "Sleep Problems": {
+      "score": 0,
+      "summary": "The respondent explicitly states they have not had any trouble falling or staying asleep and that their sleep has been restful and uninterrupted, aligning with the criteria for a score of 0.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_Sleep",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "Participant reported restful, uninterrupted sleep with no trouble falling or staying asleep."
+    },
+    "Fatigue or Low Energy": {
+      "score": 0,
+      "summary": "The respondent explicitly stated they have not felt tired or lacked energy over the past two weeks, aligning with the 'Not bothered at all' criterion.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_Tired",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "Participant denied feeling tired or lacking energy, noting they maintain usual activity levels."
+    },
+    "Appetite or Weight Changes": {
+      "score": 0,
+      "summary": "The respondent explicitly states that their appetite has been normal and they have experienced no changes in eating habits or weight over the past two weeks, indicating they were not bothered at all.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_Appetite",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "Participant confirmed normal appetite with no changes in eating habits or weight."
+    },
+    "Low Self-Worth": {
+      "score": 0,
+      "summary": "The respondent explicitly states they have not felt bad about themselves or like a failure over the past two weeks, aligning with the 'Not bothered at all' criterion.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_Failure",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "Participant explicitly denied feeling bad about themselves or like a failure, expressing contentment."
+    },
+    "Concentration Difficulties": {
+      "score": 0,
+      "summary": "The respondent explicitly states they have not had trouble concentrating over the past two weeks, aligning with the 'Not bothered at all' criterion.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_Concentrating",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "Participant reported no trouble concentrating on tasks and described their mind as clear."
+    },
+    "Psychomotor Changes": {
+      "score": 0,
+      "summary": "The respondent explicitly denied feeling slowed down in movements or speech over the past two weeks, indicating no bother.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_Moving",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "Participant denied feeling slowed down in movements or speech, reporting usual pace."
     }
   },
   "dialogue_transcript": [
@@ -70,17 +139,7 @@
     {
       "role": "participant",
       "topic": "Loss of Interest",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Background:** I have a dialogue history with an interviewer named"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Loss of Interest",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the *client* (Participant) in a psychological consultation? Wait, looking closely"
-    },
-    {
-      "role": "participant",
-      "topic": "Loss of Interest",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the *client* (Participant) in a psychological consultation.\n    *   **Task:** Respond truthfully and reasonably in the"
+      "content": "No, I have not felt a lack of interest or pleasure. I still enjoy traveling, trying new cuisines, and visiting historical sites."
     },
     {
       "role": "interviewer",
@@ -90,17 +149,7 @@
     {
       "role": "participant",
       "topic": "Depressed Mood",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Background:** I have a dialogue history with an interviewer named"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Depressed Mood",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as the *interviewer* (psychological interviewer), not the client."
-    },
-    {
-      "role": "participant",
-      "topic": "Depressed Mood",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user is asking me to act as the *interviewer* (psychological interviewer), but the prompt says \"Answer concisely (1"
+      "content": "No, I have not felt down, depressed, or hopeless over the past two weeks. I am doing fine and enjoying my travels and historical interests."
     },
     {
       "role": "interviewer",
@@ -110,17 +159,7 @@
     {
       "role": "participant",
       "topic": "Sleep Problems",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Background:** I am an older male (born 1"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Sleep Problems",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user is asking me to act as an *empathetic psychological interviewer* (therapist/c"
-    },
-    {
-      "role": "participant",
-      "topic": "Sleep Problems",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as the *participant* (Ellie's interviewee) from the provided dialogue.\n    *   **Task:** Respond to"
+      "content": "No, I have not had any trouble falling or staying asleep over the past two weeks. My sleep has been restful and uninterrupted during this time."
     },
     {
       "role": "interviewer",
@@ -130,17 +169,7 @@
     {
       "role": "participant",
       "topic": "Fatigue or Low Energy",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Background:** I am an older man (born 1"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Fatigue or Low Energy",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the *client* (Participant) in a psychological consultation. Wait, the prompt"
-    },
-    {
-      "role": "participant",
-      "topic": "Fatigue or Low Energy",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the *client* (Participant) in a psychological consultation.\n    *   **Context:** I have a background dialogue with an"
+      "content": "No, I have not felt tired or lacked energy over the past two weeks. I have been feeling fine and maintaining my usual activity levels."
     },
     {
       "role": "interviewer",
@@ -150,17 +179,7 @@
     {
       "role": "participant",
       "topic": "Appetite or Weight Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Background:** I have a dialogue history with \"Ellie"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Appetite or Weight Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the *client* (Participant) in a psychological consultation. Wait, looking at"
-    },
-    {
-      "role": "participant",
-      "topic": "Appetite or Weight Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am the *client* (Participant) in a psychological consultation.\n    *   **Task:** Respond to a specific question about \"Appet"
+      "content": "No, my appetite has been normal over the past two weeks. I haven't experienced any changes in eating habits or weight."
     },
     {
       "role": "interviewer",
@@ -170,17 +189,7 @@
     {
       "role": "participant",
       "topic": "Low Self-Worth",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Context:** I have a background dialogue provided (interview"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Low Self-Worth",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the *client* (Participant) in a psychological consultation? Wait, the prompt"
-    },
-    {
-      "role": "participant",
-      "topic": "Low Self-Worth",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the *client* (Participant) in a psychological consultation.\n    *   **Task:** Respond truthfully and reasonably in the"
+      "content": "No, I haven't felt bad about myself or like a failure over the past two weeks. I feel content with my life and my travels."
     },
     {
       "role": "interviewer",
@@ -190,17 +199,7 @@
     {
       "role": "participant",
       "topic": "Concentration Difficulties",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Background:** I am an older man (born 1"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Concentration Difficulties",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user is asking me to act as an *empathetic psychological interviewer* (clinician)."
-    },
-    {
-      "role": "participant",
-      "topic": "Concentration Difficulties",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user wants me to act as an *empathetic psychological interviewer* (clinician).\n    *   **Context:** The user provided a"
+      "content": "No, I haven't had trouble concentrating on tasks like reading or working over the past two weeks. My mind has been clear, even when recalling travel memories."
     },
     {
       "role": "interviewer",
@@ -210,18 +209,8 @@
     {
       "role": "participant",
       "topic": "Psychomotor Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Background:** I have provided a transcript of a previous interview"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Psychomotor Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user wants me to act as an *empathetic psychological interviewer* (clinician)."
-    },
-    {
-      "role": "participant",
-      "topic": "Psychomotor Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user wants me to act as an *empathetic psychological interviewer* (clinician).\n    *   **Task:** Answer a specific question"
+      "content": "No, I haven't felt slowed down in my movements or speech over the past two weeks. I've been moving and talking at my usual pace."
     }
   ],
-  "elapsed_seconds": 157.85
+  "elapsed_seconds": 84.94
 }

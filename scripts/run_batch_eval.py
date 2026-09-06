@@ -134,6 +134,47 @@ def compute_metrics(
     }
 
 
+def compute_evidence_diagnostics_summary(
+    records: list[dict[str, Any]],
+) -> dict[str, float]:
+    """Aggregate the Plan_Improve.md Sec 5.1 evidence/faithfulness diagnostics.
+
+    Per-sample ``evidence_diagnostics`` (written by
+    ``run_qwen_sample.run_full_sample_assessment`` for every topic) are
+    summed across the batch and turned into rates over the total number of
+    topic-assessments, so a run can be compared against another run (or
+    against the baseline's absence of any such diagnostic) without manually
+    re-deriving it from every per-sample JSON.
+    """
+    known = 0
+    missing = 0
+    citation_mismatches = 0
+    low_faithfulness_flags = 0
+    for record in records:
+        diagnostics = record.get("evidence_diagnostics")
+        if not diagnostics:
+            continue
+        known += diagnostics.get("known", 0)
+        missing += diagnostics.get("missing", 0)
+        citation_mismatches += diagnostics.get("citation_mismatches", 0)
+        low_faithfulness_flags += diagnostics.get("low_faithfulness_flags", 0)
+
+    total_topics = known + missing
+    if total_topics == 0:
+        return {
+            "total_topic_assessments": 0.0,
+            "evidence_coverage_rate": 0.0,
+            "citation_mismatch_rate": 0.0,
+            "low_faithfulness_rate": 0.0,
+        }
+    return {
+        "total_topic_assessments": float(total_topics),
+        "evidence_coverage_rate": round(known / total_topics, 4),
+        "citation_mismatch_rate": round(citation_mismatches / total_topics, 4),
+        "low_faithfulness_rate": round(low_faithfulness_flags / total_topics, 4),
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Run batch psychological evaluation across DAIC-WOZ samples."
@@ -441,6 +482,23 @@ def main() -> None:
     print(
         f"      Confusion: TP={int(metrics['tp'])}, FP={int(metrics['fp'])}, TN={int(metrics['tn'])}, FN={int(metrics['fn'])}"
     )
+
+    evidence_summary = compute_evidence_diagnostics_summary(records)
+    if evidence_summary["total_topic_assessments"] > 0:
+        print("  • Evidence diagnostics (Plan_Improve.md Sec 5.1):")
+        print(
+            f"      Evidence coverage rate:  "
+            f"{evidence_summary['evidence_coverage_rate'] * 100:.2f}% "
+            f"of {int(evidence_summary['total_topic_assessments'])} topic-assessments"
+        )
+        print(
+            f"      Citation-mismatch rate:  "
+            f"{evidence_summary['citation_mismatch_rate'] * 100:.2f}%"
+        )
+        print(
+            f"      Low-faithfulness rate:   "
+            f"{evidence_summary['low_faithfulness_rate'] * 100:.2f}%"
+        )
     print("=" * 80)
 
     # Save summary JSON
@@ -460,6 +518,7 @@ def main() -> None:
         ],
         "overall_elapsed_seconds": round(overall_elapsed, 2),
         "metrics": metrics,
+        "evidence_diagnostics": evidence_summary,
         "records": [
             {
                 "participant_id": r.get("participant_id"),

@@ -18,6 +18,23 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
+from psyvec.evaluation.evidence_retrieval import (  # noqa: E402
+    format_evidence_for_prompt,
+    load_keyword_lexicon,
+    load_tag_map,
+    retrieve_evidence,
+)
+from psyvec.evaluation.interview_policy import (  # noqa: E402
+    allowed_citation_ids,
+    build_client_system_prompt,
+    build_followup_instruction,
+    build_scorer_prompt,
+    default_necessity,
+    extract_demographics,
+    invalid_citations,
+    low_faithfulness_flag,
+    mentions_frequency,
+)
 from psyvec.evaluation.response_parsing import (  # noqa: E402
     parse_necessity_score,
     parse_score_and_summary,
@@ -217,6 +234,10 @@ DEFAULT_STANDARDS_FILE = (
     if (PROJECT_ROOT / "configs" / "scales" / "scoring_standards.json").is_file()
     else PROJECT_ROOT / "AgentMental" / "scales" / "scoring_standards.json"
 )
+DEFAULT_TAG_MAP_FILE = PROJECT_ROOT / "configs" / "scales" / "topic_tag_map.json"
+DEFAULT_KEYWORD_LEXICON_FILE = (
+    PROJECT_ROOT / "configs" / "scales" / "topic_keywords.json"
+)
 
 
 def run_full_sample_assessment(
@@ -224,6 +245,8 @@ def run_full_sample_assessment(
     model_name: str = "Qwen/Qwen2.5-0.5B-Instruct",
     scale_file: Path = DEFAULT_SCALE_FILE,
     standards_file: Path = DEFAULT_STANDARDS_FILE,
+    tag_map_file: Path = DEFAULT_TAG_MAP_FILE,
+    keyword_lexicon_file: Path = DEFAULT_KEYWORD_LEXICON_FILE,
     engine: QwenInferenceEngine | None = None,
     api_base_url: str | None = None,
     api_key: str | None = None,
@@ -257,20 +280,16 @@ def run_full_sample_assessment(
     topics_dict = json.loads(scale_file.read_text(encoding="utf-8"))
     scoring_standards = json.loads(standards_file.read_text(encoding="utf-8"))["PHQ-8"]
 
-    # 2. Build Client Interview Context for Simulation
-    interview_history = ""
-    for turn in real_interview[:50]:  # Limit context for speed & compact prompt
-        speaker = turn.get("roleName", "Speaker")
-        text = turn.get("content", "")
-        interview_history += f"{speaker}: {text}\n"
-
-    client_system_prompt = f"""
-    You are acting as the client in a psychological consultation.
-Here is your actual background dialogue from an interview:
-{interview_history}
-
-Please respond truthfully and reasonably in the first person (I, me) as this participant.
-Keep your answer concise (under 40 words)."""
+    # 2. Retrieve real-transcript evidence per topic (Plan_Improve.md Sec 2.3).
+    # Scans the ENTIRE real_interview, not a truncated prefix, so every
+    # role-play step below is grounded in what the participant actually
+    # said instead of a small-talk prefix that rarely mentions symptoms.
+    topics = list(topics_dict.keys())
+    tag_map = load_tag_map(tag_map_file, valid_topics=topics)
+    keyword_lexicon = load_keyword_lexicon(keyword_lexicon_file, valid_topics=topics)
+    evidence_bundles = retrieve_evidence(
+        real_interview, topics, tag_map, keyword_lexicon
+    )
 
     # 3. Initialize Engine
     if engine is None:
@@ -284,36 +303,24 @@ Keep your answer concise (under 40 words)."""
 
     truncation_baseline = engine.truncation_count
 
-    # Step 1: Basic Information Gathering
+    # Step 1: Basic Information. Extracted directly from the real transcript
+    # (Plan_Improve.md Sec 2.7) instead of a role-play call: the client
+    # persona previously had nothing but small talk to draw on for this and
+    # routinely answered "undisclosed" anyway, so this removes a wasted,
+    # hallucination-prone model call rather than losing anything.
     vprint("\n" + "=" * 50)
     vprint("STEP 1: Basic Information Collection")
     vprint("=" * 50)
 
-    initial_question = (
-        "Hello, I am your dedicated psychological assistant. Before we begin the PHQ-8 assessment, "
-        "could you please tell me your basic information: age, gender, and occupation?"
-    )
-    vprint(f"[Interviewer]: {initial_question}")
-
-    demographics_raw = engine.generate(
-        system_prompt=client_system_prompt,
-        user_prompt=(
-            f"The interviewer asks:\n'{initial_question}'\n"
-            "Provide your age, gender, and occupation based on the context in the format 'Age: <age>, Gender: <gender>, Occupation: <occupation>'."
-        ),
-        max_new_tokens=1280,
-        temperature=0.1,
-    )
-    client_demographics = strip_reasoning(demographics_raw)
-    if not client_demographics:
-        record_failure(
-            "demographics",
-            "reasoning-only response (likely truncated before the answer)",
-            demographics_raw,
-        )
+    client_demographics = extract_demographics(real_interview)
     vprint(f"[Participant {participant_id}]: {client_demographics}")
 
-    # Step 2: Assessment across 8 PHQ-8 Topics
+    # Step 2: Grounded Interview Loop across the 8 PHQ-8 topics
+    # (Plan_Improve.md Sec 2.4). The multi-round interviewer/client dialogue
+    # is intentionally kept — it is what lets the assessment probe
+    # emotional nuance and severity like a real clinical interview — but
+    # every prompt below is built from this topic's retrieved evidence
+    # instead of the old shared, truncated small-talk prefix.
     vprint("\n" + "=" * 50)
     vprint("STEP 2: PHQ-8 Topic-by-Topic Assessment (8 Topics)")
     vprint("=" * 50)
@@ -325,6 +332,9 @@ Keep your answer concise (under 40 words)."""
         vprint(f"\n>>> Topic {topic_idx}/8: [{topic_name}]")
         standard_text = json.dumps(scoring_standards.get(topic_name, {}), indent=2)
 
+        bundle = evidence_bundles[topic_name]
+        client_system_prompt = build_client_system_prompt(topic_name, bundle)
+
         topic_history = []
         depth = 0
         max_depth = 2
@@ -334,7 +344,8 @@ Keep your answer concise (under 40 words)."""
         vprint(f"  [Q1]: {question}")
 
         while depth < max_depth:
-            # Client answers
+            # Client answers, grounded in this topic's retrieved evidence
+            # via client_system_prompt rather than free invention.
             client_prompt = (
                 f"Topic: {topic_name}\n"
                 f"Question: {question}\n"
@@ -361,6 +372,7 @@ Keep your answer concise (under 40 words)."""
 
             # Check necessity of follow-up question
             history_text = "\n".join([f"Q: {h['question']}\nA: {h['answer']}" for h in topic_history])
+            has_frequency_info = mentions_frequency(history_text)
             necessity_prompt = f"""Topic: {topic_name}
 History:
 {history_text}
@@ -380,17 +392,26 @@ Return only the single number 0, 1, or 2."""
                     necessity_parse.failure_reason,
                     necessity_resp,
                 )
-            # 0 = stop asking: the conservative default when unparseable.
-            necessity = necessity_parse.score if necessity_parse.score is not None else 0
+            # Fallback default when unparseable depends on evidence status and
+            # whether a frequency has already been established, instead of a
+            # single hard-coded constant (Plan_Improve.md Sec 2.4).
+            fallback_necessity = default_necessity(bundle.status, has_frequency_info)
+            necessity = (
+                necessity_parse.score
+                if necessity_parse.score is not None
+                else fallback_necessity
+            )
             depth += 1
 
             if necessity == 0 or depth >= max_depth:
                 break
 
-            # Generate follow-up question
-            followup_prompt = f"""Topic: {topic_name}
-Patient response: {client_reply}
-Ask a short clinical follow-up question to clarify the frequency or severity over the past two weeks."""
+            # Generate a follow-up question targeted at whichever PHQ-8
+            # rubric dimension (usually frequency/duration) is still missing,
+            # instead of an open-ended prompt that lets the model wander.
+            followup_prompt = build_followup_instruction(
+                topic_name, client_reply, has_frequency_info
+            )
             followup_raw = engine.generate(
                 system_prompt="You are an empathetic psychological interviewer. Generate a short clinical follow-up question.",
                 user_prompt=followup_prompt,
@@ -408,17 +429,11 @@ Ask a short clinical follow-up question to clarify the frequency or severity ove
             question = followup_question
             vprint(f"  [Q{depth+1}]: {question}")
 
-        # Scorer evaluates this topic
+        # Scorer sees both the grounded dialogue and the raw cited evidence,
+        # and must cite which real transcript turn ids it used
+        # (Plan_Improve.md Sec 2.5).
         history_str = "\n".join([f"Q: {h['question']}\nA: {h['answer']}" for h in topic_history])
-        scorer_prompt = f"""Topic: {topic_name}
-Dialogue history:
-{history_str}
-
-Scoring standard:
-{standard_text}
-
-Score this topic from 0 to 3 based on the standard. Output JSON:
-{{"score": <0, 1, 2, or 3>, "summary": "<one sentence basis>"}}"""
+        scorer_prompt = build_scorer_prompt(topic_name, history_str, bundle, standard_text)
 
         scorer_resp = engine.generate(
             system_prompt="You are a professional psychological scale scorer. Output valid JSON only.",
@@ -427,10 +442,23 @@ Score this topic from 0 to 3 based on the standard. Output JSON:
             temperature=0.0,
         )
         score_parse = parse_score_and_summary(scorer_resp)
+        bad_citations: tuple[str, ...] = ()
         if not score_parse.ok:
             record_failure(f"scorer[{topic_name}]", score_parse.failure_reason, scorer_resp)
             vprint(f"  --> SCORE PARSE FAILED: {score_parse.failure_reason}")
         else:
+            allowed_ids = allowed_citation_ids(bundle)
+            bad_citations = invalid_citations(
+                score_parse.evidence_turn_ids, allowed_ids
+            )
+            if bad_citations:
+                logger.warning(
+                    "Participant %s topic %s: scorer cited turn id(s) never "
+                    "sent to it: %s",
+                    participant_id,
+                    topic_name,
+                    bad_citations,
+                )
             vprint(
                 f"  --> Assigned Score: {score_parse.score} | Reason: {score_parse.summary}"
             )
@@ -441,6 +469,10 @@ Score this topic from 0 to 3 based on the standard. Output JSON:
             "parse_failed": not score_parse.ok,
             "rounds": depth,
             "item_key": TOPIC_TO_ITEM_KEY.get(topic_name, ""),
+            "evidence_status": bundle.status,
+            "evidence_turn_ids": list(score_parse.evidence_turn_ids),
+            "citation_mismatch": bool(bad_citations),
+            "low_faithfulness": low_faithfulness_flag(history_str, bundle),
         }
         if not score_parse.ok:
             assessed_topics[topic_name]["raw_response"] = scorer_resp
@@ -468,20 +500,32 @@ Score this topic from 0 to 3 based on the standard. Output JSON:
             f"(Reason: {info['summary']})"
             for t, info in assessed_topics.items()
         )
+        # All 8 topics' raw retrieved evidence, not just the grounded dialogue
+        # above — this is what lets the review catch a genuine cross-topic
+        # inconsistency against the real transcript (Plan_Improve.md Sec 2.6),
+        # instead of only re-reading its own role-play.
+        evidence_all_str = "\n\n".join(
+            f"[{topic}]\n{format_evidence_for_prompt(evidence_bundles[topic])}"
+            for topic in topics
+        )
         memory_prompt = f"""Full Consultation Dialogue:
 {history_str}
+
+Real Transcript Evidence (all topics):
+{evidence_all_str}
 
 Initial Topic Scores:
 {initial_scores_str}
 
-Analyze the complete dialogue history and memory across all topics. Make reasonable minor adjustments to the initial topic scores (0-3) if warranted by the overall clinical picture.
+Analyze the complete dialogue history and the real transcript evidence across all topics. Make reasonable minor adjustments to the initial topic scores (0-3) only where the evidence above actually supports a different score.
 Output strictly in JSON format:
 {{
   "summary": "<overall assessment summary>",
   "updated_scores": {{
-    "<Topic Name>": {{"score": <0, 1, 2, or 3>, "reason": "<clinical adjustment basis>"}}
+    "<Topic Name>": {{"score": <0, 1, 2, or 3>, "reason": "<clinical adjustment basis>", "evidence_turn_ids": ["turn-12", ...]}}
   }}
-}}"""
+}}
+Only include a topic in "updated_scores" if you are citing at least one evidence_turn_ids entry that supports the new score; otherwise leave that topic's score unchanged and omit it."""
         updater_resp = engine.generate(
             system_prompt=(
                 "You are an expert clinical psychological supervisor and diagnostic updater. "
@@ -491,14 +535,33 @@ Output strictly in JSON format:
             max_new_tokens=10240,
             temperature=0.0,
         )
-        updater_parse = parse_summary_and_updated_scores(
-            updater_resp, list(topics_dict.keys())
-        )
+        updater_parse = parse_summary_and_updated_scores(updater_resp, topics)
         if not updater_parse.ok:
             record_failure("memory_update", updater_parse.failure_reason, updater_resp)
             vprint(f"  [Memory Update] PARSE FAILED: {updater_parse.failure_reason}")
         overall_summary = updater_parse.summary
-        updated_scores = updater_parse.updated_scores
+
+        # A revision without a cited turn id is rejected outright rather than
+        # applied on a bare "reason" string (Plan_Improve.md Sec 2.6, mirrors
+        # the evidence requirement in psyvec.roles.updater.Updater).
+        global_allowed_ids = frozenset().union(
+            *(allowed_citation_ids(evidence_bundles[t]) for t in topics)
+        )
+        updated_scores: dict[str, dict[str, Any]] = {}
+        for topic, update_info in updater_parse.updated_scores.items():
+            cited = update_info.get("evidence_turn_ids", ())
+            if not cited:
+                vprint(
+                    f"    • {topic}: revision REJECTED (no evidence_turn_ids cited)"
+                )
+                continue
+            unseen = invalid_citations(cited, global_allowed_ids)
+            if unseen:
+                vprint(
+                    f"    • {topic}: revision REJECTED (cited unseen turn id(s) {unseen})"
+                )
+                continue
+            updated_scores[topic] = update_info
 
         if updated_scores:
             vprint("  [Memory Update Adjustments]:")
@@ -510,6 +573,9 @@ Output strictly in JSON format:
                 assessed_topics[topic]["updated_score"] = new_score
                 assessed_topics[topic]["score"] = new_score
                 assessed_topics[topic]["update_reason"] = update_info["reason"]
+                assessed_topics[topic]["update_evidence_turn_ids"] = list(
+                    update_info["evidence_turn_ids"]
+                )
                 vprint(
                     f"    • {topic}: {old_score} -> {new_score} "
                     f"({update_info['reason']})"
@@ -585,6 +651,18 @@ Output strictly in JSON format:
         )
     vprint("=" * 80)
 
+    # Aggregate the Plan_Improve.md Sec 5.1 diagnostics (evidence coverage,
+    # citation mismatches, faithfulness flags) once per sample, so a batch
+    # runner can roll them up across participants without re-deriving them
+    # from `topics` on every read.
+    topic_infos = list(assessed_topics.values())
+    evidence_diagnostics = {
+        "known": sum(1 for t in topic_infos if t["evidence_status"] == "known"),
+        "missing": sum(1 for t in topic_infos if t["evidence_status"] == "missing"),
+        "citation_mismatches": sum(1 for t in topic_infos if t["citation_mismatch"]),
+        "low_faithfulness_flags": sum(1 for t in topic_infos if t["low_faithfulness"]),
+    }
+
     result_data = {
         "participant_id": participant_id,
         "sample_path": str(sample_path),
@@ -602,6 +680,7 @@ Output strictly in JSON format:
         "truncated_generations": sample_truncations,
         "overall_summary": overall_summary,
         "updated_scores": updated_scores,
+        "evidence_diagnostics": evidence_diagnostics,
         "topics": assessed_topics,
         "dialogue_transcript": dialogue_transcript,
     }

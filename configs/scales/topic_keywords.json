@@ -1,0 +1,47 @@
+{
+  "_meta": {
+    "description": "Fallback keyword lexicon for topic-evidence retrieval (Plan_Improve.md Sec 2.3b). Used to scan every Participant turn in the full real_interview (not just a tag-anchored one) for topic-relevant disclosures. Substrings are matched case-insensitively against the whole turn text, so a deliberately partial stem (e.g. 'concentrat') catches 'concentrate'/'concentrating'/'concentration'. Tuned by running scripts/audit_keyword_lexicon.py against the train split ONLY (Plan_Improve.md Sec 5.2) and reading the matched lines: bare single words that collided with unrelated speech were replaced with multi-word phrases or dropped. Known collisions fixed here: 'numb' (was matching inside 'number'/'numbers'), 'blue' (was matching the color, e.g. 'the blue hole in Belize'), 'down' (was matching 'downtown', 'lay down', 'somewhere down the line'), 'weight' (was matching 'lifting weights', 'height weight'), 'slow' (was matching 'work slow down', personality remarks), \"can't think\"/'hard to think' (idiomatic 'can't think of an example', not a concentration complaint), 'care about' (about caring for others, not anhedonia), bare 'guilt'/'guilty' (was matching legal 'not guilty of the crime' from unrelated life-history discussion).",
+    "source_split": "train"
+  },
+  "Loss of Interest": [
+    "interest", "enjoy", "hobby", "hobbies", "motivat", "bored", "boring",
+    "don't feel like doing", "used to like", "used to enjoy"
+  ],
+  "Depressed Mood": [
+    "feel down", "feeling down", "felt down", "so down", "really down",
+    "sad", "hopeless", "depress", "cry", "crying", "feel blue", "feeling blue",
+    "a little blue", "low mood", "miserable", "empty inside",
+    "feel numb", "feeling numb", "numb inside", "emotionally numb"
+  ],
+  "Sleep Problems": [
+    "sleep", "insomnia", "wake up", "waking up", "get some rest",
+    "good night's rest", "resting well", "nap",
+    "fall asleep", "stay asleep", "sleeping too much", "oversleep"
+  ],
+  "Fatigue or Low Energy": [
+    "tired", "exhaust", "energy", "fatigue", "drained", "worn out",
+    "no energy", "low energy", "sluggish"
+  ],
+  "Appetite or Weight Changes": [
+    "appetite", "eating", "overeat", "meal", "hungry",
+    "not eating", "skip meals", "gained weight", "lost weight",
+    "losing weight", "gaining weight", "weight loss", "weight gain",
+    "my weight"
+  ],
+  "Low Self-Worth": [
+    "failure", "worthless", "feel guilty", "feeling guilty", "guilty about",
+    "guilt about", "so guilty", "blame myself",
+    "disappoint", "inadequate", "let myself down", "let others down",
+    "not good enough", "bad about myself"
+  ],
+  "Concentration Difficulties": [
+    "concentrat", "focus", "distract", "forget", "foggy",
+    "trouble reading", "zone out", "hard to think straight",
+    "trouble thinking clearly"
+  ],
+  "Psychomotor Changes": [
+    "restless", "fidget", "sluggish", "agitat",
+    "can't sit still", "moving slowly", "speaking slowly",
+    "slowed down", "slow to get going", "physically slow"
+  ]
+}

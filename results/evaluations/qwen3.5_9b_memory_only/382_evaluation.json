@@ -2,63 +2,132 @@
   "participant_id": "382",
   "sample_path": "data/processed_daic_woz/dev/382.json",
   "model_name": "Qwen/Qwen3.5-9B",
-  "timestamp": "2026-09-03 10:39:41",
-  "demographics": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Context",
+  "timestamp": "2026-09-03 13:07:15",
+  "demographics": "Age: 29, Gender: Female, Occupation: Film Actor.",
   "memory_update_enabled": true,
-  "initial_total_score": 8,
-  "total_predicted_score": 8,
+  "initial_total_score": 4,
+  "total_predicted_score": 4,
   "ground_truth_total": 0,
-  "predicted_category": "Mild depression (5-9)",
-  "overall_summary": "",
-  "updated_scores": {},
-  "topics": {
+  "predicted_category": "None / Minimal depression (0-4)",
+  "assessment_valid": true,
+  "parse_failure_count": 0,
+  "parse_failures": [],
+  "truncated_generations": 0,
+  "overall_summary": "The participant denies core depressive symptoms (anhedonia, depressed mood, sleep disturbance, appetite changes, low self-worth, and psychomotor retardation) and explicitly reports feeling content and fulfilled. However, they report severe fatigue and significant concentration difficulties. While the initial score for Fatigue was 3, the participant's description of being 'unable to get out of bed' and getting only 'four hours of rest' despite denying sleep onset insomnia suggests a discrepancy between the specific sleep question and the functional impact of fatigue. The concentration score of 1 is accurate based on the 5-day report. The overall clinical picture indicates significant functional impairment driven by fatigue and concentration issues in the absence of other depressive criteria, warranting a re-evaluation of the Fatigue score to reflect the severity of functional impairment described.",
+  "updated_scores": {
     "Loss of Interest": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am a professional psychological scale scorer.\n    *   **Task:** Score a specific topic (\"Loss of Interest\") based on provided dialogue history and scoring standards.\n    *   **Input:**",
-      "rounds": 2,
-      "item_key": "PHQ8_NoInterest"
+      "score": 0,
+      "reason": "Participant explicitly denies loss of interest or pleasure, stating they find their career and life fun and fulfilling."
     },
     "Depressed Mood": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user prompt contains conflicting instructions. The initial system instruction says \"You are a professional psychological scale scorer. Output valid JSON only.\" The user prompt text says \"You are acting as the client in a",
-      "rounds": 2,
-      "item_key": "PHQ8_Depressed"
+      "score": 0,
+      "reason": "Participant explicitly denies feeling down, depressed, or hopeless, aligning with 'Not bothered at all'."
     },
     "Sleep Problems": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as a professional psychological scale scorer.\n    *   **Task:** Score a specific topic (\"Sleep Problems\") based on a provided dialogue history and scoring standard.\n    *",
-      "rounds": 2,
-      "item_key": "PHQ8_Sleep"
+      "score": 0,
+      "reason": "Participant explicitly denies trouble falling or staying asleep and reports easy sleep onset and full rest, despite later mentioning low total hours; the specific symptom of insomnia is absent."
     },
     "Fatigue or Low Energy": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as a professional psychological scale scorer.\n    *   **Input:** A dialogue history snippet (which seems incomplete or repetitive in the prompt provided) and a scoring standard for \"Fatigue",
-      "rounds": 2,
-      "item_key": "PHQ8_Tired"
+      "score": 3,
+      "reason": "Participant reports severe fatigue for the entire two-week period, explicitly stating they were 'unable to get out of bed' and functionally impaired, which meets the criteria for 'Nearly every day' (3 points). The low rest hours (4 hours) corroborate the severity of the fatigue."
     },
     "Appetite or Weight Changes": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as a professional psychological scale scorer.\n    *   **Input:** A dialogue snippet containing a question (\"Over the past two weeks, have you had a poor appetite or been overeating",
-      "rounds": 2,
-      "item_key": "PHQ8_Appetite"
+      "score": 0,
+      "reason": "Participant explicitly states appetite is normal with no significant changes in eating habits or weight."
     },
     "Low Self-Worth": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am a professional psychological scale scorer.\n    *   **Task:** Score the provided dialogue based on the \"Low Self-Worth\" topic using the provided scoring standard.\n    *   **",
-      "rounds": 2,
-      "item_key": "PHQ8_Failure"
+      "score": 0,
+      "reason": "Participant explicitly denies feeling bad about themselves or like a failure, stating they feel content."
     },
     "Concentration Difficulties": {
       "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as a professional psychological scale scorer.\n    *   **Input:** A dialogue snippet where a question is asked about concentration difficulties over the past two weeks.\n    *   **Task",
-      "rounds": 2,
-      "item_key": "PHQ8_Concentrating"
+      "reason": "Participant reports severe concentration difficulties on approximately 5 days over the past two weeks, which falls within the 2-6 day range corresponding to a score of 1."
     },
     "Psychomotor Changes": {
-      "score": 1,
-      "summary": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as a professional psychological scale scorer.\n    *   **Input:** A dialogue snippet containing a question about psychomotor changes (\"Over the past two weeks, have you felt slowed down",
+      "score": 0,
+      "reason": "Participant explicitly denies feeling slowed down in movements or speech."
+    }
+  },
+  "topics": {
+    "Loss of Interest": {
+      "score": 0,
+      "summary": "The respondent explicitly states they have not felt a loss of interest or pleasure over the past two weeks, indicating they were not bothered at all.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_NoInterest",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "Participant explicitly denies loss of interest or pleasure, stating they find their career and life fun and fulfilling."
+    },
+    "Depressed Mood": {
+      "score": 0,
+      "summary": "The respondent explicitly states they have not felt down, depressed, or hopeless over the past two weeks, aligning with the 'Not bothered at all' criterion.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_Depressed",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "Participant explicitly denies feeling down, depressed, or hopeless, aligning with 'Not bothered at all'."
+    },
+    "Sleep Problems": {
+      "score": 0,
+      "summary": "The respondent explicitly states no trouble falling or staying asleep and describes easy sleep onset and full rest, aligning with the 'Not bothered at all' criterion.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_Sleep",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "Participant explicitly denies trouble falling or staying asleep and reports easy sleep onset and full rest, despite later mentioning low total hours; the specific symptom of insomnia is absent."
+    },
+    "Fatigue or Low Energy": {
+      "score": 3,
+      "summary": "The respondent explicitly states they have struggled with severe fatigue for the entire two-week period, experiencing symptoms nearly every day.",
+      "parse_failed": false,
       "rounds": 2,
-      "item_key": "PHQ8_Moving"
+      "item_key": "PHQ8_Tired",
+      "initial_score": 3,
+      "updated_score": 3,
+      "update_reason": "Participant reports severe fatigue for the entire two-week period, explicitly stating they were 'unable to get out of bed' and functionally impaired, which meets the criteria for 'Nearly every day' (3 points). The low rest hours (4 hours) corroborate the severity of the fatigue."
+    },
+    "Appetite or Weight Changes": {
+      "score": 0,
+      "summary": "The respondent explicitly states that their appetite has been normal and they have not experienced any significant changes in eating habits or weight over the past two weeks, aligning with the 'Not bothered at all' criterion.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_Appetite",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "Participant explicitly states appetite is normal with no significant changes in eating habits or weight."
+    },
+    "Low Self-Worth": {
+      "score": 0,
+      "summary": "The respondent explicitly states they have not felt bad about themselves or like a failure recently, aligning with the 'Not bothered at all' criterion.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_Failure",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "Participant explicitly denies feeling bad about themselves or like a failure, stating they feel content."
+    },
+    "Concentration Difficulties": {
+      "score": 1,
+      "summary": "The respondent reports severe concentration difficulties on about five days over the past two weeks, which falls within the 2-6 day range corresponding to a score of 1.",
+      "parse_failed": false,
+      "rounds": 2,
+      "item_key": "PHQ8_Concentrating",
+      "initial_score": 1,
+      "updated_score": 1,
+      "update_reason": "Participant reports severe concentration difficulties on approximately 5 days over the past two weeks, which falls within the 2-6 day range corresponding to a score of 1."
+    },
+    "Psychomotor Changes": {
+      "score": 0,
+      "summary": "The respondent explicitly states they have not felt slowed down in movements or speech over the past two weeks, aligning with the criteria for a score of 0.",
+      "parse_failed": false,
+      "rounds": 1,
+      "item_key": "PHQ8_Moving",
+      "initial_score": 0,
+      "updated_score": 0,
+      "update_reason": "Participant explicitly denies feeling slowed down in movements or speech."
     }
   },
   "dialogue_transcript": [
@@ -70,17 +139,7 @@
     {
       "role": "participant",
       "topic": "Loss of Interest",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Background:** I have a dialogue history with \"Ellie"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Loss of Interest",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user wants me to act as an empathetic psychological interviewer (clinician).\n    *"
-    },
-    {
-      "role": "participant",
-      "topic": "Loss of Interest",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as the *participant* (Ellie's interviewee) in the dialogue, not the interviewer. Wait, looking at the prompt"
+      "content": "No, I haven't felt a loss of interest or pleasure in activities over the past two weeks. I still find my film career challenging but fun, and I enjoy the warm weather and beaches in L.A."
     },
     {
       "role": "interviewer",
@@ -90,17 +149,7 @@
     {
       "role": "participant",
       "topic": "Depressed Mood",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Context:** I have a background dialogue with an interviewer named"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Depressed Mood",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the *interviewer* (clinician), not the client. Wait,"
-    },
-    {
-      "role": "participant",
-      "topic": "Depressed Mood",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user prompt says \"You are acting as the client in a psychological consultation.\" However, the system instruction at the very beginning says \"You are acting"
+      "content": "No, I haven't felt down, depressed, or hopeless over the past two weeks. While my film career is challenging, I still find it fun and fulfilling."
     },
     {
       "role": "interviewer",
@@ -110,17 +159,7 @@
     {
       "role": "participant",
       "topic": "Sleep Problems",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Context:** I have a background dialogue with an interviewer named"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Sleep Problems",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user wants me to act as the *interviewer* (psychological interviewer), but the"
-    },
-    {
-      "role": "participant",
-      "topic": "Sleep Problems",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as the *participant* (Ellie's interviewee) in the dialogue, not the interviewer. The prompt says \"You are"
+      "content": "No, I haven't had any trouble falling or staying asleep recently. I usually drift off easily and get a full night's rest."
     },
     {
       "role": "interviewer",
@@ -130,17 +169,17 @@
     {
       "role": "participant",
       "topic": "Fatigue or Low Energy",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Background:** I have a dialogue history with an interviewer named"
+      "content": "Yes, I've felt quite tired and lacked energy over the past two weeks, likely due to the stress of pursuing my film career and the high cost of living in LA."
     },
     {
       "role": "interviewer",
       "topic": "Fatigue or Low Energy",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Task"
+      "content": "\"Could you describe a typical day during those two weeks? How many hours of rest did you get, and did you find yourself unable to complete daily tasks like getting out of bed or working on your projects?\""
     },
     {
       "role": "participant",
       "topic": "Fatigue or Low Energy",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am the Participant (Ellie's client) in a psychological consultation.\n    *   **Task:** Respond to a specific question about \"Fat"
+      "content": "Over the past two weeks, I've struggled with severe fatigue, often finding myself unable to get out of bed or work on my film projects. I managed only about four hours of rest per day, which left me feeling completely drained by evening."
     },
     {
       "role": "interviewer",
@@ -150,17 +189,7 @@
     {
       "role": "participant",
       "topic": "Appetite or Weight Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Background:** I am Ellie (the interviewer) talking to"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Appetite or Weight Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the *client* (Participant) in a psychological consultation? Wait, looking closely"
-    },
-    {
-      "role": "participant",
-      "topic": "Appetite or Weight Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the *client* (Participant) in a psychological consultation.\n    *   **Task:** Respond to a specific question about \""
+      "content": "No, my appetite has been normal over the past two weeks. I haven't experienced any significant changes in eating habits or weight."
     },
     {
       "role": "interviewer",
@@ -170,17 +199,7 @@
     {
       "role": "participant",
       "topic": "Low Self-Worth",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Context:** I have a background dialogue with an interviewer named"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Low Self-Worth",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user is asking me to act as an *empathetic psychological interviewer*. However, the prompt"
-    },
-    {
-      "role": "participant",
-      "topic": "Low Self-Worth",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as the *participant* (Ellie's interviewee) in the provided dialogue.\n    *   **Task:** Respond truth"
+      "content": "No, I haven't felt bad about myself or like a failure recently. I feel content with my progress in my film career and my life in Los Angeles."
     },
     {
       "role": "interviewer",
@@ -190,17 +209,17 @@
     {
       "role": "participant",
       "topic": "Concentration Difficulties",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Background:** I have a dialogue history with \"Ellie"
+      "content": "Yes, I've struggled to focus on scripts or work lately, often finding my mind drifting to thoughts about my film career or the cost of living in LA. It's been harder to stay on task than usual."
     },
     {
       "role": "interviewer",
       "topic": "Concentration Difficulties",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation. Wait, looking at the prompt"
+      "content": "\"Over the past two weeks, on how many days has this difficulty with staying focused been severe enough to interfere with your daily tasks or work performance?\""
     },
     {
       "role": "participant",
       "topic": "Concentration Difficulties",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am the Participant (Ellie's client) in a psychological consultation.\n    *   **Task:** Respond to a question about \"Concentration"
+      "content": "I have experienced severe concentration difficulties on about five days over the past two weeks, which significantly interfered with my ability to focus on my film projects and daily tasks."
     },
     {
       "role": "interviewer",
@@ -210,18 +229,8 @@
     {
       "role": "participant",
       "topic": "Psychomotor Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I am acting as the client (Participant) in a psychological consultation.\n    *   **Context:** I have a background dialogue with an interviewer named"
-    },
-    {
-      "role": "interviewer",
-      "topic": "Psychomotor Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** The user is asking me to act as an *empathetic psychological interviewer* (based on the"
-    },
-    {
-      "role": "participant",
-      "topic": "Psychomotor Changes",
-      "content": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   **Role:** I need to act as the *participant* (Ellie's interviewee) in the provided dialogue.\n    *   **Task:** Respond to"
+      "content": "No, I haven't felt slowed down in my movements or speech. I've been moving and talking at my usual pace, though I sometimes pause to think before answering questions."
     }
   ],
-  "elapsed_seconds": 157.26
+  "elapsed_seconds": 113.12
 }

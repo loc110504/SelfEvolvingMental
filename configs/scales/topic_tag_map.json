@@ -1,0 +1,48 @@
+{
+  "_meta": {
+    "description": "Maps Ellie's fixed DAIC-WOZ protocol tags (e.g. 'easy_sleep (how easy is it ...)') to a PHQ-8 topic, or to CROSS_CUTTING when the tag probes general mood/diagnosis/therapy rather than one specific symptom domain. Built from scripts/build_tag_inventory.py run against data/processed_daic_woz/train ONLY (Plan_Improve.md Sec 5.2 split discipline) — dev/test tags were not used to decide this mapping. Tags that are pure backchannel ('mhm', 'okay_confirm', ...) or unrelated small talk (LA, travel, military, family, career) are intentionally omitted: retrieval falls back to the keyword lexicon (topic_keywords.json) or, for tags omitted here that still touch mood generically, is left to keyword matching so a superficial pleasantry never becomes 'evidence'.",
+    "source_split": "train",
+    "valid_targets": [
+      "Loss of Interest",
+      "Depressed Mood",
+      "Sleep Problems",
+      "Fatigue or Low Energy",
+      "Appetite or Weight Changes",
+      "Low Self-Worth",
+      "Concentration Difficulties",
+      "Psychomotor Changes",
+      "CROSS_CUTTING"
+    ]
+  },
+  "feel_down": "Depressed Mood",
+  "feel_lately": "Depressed Mood",
+
+  "easy_sleep": "Sleep Problems",
+  "sleep_affects": "Sleep Problems",
+
+  "feelbadly": "Low Self-Worth",
+  "feelguilty": "Low Self-Worth",
+  "self_change": "Low Self-Worth",
+  "too_hard": "Low Self-Worth",
+
+  "happy_lasttime": "Loss of Interest",
+  "Ellie17Dec2012_10": "Loss of Interest",
+
+  "depression_diagnosed": "CROSS_CUTTING",
+  "ptsd_diagnosed": "CROSS_CUTTING",
+  "behavior_changes": "CROSS_CUTTING",
+  "symptoms_cope": "CROSS_CUTTING",
+  "symptoms_what": "CROSS_CUTTING",
+  "bouts_symptoms": "CROSS_CUTTING",
+  "when_diagnosed": "CROSS_CUTTING",
+  "why_seek_help": "CROSS_CUTTING",
+  "suspect_problem": "CROSS_CUTTING",
+  "disturbing_thoughts": "CROSS_CUTTING",
+  "trigger": "CROSS_CUTTING",
+  "therapist_affect": "CROSS_CUTTING",
+  "therapist_useful": "CROSS_CUTTING",
+  "therapy_changes": "CROSS_CUTTING",
+  "therapy_going": "CROSS_CUTTING",
+  "therapy_useful": "CROSS_CUTTING",
+  "uncomfortable_talkV": "CROSS_CUTTING"
+}

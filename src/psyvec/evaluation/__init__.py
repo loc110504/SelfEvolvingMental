@@ -2,6 +2,30 @@
 
 from __future__ import annotations
 
+from psyvec.evaluation.evidence_retrieval import (
+    CROSS_CUTTING,
+    EvidenceBundle,
+    EvidenceSnippet,
+    EvidenceSource,
+    InterviewTurn,
+    RetrievalStatus,
+    extract_ellie_tag,
+    format_evidence_for_prompt,
+    load_keyword_lexicon,
+    load_tag_map,
+    retrieve_evidence,
+)
+from psyvec.evaluation.interview_policy import (
+    allowed_citation_ids,
+    build_client_system_prompt,
+    build_followup_instruction,
+    build_scorer_prompt,
+    default_necessity,
+    extract_demographics,
+    invalid_citations,
+    low_faithfulness_flag,
+    mentions_frequency,
+)
 from psyvec.evaluation.metrics import (
     PairedBootstrapResult,
     PairedPermutationResult,
@@ -31,6 +55,26 @@ from psyvec.evaluation.response_parsing import (
 )
 
 __all__ = [
+    "CROSS_CUTTING",
+    "EvidenceBundle",
+    "EvidenceSnippet",
+    "EvidenceSource",
+    "InterviewTurn",
+    "RetrievalStatus",
+    "extract_ellie_tag",
+    "format_evidence_for_prompt",
+    "load_keyword_lexicon",
+    "load_tag_map",
+    "retrieve_evidence",
+    "allowed_citation_ids",
+    "build_client_system_prompt",
+    "build_followup_instruction",
+    "build_scorer_prompt",
+    "default_necessity",
+    "extract_demographics",
+    "invalid_citations",
+    "low_faithfulness_flag",
+    "mentions_frequency",
     "InternalizationVerdict",
     "OnOffArm",
     "OnOffDecomposition",
