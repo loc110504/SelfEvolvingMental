@@ -31,6 +31,8 @@ from psyvec.evaluation.interview_policy import (  # noqa: E402
     build_scorer_prompt,
     default_necessity,
     extract_demographics,
+    faithfulness_capped_score,
+    grounded_score,
     invalid_citations,
     low_faithfulness_flag,
     mentions_frequency,
@@ -443,6 +445,10 @@ Return only the single number 0, 1, or 2."""
         )
         score_parse = parse_score_and_summary(scorer_resp)
         bad_citations: tuple[str, ...] = ()
+        low_faith = low_faithfulness_flag(history_str, bundle)
+        final_score = score_parse.score
+        grounding_overridden = False
+        faithfulness_capped = False
         if not score_parse.ok:
             record_failure(f"scorer[{topic_name}]", score_parse.failure_reason, scorer_resp)
             vprint(f"  --> SCORE PARSE FAILED: {score_parse.failure_reason}")
@@ -459,12 +465,28 @@ Return only the single number 0, 1, or 2."""
                     topic_name,
                     bad_citations,
                 )
+            # Enforce the "no evidence -> score 0" rule the scorer prompt only
+            # states in words, and cap severity claims the dialogue drifted
+            # away from its cited evidence for (Plan_Improve.md Sec 5.1).
+            final_score, grounding_overridden = grounded_score(final_score, bundle)
+            final_score, faithfulness_capped = faithfulness_capped_score(
+                final_score, low_faith
+            )
+            if grounding_overridden:
+                logger.warning(
+                    "Participant %s topic %s: scorer assigned %s with no "
+                    "topic-specific evidence (status=%s); reset to 0.",
+                    participant_id,
+                    topic_name,
+                    score_parse.score,
+                    bundle.status,
+                )
             vprint(
-                f"  --> Assigned Score: {score_parse.score} | Reason: {score_parse.summary}"
+                f"  --> Assigned Score: {final_score} | Reason: {score_parse.summary}"
             )
 
         assessed_topics[topic_name] = {
-            "score": score_parse.score,
+            "score": final_score,
             "summary": score_parse.summary,
             "parse_failed": not score_parse.ok,
             "rounds": depth,
@@ -472,7 +494,9 @@ Return only the single number 0, 1, or 2."""
             "evidence_status": bundle.status,
             "evidence_turn_ids": list(score_parse.evidence_turn_ids),
             "citation_mismatch": bool(bad_citations),
-            "low_faithfulness": low_faithfulness_flag(history_str, bundle),
+            "low_faithfulness": low_faith,
+            "grounding_overridden": grounding_overridden,
+            "faithfulness_capped": faithfulness_capped,
         }
         if not score_parse.ok:
             assessed_topics[topic_name]["raw_response"] = scorer_resp
@@ -543,10 +567,11 @@ Only include a topic in "updated_scores" if you are citing at least one evidence
 
         # A revision without a cited turn id is rejected outright rather than
         # applied on a bare "reason" string (Plan_Improve.md Sec 2.6, mirrors
-        # the evidence requirement in psyvec.roles.updater.Updater).
-        global_allowed_ids = frozenset().union(
-            *(allowed_citation_ids(evidence_bundles[t]) for t in topics)
-        )
+        # the evidence requirement in psyvec.roles.updater.Updater). Citations
+        # are validated per-topic (not against the union of every topic's
+        # evidence) so a revision cannot "launder" a topic that has no
+        # evidence of its own by citing a real turn id that was only ever
+        # shown as evidence for a *different* topic.
         updated_scores: dict[str, dict[str, Any]] = {}
         for topic, update_info in updater_parse.updated_scores.items():
             cited = update_info.get("evidence_turn_ids", ())
@@ -555,13 +580,24 @@ Only include a topic in "updated_scores" if you are citing at least one evidence
                     f"    • {topic}: revision REJECTED (no evidence_turn_ids cited)"
                 )
                 continue
-            unseen = invalid_citations(cited, global_allowed_ids)
+            topic_allowed_ids = allowed_citation_ids(evidence_bundles[topic])
+            unseen = invalid_citations(cited, topic_allowed_ids)
             if unseen:
                 vprint(
-                    f"    • {topic}: revision REJECTED (cited unseen turn id(s) {unseen})"
+                    f"    • {topic}: revision REJECTED (cited turn id(s) not "
+                    f"shown as evidence for this topic: {unseen})"
                 )
                 continue
-            updated_scores[topic] = update_info
+            revised_score, overridden = grounded_score(
+                update_info["score"], evidence_bundles[topic]
+            )
+            if overridden:
+                vprint(
+                    f"    • {topic}: revision REJECTED (topic has no "
+                    "topic-specific evidence; cannot raise score above 0)"
+                )
+                continue
+            updated_scores[topic] = {**update_info, "score": revised_score}
 
         if updated_scores:
             vprint("  [Memory Update Adjustments]:")
@@ -661,6 +697,12 @@ Only include a topic in "updated_scores" if you are citing at least one evidence
         "missing": sum(1 for t in topic_infos if t["evidence_status"] == "missing"),
         "citation_mismatches": sum(1 for t in topic_infos if t["citation_mismatch"]),
         "low_faithfulness_flags": sum(1 for t in topic_infos if t["low_faithfulness"]),
+        "grounding_overrides": sum(
+            1 for t in topic_infos if t.get("grounding_overridden")
+        ),
+        "faithfulness_caps": sum(
+            1 for t in topic_infos if t.get("faithfulness_capped")
+        ),
     }
 
     result_data = {

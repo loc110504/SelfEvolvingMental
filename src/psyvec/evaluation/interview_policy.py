@@ -40,6 +40,8 @@ __all__ = [
     "build_scorer_prompt",
     "default_necessity",
     "extract_demographics",
+    "faithfulness_capped_score",
+    "grounded_score",
     "invalid_citations",
     "low_faithfulness_flag",
     "mentions_frequency",
@@ -216,3 +218,40 @@ def low_faithfulness_flag(
         return False
     overlap = len(dialogue_words & evidence_words) / len(dialogue_words)
     return overlap < min_overlap
+
+
+def grounded_score(score: int, bundle: EvidenceBundle) -> tuple[int, bool]:
+    """Reset a nonzero score to 0 when this topic has no topic-specific evidence.
+
+    ``build_scorer_prompt``/the memory-update prompt both *tell* the model
+    "if no evidence supports a nonzero score, score 0", but a prompt
+    instruction is not enforcement: in practice the model routinely ignores
+    it and scores off its own invented client-persona dialogue instead of
+    respecting a ``missing`` bundle. ``bundle.status == "known"`` is the one
+    signal this module can trust without a model call (it means at least one
+    real transcript turn was actually retrieved for this topic); anything
+    else — ``missing``, even with cross-cutting mood context — carries no
+    symptom-specific signal, so a nonzero score there is treated as
+    hallucination and reset. Returns ``(final_score, was_overridden)``.
+    """
+    if score > 0 and bundle.status != "known":
+        return 0, True
+    return score, False
+
+
+def faithfulness_capped_score(
+    score: int, low_faithfulness: bool, cap: int = 1
+) -> tuple[int, bool]:
+    """Cap a score when its dialogue shares almost no vocabulary with its evidence.
+
+    ``low_faithfulness_flag`` only fires on a ``known`` bundle (see its
+    docstring), so the topic itself is real — but a client-persona reply
+    that has drifted this far from the cited evidence is more likely to have
+    invented the specific *severity/frequency* claim than to have engaged
+    with the topic at all. Falling back to the minimal nonzero severity is
+    safer than trusting an invented "nearly every day". Returns
+    ``(final_score, was_capped)``.
+    """
+    if low_faithfulness and score > cap:
+        return cap, True
+    return score, False

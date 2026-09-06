@@ -31,7 +31,7 @@ from psyvec.evaluation.evidence_retrieval import (  # noqa: E402
     retrieve_evidence,
 )
 
-TOPICS = ["Sleep Problems", "Depressed Mood", "Loss of Interest"]
+TOPICS = ["Sleep Problems", "Depressed Mood", "Loss of Interest", "Fatigue or Low Energy"]
 
 TAG_MAP = {
     "easy_sleep": "Sleep Problems",
@@ -44,6 +44,7 @@ KEYWORD_LEXICON = {
     "Sleep Problems": ("sleep", "insomnia"),
     "Depressed Mood": ("sad", "hopeless"),
     "Loss of Interest": ("interest", "hobby"),
+    "Fatigue or Low Energy": ("tired", "exhaust"),
 }
 
 SLEEP_Q = "easy_sleep (how easy is it to get a good night's sleep)"
@@ -139,6 +140,54 @@ class RetrieveEvidenceKeywordFallbackTests(unittest.TestCase):
         mood = bundles["Depressed Mood"]
         self.assertEqual(len(mood.snippets), 1)
         self.assertEqual(mood.snippets[0].source, "tag_anchor")
+
+    def test_skips_locally_negated_keyword_mention(self) -> None:
+        # Regression: participant 303's real transcript ("i try to stay
+        # happy i'd rather be happy than sad") used to be retrieved as
+        # "known" Depressed Mood evidence on a bare "sad" substring match,
+        # even though the participant is contrasting themself away from
+        # sadness, not reporting it.
+        interview = [
+            turn(
+                "Participant",
+                "i try to stay happy i'd rather be happy than sad my kids keep me going",
+            )
+        ]
+        bundles = retrieve_evidence(interview, TOPICS, TAG_MAP, KEYWORD_LEXICON)
+        self.assertEqual(bundles["Depressed Mood"].status, "missing")
+
+    def test_keeps_unnegated_keyword_mention_elsewhere_in_a_long_turn(self) -> None:
+        # A negation cue far from the keyword (outside the local window)
+        # must not suppress a real, unrelated disclosure later in the turn.
+        interview = [
+            turn(
+                "Participant",
+                "i don't know what to say but honestly i've just felt so sad lately",
+            )
+        ]
+        bundles = retrieve_evidence(interview, TOPICS, TAG_MAP, KEYWORD_LEXICON)
+        self.assertEqual(bundles["Depressed Mood"].status, "known")
+
+    def test_skips_reply_to_a_hypothetical_ellie_question(self) -> None:
+        # Regression: participant 303's real transcript had Ellie ask the
+        # hypothetical "what are you like when you don't sleep well", and
+        # the participant's reply ("irritated tired lazy") used to be
+        # retrieved as "known" Fatigue evidence even though it describes a
+        # hypothetical disposition, not a two-week self-report.
+        interview = [
+            turn("Ellie", "what are you like when you don't sleep well"),
+            turn("Participant", "irritated tired lazy"),
+        ]
+        bundles = retrieve_evidence(interview, TOPICS, TAG_MAP, KEYWORD_LEXICON)
+        self.assertEqual(bundles["Fatigue or Low Energy"].status, "missing")
+
+    def test_keeps_reply_to_a_direct_non_hypothetical_question(self) -> None:
+        interview = [
+            turn("Ellie", "have you felt tired over the past two weeks"),
+            turn("Participant", "yeah i've felt tired most days"),
+        ]
+        bundles = retrieve_evidence(interview, TOPICS, TAG_MAP, KEYWORD_LEXICON)
+        self.assertEqual(bundles["Fatigue or Low Energy"].status, "known")
 
     def test_orders_keyword_hits_by_density_then_length(self) -> None:
         interview = [

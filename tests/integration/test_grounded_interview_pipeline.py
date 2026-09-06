@@ -138,7 +138,13 @@ class GroundedInterviewPipelineTest(unittest.TestCase):
         )
 
         self.assertTrue(result["assessment_valid"])
-        self.assertEqual(result["total_predicted_score"], 8)  # 8 topics x score 1
+        # FakeEngine always scores 1, but grounded_score() now resets any
+        # nonzero score to 0 for topics with no topic-specific evidence
+        # (Plan_Improve.md Sec 5.1 enforcement) — only "known"-status topics
+        # keep their score.
+        expected_total = result["evidence_diagnostics"]["known"]
+        self.assertEqual(result["total_predicted_score"], expected_total)
+        self.assertEqual(result["evidence_diagnostics"]["grounding_overrides"], 8 - expected_total)
         self.assertEqual(result["ground_truth_total"], 0)
 
         topics = result["topics"]
@@ -206,6 +212,56 @@ class GroundedInterviewPipelineTest(unittest.TestCase):
         )
         self.assertIn("Loss of Interest", result["updated_scores"])
         self.assertEqual(result["topics"]["Loss of Interest"]["updated_score"], 3)
+
+    def test_memory_update_rejects_citation_borrowed_from_another_topic(self) -> None:
+        """A cited turn id that is real but was only ever shown as evidence
+        for a *different* topic must not be enough to raise this topic's
+        score — regression for the production bug where "Low Self-Worth"
+        was repeatedly scored 3/3 by citing turn ids that were only ever
+        retrieved for an unrelated topic.
+        """
+        from psyvec.evaluation.evidence_retrieval import (
+            load_keyword_lexicon,
+            load_tag_map,
+            retrieve_evidence,
+        )
+
+        sample = json.loads(GOLDEN_SAMPLE.read_text(encoding="utf-8"))
+        scale_file = PROJECT_ROOT / "configs" / "scales" / "PHQ-8.json"
+        topics = list(json.loads(scale_file.read_text(encoding="utf-8")).keys())
+        tag_map = load_tag_map(
+            PROJECT_ROOT / "configs" / "scales" / "topic_tag_map.json",
+            valid_topics=topics,
+        )
+        lexicon = load_keyword_lexicon(
+            PROJECT_ROOT / "configs" / "scales" / "topic_keywords.json",
+            valid_topics=topics,
+        )
+        bundles = retrieve_evidence(sample["real_interview"], topics, tag_map, lexicon)
+        sleep_bundle = bundles["Sleep Problems"]
+        self.assertEqual(
+            sleep_bundle.status,
+            "known",
+            "test fixture assumption broken: retune this test's citation if "
+            "retrieval no longer finds evidence for participant 404's Sleep "
+            "Problems",
+        )
+        # A turn id that IS real evidence, but only for "Sleep Problems" —
+        # FakeEngine always proposes its revision for "Loss of Interest", so
+        # citing this borrowed id must not be enough to raise that score.
+        borrowed_turn_id = sleep_bundle.snippets[0].turn_id
+
+        fake_engine = FakeEngine(
+            memory_update_score=3, memory_update_turn_id=borrowed_turn_id
+        )
+        result = self.module.run_full_sample_assessment(
+            sample_path=GOLDEN_SAMPLE,
+            engine=fake_engine,
+            enable_memory_update=True,
+            verbose=False,
+        )
+        self.assertNotIn("Loss of Interest", result["updated_scores"])
+        self.assertNotIn("updated_score", result["topics"]["Loss of Interest"])
 
 
 if __name__ == "__main__":

@@ -20,6 +20,8 @@ from psyvec.evaluation.interview_policy import (  # noqa: E402
     build_scorer_prompt,
     default_necessity,
     extract_demographics,
+    faithfulness_capped_score,
+    grounded_score,
     invalid_citations,
     low_faithfulness_flag,
     mentions_frequency,
@@ -147,6 +149,29 @@ class ExtractDemographicsTests(unittest.TestCase):
     def test_ignores_ellie_turns(self) -> None:
         interview = [{"roleName": "Ellie", "content": "i'm 5 years into this job"}]
         self.assertIn("Age: undisclosed", extract_demographics(interview))
+
+
+class GroundedScoreTests(unittest.TestCase):
+    def test_known_bundle_keeps_nonzero_score(self) -> None:
+        self.assertEqual(grounded_score(3, KNOWN_BUNDLE), (3, False))
+
+    def test_missing_bundle_resets_nonzero_score_to_zero(self) -> None:
+        self.assertEqual(grounded_score(3, MISSING_BUNDLE), (0, True))
+
+    def test_zero_score_is_never_flagged_as_overridden(self) -> None:
+        self.assertEqual(grounded_score(0, MISSING_BUNDLE), (0, False))
+
+
+class FaithfulnessCappedScoreTests(unittest.TestCase):
+    def test_uncapped_when_faithful(self) -> None:
+        self.assertEqual(faithfulness_capped_score(3, low_faithfulness=False), (3, False))
+
+    def test_capped_when_low_faithfulness(self) -> None:
+        self.assertEqual(faithfulness_capped_score(3, low_faithfulness=True), (1, True))
+
+    def test_not_capped_when_already_at_or_below_cap(self) -> None:
+        self.assertEqual(faithfulness_capped_score(1, low_faithfulness=True), (1, False))
+        self.assertEqual(faithfulness_capped_score(0, low_faithfulness=True), (0, False))
 
 
 class LowFaithfulnessFlagTests(unittest.TestCase):

@@ -197,17 +197,74 @@ def _tag_anchor_snippets(
     return buckets
 
 
+#: Cues that locally negate or contrast away a keyword match right before it
+#: (e.g. "i'd rather be happy than **sad**", "i wasn't **worthless**"). This is
+#: a cheap per-occurrence window check, not full negation scope resolution —
+#: it only looks a few words back from the match, so a negation elsewhere in
+#: a long turn does not suppress an unrelated later disclosure.
+_NEGATION_CUES = ("not", "n't", "never", "nothing", "without", "rather", "instead")
+_NEGATION_WINDOW_WORDS = 4
+
+
+def _is_locally_negated(
+    lowered_text: str, keyword: str, window: int = _NEGATION_WINDOW_WORDS
+) -> bool:
+    """Whether every occurrence of ``keyword`` in ``lowered_text`` is preceded
+    by a negation/contrast cue within ``window`` words.
+    """
+    matches = list(re.finditer(re.escape(keyword), lowered_text))
+    if not matches:
+        return False
+    for match in matches:
+        preceding_words = lowered_text[: match.start()].split()[-window:]
+        if not any(
+            any(cue in word for cue in _NEGATION_CUES) for word in preceding_words
+        ):
+            return False  # at least one occurrence is NOT negated -> a real hit
+    return True
+
+
+#: A DAIC-WOZ Ellie question phrased as a hypothetical ("what are you like
+#: when...", "what would you...") asks the participant to describe a general
+#: disposition, not to report their own state over the past two weeks. A
+#: keyword match in the reply to one of these is not a self-report and must
+#: not be retrieved as topic evidence.
+_HYPOTHETICAL_QUESTION_RE = re.compile(
+    r"\bwhat are you like\b|\bwhat would you\b|\bhow would you\b|"
+    r"\bif you (?:were|didn't|weren't|would)\b|\bimagine\b",
+    re.IGNORECASE,
+)
+
+
+def _replies_to_hypothetical_question(
+    turns: Sequence[InterviewTurn], index: int
+) -> bool:
+    if index == 0:
+        return False
+    previous = turns[index - 1]
+    if previous.speaker != "Ellie":
+        return False
+    return bool(_HYPOTHETICAL_QUESTION_RE.search(previous.text))
+
+
 def _keyword_snippets(
     turns: Sequence[InterviewTurn],
     keyword_lexicon: Mapping[str, Sequence[str]],
 ) -> dict[str, list[EvidenceSnippet]]:
     buckets: dict[str, list[EvidenceSnippet]] = {}
     for topic, keywords in keyword_lexicon.items():
-        for turn in turns:
+        for index, turn in enumerate(turns):
             if turn.speaker != "Participant":
                 continue
+            if _replies_to_hypothetical_question(turns, index):
+                continue
             lowered_text = turn.text.lower()
-            hits = sum(1 for keyword in keywords if keyword in lowered_text)
+            hits = sum(
+                1
+                for keyword in keywords
+                if keyword in lowered_text
+                and not _is_locally_negated(lowered_text, keyword)
+            )
             if hits == 0:
                 continue
             buckets.setdefault(topic, []).append(
