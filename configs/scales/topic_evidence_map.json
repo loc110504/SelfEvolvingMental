@@ -1,0 +1,81 @@
+{
+  "_meta": {
+    "description": "Rich DAIC-WOZ interviewer-tag -> PHQ-8 topic map, built by mining every tagged Ellie turn in the TRAIN split only (156 distinct tags; the previous topic_tag_map.json covered 27). Each mapping records how the question relates to the symptom, not just which symptom it touches.",
+    "built_from": "data/processed_daic_woz/train",
+    "generalization_check": "Key tags appear in 60% of train, 77% of dev and 62% of test participants; only 5 (dev) and 6 (test) tags are unseen in train.",
+    "relation": {
+      "probe": "The question asks about the symptom. A symptom-congruent answer is direct evidence FOR a nonzero score.",
+      "reverse": "The question asks about the OPPOSITE pole (pride, strengths, recent enjoyment, happiness). A rich, specific, positive answer is evidence AGAINST the symptom; a flat, empty or 'I can't think of anything' answer is evidence FOR it. Retrieving these without polarity is why the v2 Low Self-Worth item correlated NEGATIVELY (r = -0.13) with its reference despite 60% evidence coverage.",
+      "context": "General mood, diagnosis or treatment history. Never sufficient on its own for an item score."
+    },
+    "strength": {
+      "direct": "Asks the symptom itself.",
+      "indirect": "Elicits the symptom obliquely; needs the scorer to interpret."
+    }
+  },
+  "tags": {
+    "easy_sleep": [{"topic": "Sleep Problems", "relation": "probe", "strength": "direct"}],
+    "sleep_affects": [
+      {"topic": "Fatigue or Low Energy", "relation": "probe", "strength": "indirect"},
+      {"topic": "Sleep Problems", "relation": "probe", "strength": "indirect"}
+    ],
+
+    "feel_lately": [{"topic": "Depressed Mood", "relation": "probe", "strength": "direct"}],
+    "feel_down": [{"topic": "Depressed Mood", "relation": "probe", "strength": "direct"}],
+    "describe_felt": [{"topic": "Depressed Mood", "relation": "probe", "strength": "indirect"}],
+    "how_doingV": [{"topic": "Depressed Mood", "relation": "probe", "strength": "indirect"}],
+
+    "happy_lasttime": [
+      {"topic": "Depressed Mood", "relation": "reverse", "strength": "indirect"},
+      {"topic": "Loss of Interest", "relation": "reverse", "strength": "indirect"}
+    ],
+    "Ellie17Dec2012_09": [
+      {"topic": "Depressed Mood", "relation": "reverse", "strength": "indirect"},
+      {"topic": "Loss of Interest", "relation": "reverse", "strength": "indirect"}
+    ],
+    "Ellie17Dec2012_10": [{"topic": "Loss of Interest", "relation": "reverse", "strength": "direct"}],
+    "ideal_weekendC": [{"topic": "Loss of Interest", "relation": "reverse", "strength": "indirect"}],
+    "travel_changed": [{"topic": "Loss of Interest", "relation": "reverse", "strength": "indirect"}],
+
+    "feelbadly": [{"topic": "Low Self-Worth", "relation": "probe", "strength": "direct"}],
+    "feelguilty": [{"topic": "Low Self-Worth", "relation": "probe", "strength": "direct"}],
+    "self_change": [{"topic": "Low Self-Worth", "relation": "probe", "strength": "indirect"}],
+    "too_hard": [{"topic": "Low Self-Worth", "relation": "probe", "strength": "indirect"}],
+    "regret": [{"topic": "Low Self-Worth", "relation": "probe", "strength": "indirect"}],
+    "situation_handled": [{"topic": "Low Self-Worth", "relation": "probe", "strength": "indirect"}],
+    "memory_erase": [{"topic": "Low Self-Worth", "relation": "probe", "strength": "indirect"}],
+    "advice_back": [{"topic": "Low Self-Worth", "relation": "probe", "strength": "indirect"}],
+    "Ellie17Dec2012_08": [{"topic": "Low Self-Worth", "relation": "reverse", "strength": "indirect"}],
+    "Ellie17Dec2012_07": [{"topic": "Low Self-Worth", "relation": "reverse", "strength": "indirect"}],
+    "BF_describe": [{"topic": "Low Self-Worth", "relation": "reverse", "strength": "indirect"}],
+
+    "control_temper": [{"topic": "Psychomotor Changes", "relation": "probe", "strength": "indirect"}],
+    "last_argument": [{"topic": "Psychomotor Changes", "relation": "probe", "strength": "indirect"}],
+    "landed_trouble": [{"topic": "Psychomotor Changes", "relation": "probe", "strength": "indirect"}],
+    "relax_fishtank": [{"topic": "Psychomotor Changes", "relation": "probe", "strength": "indirect"}],
+    "behavior_changes": [
+      {"topic": "Psychomotor Changes", "relation": "probe", "strength": "indirect"},
+      {"topic": "Concentration Difficulties", "relation": "probe", "strength": "indirect"}
+    ],
+    "hard_decisionB": [{"topic": "Concentration Difficulties", "relation": "probe", "strength": "indirect"}],
+
+    "depression_diagnosed": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "ptsd_diagnosed": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "when_diagnosed": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "why_seek_help": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "suspect_problem": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "symptoms_cope": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "symptoms_what": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "bouts_symptoms": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "trigger": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "disturbing_thoughts": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "therapy_going": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "therapy_useful": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "therapy_changes": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "therapist_affect": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "therapist_useful": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "stop_going": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "uncomfortable_talkV": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}],
+    "been_hard": [{"topic": "CROSS_CUTTING", "relation": "context", "strength": "indirect"}]
+  }
+}

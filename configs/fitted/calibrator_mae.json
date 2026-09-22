@@ -1,0 +1,7 @@
+{
+  "intercept": 2.05,
+  "maximum": 24.0,
+  "minimum": 0.0,
+  "objective": "mae",
+  "slope": 0.55
+}

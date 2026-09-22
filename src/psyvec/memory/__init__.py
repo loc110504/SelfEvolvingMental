@@ -12,6 +12,14 @@ from psyvec.memory.case_memory import (
     ExpiredCaseMemoryError,
     UnauthorizedRoleError,
 )
+from psyvec.memory.patient_evidence import (
+    ContradictionEdge,
+    EvidenceRecord,
+    PatientEvidenceMemory,
+    add_evidence,
+    detect_contradictions,
+    make_record_id,
+)
 
 __all__ = [
     "AccessPolicy",
@@ -20,6 +28,12 @@ __all__ = [
     "CaseMemoryAccessError",
     "CaseMemoryAdapter",
     "CaseMemoryBuilder",
+    "ContradictionEdge",
+    "EvidenceRecord",
     "ExpiredCaseMemoryError",
+    "PatientEvidenceMemory",
     "UnauthorizedRoleError",
+    "add_evidence",
+    "detect_contradictions",
+    "make_record_id",
 ]

@@ -1,0 +1,53 @@
+{
+  "fits": {
+    "PHQ8_Appetite": {
+      "base_rate": 0.9146341463414634,
+      "intercept": 0.29626443706232797,
+      "slope": 0.3768385318252721,
+      "support": 82
+    },
+    "PHQ8_Concentrating": {
+      "base_rate": 0.65625,
+      "intercept": 0.06114189784422397,
+      "slope": 0.3809508176977747,
+      "support": 64
+    },
+    "PHQ8_Depressed": {
+      "base_rate": 0.8235294117647058,
+      "intercept": 0.4882068236547005,
+      "slope": 0.18568351784593132,
+      "support": 17
+    },
+    "PHQ8_Failure": {
+      "base_rate": 1.2093023255813953,
+      "intercept": 0.7318378523407221,
+      "slope": 0.26423387836999934,
+      "support": 43
+    },
+    "PHQ8_Moving": {
+      "base_rate": 0.3333333333333333,
+      "intercept": 0.13360494761853103,
+      "slope": 0.13329758720460785,
+      "support": 99
+    },
+    "PHQ8_NoInterest": {
+      "base_rate": 1.0666666666666667,
+      "intercept": 0.33694690740206523,
+      "slope": 0.3872333628173003,
+      "support": 15
+    },
+    "PHQ8_Sleep": {
+      "base_rate": 1.3333333333333333,
+      "intercept": 1.3597402597402597,
+      "slope": -0.011688311688311727,
+      "support": 9
+    },
+    "PHQ8_Tired": {
+      "base_rate": 0.7735849056603774,
+      "intercept": 0.1309595341772254,
+      "slope": 0.4793686796426046,
+      "support": 53
+    }
+  },
+  "source": "run"
+}

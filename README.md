@@ -11,6 +11,7 @@ Offline-research implementation of **PsyVEC** (Self-Evolving Mental Health Asses
 2. [Cơ chế Tự tiến hóa (Self-Evolution) & Tùy chọn Turn ON / OFF](#2-cơ-chế-tự-tiến-hóa-self-evolution--tùy-chọn-turn-on--off)
 3. [Hướng dẫn chạy Đơn mẫu (Single Sample Assessment)](#3-hướng-dẫn-chạy-đơn-mẫu-single-sample-assessment)
 4. [Hướng dẫn chạy Hàng loạt (Full Batch Evaluation)](#4-hướng-dẫn-chạy-hàng-loạt-full-batch-evaluation)
+   - [4c. Proposed method — Bounded Self-Evolving Evidence Memory](#4c-proposed-method--bounded-self-evolving-evidence-memory-adaptive-interviewing)
 5. [Cấu hình Model: HuggingFace, vLLM, Ollama, API](#5-cấu-hình-model-huggingface-vllm-ollama-api)
 6. [Evidence-Grounded Retrieval (Grounded Interview Loop)](#6-evidence-grounded-retrieval-grounded-interview-loop)
 7. [Offline Verification & Testing](#7-offline-verification--testing)
@@ -65,6 +66,13 @@ Trong `src/psyvec/evaluation/onoff.py`, hệ thống định nghĩa 4 cấu hìn
 
 ## 3. Hướng dẫn chạy Đơn mẫu (Single Sample Assessment)
 
+> **Lưu ý.** Từ v3, đường chạy chính là `scripts/run_psyvec.sh` /
+> `scripts/run_assessment.py` (mục 4b). Hai script dưới đây là pipeline v2,
+> giữ lại để tái lập kết quả cũ; hành vi đặc trưng của nó (item không có bằng
+> chứng bị ép về 0, tag map phẳng, không mở rộng truy vấn) đã có sẵn trong v3
+> dưới dạng cờ ablation, nên bảng ablation không cần chạy hai code path.
+
+
 Script [`scripts/run_qwen_sample.py`](scripts/run_qwen_sample.py) chạy trọn vẹn quy trình đánh giá 1 bệnh nhân qua 8 chủ đề của thang đo **PHQ-8**:
 1. Thu thập thông tin nhân khẩu học (tuổi) bằng regex trực tiếp trên transcript thật — không còn gọi LLM cho bước này (tránh bịa thông tin không có căn cứ).
 2. **Truy xuất bằng chứng (evidence retrieval)** cho từng chủ đề từ **toàn bộ** `real_interview` (không giới hạn 50 lượt đầu như trước) — xem [mục 6](#6-evidence-grounded-retrieval-grounded-interview-loop).
@@ -95,6 +103,13 @@ python3 scripts/run_qwen_sample.py --model-name Qwen/Qwen2.5-7B-Instruct
 ---
 
 ## 4. Hướng dẫn chạy Hàng loạt (Full Batch Evaluation)
+
+> **Lưu ý.** Từ v3, đường chạy chính là `scripts/run_psyvec.sh` /
+> `scripts/run_assessment.py` (mục 4b). Hai script dưới đây là pipeline v2,
+> giữ lại để tái lập kết quả cũ; hành vi đặc trưng của nó (item không có bằng
+> chứng bị ép về 0, tag map phẳng, không mở rộng truy vấn) đã có sẵn trong v3
+> dưới dạng cờ ablation, nên bảng ablation không cần chạy hai code path.
+
 
 Script [`scripts/run_batch_eval.py`](scripts/run_batch_eval.py) dùng để đánh giá tự động trên toàn bộ tập dữ liệu mẫu:
 - **Tối ưu**: Nạp mô hình một lần duy nhất vào bộ nhớ để đánh giá liên tục nhiều mẫu.
@@ -133,6 +148,167 @@ python3 scripts/run_batch_eval.py --data-dir data/processed_daic_woz/dev --num-s
 - `--output-dir` (Path): Thư mục lưu kết quả (mặc định: `results/evaluations/batch/`).
 
 ---
+
+## 4b. Pipeline v3 — chạy trên OpenAI, vLLM hoặc local
+
+### Vì sao viết lại
+
+Pipeline v2 (`run_batch_eval.py`) chấm điểm từ một **đoạn hội thoại mô phỏng**:
+bằng chứng truy hồi được đưa cho một LLM đóng vai bệnh nhân, LLM đó ứng khẩu một
+câu trả lời, rồi scorer chấm chính câu ứng khẩu. Đo trên kết quả v2:
+
+- Khi truy hồi hụt, persona bịa ra lời **phủ nhận**, scorer ghi 0 kèm một lý giải
+  lâm sàng tự tin nhưng không có trong transcript.
+- Luật cứng "không bằng chứng ⇒ 0" xoá ~2.66 điểm PHQ-8 mỗi người (≈40% tín
+  hiệu); trên tập topic đó nhãn thật khác 0 tới 55–78% số lần.
+- Người có nhãn ≥ 15 bị hạ 8.6 (dev) đến 10.1 (train) điểm.
+
+v3 bỏ persona khỏi đường chấm điểm và tách **"chưa ai hỏi"** khỏi **"bệnh nhân
+phủ nhận"**.
+
+### Các thành phần
+
+| Module | Vai trò |
+|---|---|
+| `psyvec.model.llm_backend` | một giao diện chat cho OpenAI / vLLM / local, tự retry, tự hạ cấp khi endpoint không hỗ trợ structured output, đếm token + chi phí |
+| `psyvec.evaluation.evidence_map` | truy hồi theo tag, dùng `topic_evidence_map.json` (46 tag, khai thác từ 156 tag thật của train) — có **polarity** |
+| `psyvec.evaluation.evidence_tiers` | ghép (câu hỏi, câu trả lời), gộp câu trả lời bị transcript cắt vụn, tìm kiếm theo truy vấn tự do |
+| `psyvec.evaluation.item_scoring` | prompt chấm điểm trực tiếp từ bằng chứng, có kênh `sufficient: false`; `quote_is_grounded()` bắt trích dẫn bịa |
+| `psyvec.evaluation.imputation` | ước lượng item bỏ trắng từ các item đã chấm, fit trên train |
+| `psyvec.evaluation.calibration` | hiệu chỉnh tổng điểm (`mae` / `spread` / `identity`) |
+| `psyvec.evolution.item_lessons` | mine → distil → cross-state paired validation → promote, lưu qua `psyvec.lessons.core.LessonStore` |
+
+Hai điểm đáng chú ý về mặt thiết kế:
+
+**Polarity.** `Ellie17Dec2012_08` ("what are you most proud of") khơi ra nội dung
+**tích cực**. v2 truy hồi nó làm bằng chứng *cho* Low Self-Worth — đó là cơ chế
+khiến item này tương quan **âm** với nhãn (r = −0.13 trên train dù coverage 60%).
+v3 gắn nhãn `reverse` và nói rõ cho scorer cách đọc.
+
+**Gộp turn.** DAIC-WOZ cắt một câu trả lời thành nhiều turn (`um` / `don't think
+about going to law school` / `uh` / `get a head start studying music`). Chấm rời
+từng mảnh thì ba mảnh là filler. v3 gộp lại theo câu hỏi đã khơi ra chúng.
+
+### Chạy
+
+```sh
+./scripts/run_psyvec.sh <stage>
+```
+
+Chọn backend bằng `MODE`, mọi thứ khác override qua biến môi trường:
+
+```sh
+# OpenAI
+export OPENAI_API_KEY=sk-...
+MODE=openai MODEL=gpt-4o-mini ./scripts/run_psyvec.sh all
+
+# vLLM (hoặc bất kỳ endpoint OpenAI-compatible nào: Ollama, LM Studio, OpenRouter)
+vllm serve Qwen/Qwen2.5-14B-Instruct --port 8000
+MODE=vllm MODEL=Qwen/Qwen2.5-14B-Instruct ./scripts/run_psyvec.sh dev
+
+# local transformers, không cần server
+MODE=local MODEL=Qwen/Qwen2.5-7B-Instruct DEVICE=cuda ./scripts/run_psyvec.sh dev
+```
+
+| Stage | Làm gì |
+|---|---|
+| `fit` | fit imputer (+ calibrator nếu đã có train run) — **chỉ trên train** |
+| `train` | chạy tập train, lưu cache bằng chứng cho vòng lesson |
+| `evolve` | mine → distil → verify transfer → promote lessons |
+| `dev` / `test` | chạy split tương ứng (`test` chạy sau cùng, một lần) |
+| `score` | in metric cho một thư mục kết quả |
+| `ablate` | quét toàn bộ nhánh ablation trên dev |
+| `all` | fit → train → evolve → dev → score |
+
+Gọi thẳng cũng được, mọi cờ đều lộ ra:
+
+```sh
+python3 scripts/run_assessment.py --backend vllm --model Qwen/Qwen2.5-14B-Instruct \
+    --base-url http://localhost:8000/v1 \
+    --data-dir data/processed_daic_woz/dev --output-dir results/evaluations/qwen_dev \
+    --imputation-model configs/fitted/imputation_references.json --concurrency 16
+```
+
+### Ablation
+
+Mọi nhánh đi qua **cùng một** code path, nên bảng ablation so sánh một
+implementation với chính nó:
+
+| Cờ | Gỡ bỏ thứ gì |
+|---|---|
+| `--no-imputation` | item bỏ trắng tính 0 (tái lập luật v2) |
+| `--max-rounds 1` | không mở rộng truy vấn |
+| `--no-polarity` | bằng chứng đảo cực trình bày như bằng chứng thường (tái lập tag map phẳng của v2) |
+| `--no-turn-merge` | không gộp câu trả lời bị cắt vụn |
+| bỏ `--lessons` | không dùng lesson memory |
+
+### Đọc kết quả
+
+```sh
+python3 scripts/score_run.py results/evaluations/<run>/dev --split dev
+```
+
+`score_run.py` đọc được cả schema v2 lẫn v3, và in kèm những mốc mà phân tích v2
+cho thấy là bắt buộc: sàn của bộ dự đoán hằng số (trên dev là MAE 5.49 — cả ba
+baseline prompt trong repo này đều **thua** mốc đó), sai số có dấu tách theo mức
+nặng, tỉ lệ độ phân tán, và phân rã oracle giữa lỗi do truy hồi và lỗi do chấm.
+
+## 4c. Proposed method — Bounded Self-Evolving Evidence Memory (adaptive interviewing)
+
+Đây là pipeline hoàn chỉnh của **phương pháp đề xuất**: bộ nhớ bằng chứng
+provenance-preserving (không bao giờ ghi đè, mâu thuẫn được gắn cờ chứ không bị
+hoà tan), phỏng vấn thích ứng theo utility (chọn topic nào đáng hỏi tiếp theo
+dưới một ngân sách chung, thay vì hỏi thêm từng topic độc lập tới khi đủ), và
+hai kênh self-evolution **bounded** (chỉ tiến hoá chiến lược diễn giải bằng
+chứng và chiến lược thu thập bằng chứng — rubric PHQ-8, ngưỡng điểm, protocol
+lâm sàng luôn cố định) — chỉ chạy trên **train**, đóng băng rồi mới đánh giá
+trên **dev**/**test**.
+
+Vì DAIC-WOZ chỉ có transcript tĩnh, không có bệnh nhân sống, "phỏng vấn thích
+ứng" ở đây nghĩa là **thu thập bằng chứng tuần tự, có ngân sách** trên transcript
+thật — không sinh hội thoại giả lập cho bệnh nhân (đây chính là lỗi mà pipeline
+v3 ở trên đã sửa: persona ứng khẩu khi không có bằng chứng sẽ bịa ra lời phủ
+nhận).
+
+### Thành phần mới (ngoài các module v3 đã tái dùng ở mục 4b)
+
+| Module | Vai trò |
+|---|---|
+| `psyvec.memory.patient_evidence` | Patient Evidence Memory: bản ghi bằng chứng atomic (polarity, frequency_basis, provenance), không ghi đè, phát hiện mâu thuẫn đối lập |
+| `psyvec.evaluation.evidence_extraction` | Evidence Agent: tách excerpt mới truy hồi mỗi vòng thành các claim atomic, kể cả các claim mâu thuẫn nhau |
+| `psyvec.interview.utility` | scheduler thuần hàm: `U = U_need + α·U_experience − β·R`, ngân sách vòng mở rộng là điều kiện dừng chung, không phải trọng số riêng từng topic |
+| `psyvec.evolution.interview_lessons` | kênh self-evolution thứ 2: mine → distil → verify transfer → promote lesson **chiến lược thu thập** (khác `item_lessons`, vốn evolve chiến lược **diễn giải điểm**) |
+
+### Chạy
+
+```sh
+# Ollama (mặc định), model gpt-oss:20b
+ollama serve &
+ollama pull gpt-oss:20b
+./scripts/run_proposed_method.sh all
+
+# OpenAI, model gpt-4o-mini
+export OPENAI_API_KEY=sk-...
+MODE=openai ./scripts/run_proposed_method.sh all
+```
+
+| Stage | Làm gì |
+|---|---|
+| `fit` | fit imputer (+ calibrator nếu đã có train run) — chỉ trên train |
+| `train` | chạy adaptive interview trên train, dựng Patient Evidence Memory + cache acquisition trace cho hai kênh evolve |
+| `evolve` | mine → distil → verify transfer → promote cho **cả hai** kênh lesson (interpretation + acquisition-strategy) |
+| `freeze` | không tính toán gì — chỉ xác nhận hai file lesson đã ghi xong, từ đây chỉ đọc |
+| `dev` / `test` | chạy split tương ứng với bộ nhớ đã đóng băng, chỉ đánh giá |
+| `score` | in metric + xuất Evidence-Criterion Map (`build_evidence_criterion_map.py`) cho một thư mục kết quả |
+| `all` | fit → train → evolve → fit lại → freeze → dev → test → score(dev) → score(test) |
+
+Không có nhánh ablation trong pipeline này — chỉ chạy phương pháp đề xuất đầy đủ.
+
+Mỗi participant trong `results/proposed/<run>/{train,dev,test}/*_evaluation.json`
+mang thêm hai trường so với schema v3: `evidence_memory` (toàn bộ bản ghi bằng
+chứng + cạnh mâu thuẫn) và `criterion_map` (Evidence-Criterion Map: trạng thái,
+điểm, trích dẫn, mâu thuẫn, và một **counterfactual tất định** — "bằng chứng nào
+sẽ đổi điểm này" — đọc thẳng từ rubric, không gọi model nên không thể bịa).
 
 ## 5. Cấu hình Model: HuggingFace, vLLM, Ollama, API
 

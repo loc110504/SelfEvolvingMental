@@ -1,0 +1,105 @@
+{
+  "_meta": {
+    "description": "Seed retrieval queries per PHQ-8 topic, phrased the way people actually speak in an interview rather than the way a clinician writes. Used to search the full transcript before any model call, and as the 'already tried' list the interviewer role must not repeat when it expands the query set.",
+    "design": "Deliberately corpus-neutral: no DAIC-WOZ-specific wording, so the same file transfers to another interview corpus. Each entry is a short phrase; retrieval scores idf-weighted token overlap plus a verbatim-phrase bonus, so multi-word entries act as soft phrase anchors rather than hard filters.",
+    "note": "Appetite or Weight Changes and Psychomotor Changes have no direct interviewer question anywhere in the DAIC-WOZ protocol, so for those two topics these queries plus model-generated expansion are the ONLY route to evidence."
+  },
+  "Loss of Interest": [
+    "don't feel like doing anything",
+    "lost interest in things",
+    "stopped doing things i used to love",
+    "nothing sounds fun anymore",
+    "used to enjoy but not anymore",
+    "can't be bothered to do things",
+    "no motivation to do anything",
+    "just sit around all day",
+    "hobbies i gave up",
+    "hard to get excited about anything"
+  ],
+  "Depressed Mood": [
+    "feeling down lately",
+    "been really sad",
+    "feel hopeless about things",
+    "crying a lot",
+    "feel empty inside",
+    "in a dark place",
+    "miserable most of the time",
+    "struggling emotionally right now",
+    "feel numb",
+    "can't shake this feeling"
+  ],
+  "Sleep Problems": [
+    "trouble falling asleep",
+    "lay awake for hours",
+    "wake up in the middle of the night",
+    "can't get back to sleep",
+    "only get a few hours of sleep",
+    "sleeping way too much",
+    "up all night",
+    "wake up too early",
+    "toss and turn",
+    "sleep is terrible"
+  ],
+  "Fatigue or Low Energy": [
+    "always tired",
+    "no energy at all",
+    "exhausted all the time",
+    "drained after doing nothing",
+    "worn out",
+    "hard to get out of bed",
+    "everything takes so much effort",
+    "run out of steam",
+    "feel sluggish",
+    "tired even after sleeping"
+  ],
+  "Appetite or Weight Changes": [
+    "not really eating",
+    "lost my appetite",
+    "forget to eat",
+    "eating way too much",
+    "stress eating",
+    "gained a lot of weight",
+    "lost a lot of weight",
+    "skipping meals",
+    "food doesn't taste like anything",
+    "eat when i'm upset",
+    "haven't been hungry",
+    "my weight changed"
+  ],
+  "Low Self-Worth": [
+    "feel like a failure",
+    "feel bad about myself",
+    "blame myself for things",
+    "feel guilty about",
+    "let people down",
+    "not good enough",
+    "feel worthless",
+    "disappointed in myself",
+    "hard on myself",
+    "feel like a burden"
+  ],
+  "Concentration Difficulties": [
+    "can't concentrate",
+    "trouble focusing",
+    "mind wanders",
+    "can't remember things",
+    "hard to make decisions",
+    "read the same thing over and over",
+    "zone out a lot",
+    "brain feels foggy",
+    "lose my train of thought",
+    "trouble thinking clearly"
+  ],
+  "Psychomotor Changes": [
+    "can't sit still",
+    "restless all the time",
+    "fidgety",
+    "pacing around",
+    "moving really slowly",
+    "everything takes longer than it used to",
+    "people say i talk slower",
+    "feel agitated",
+    "wound up and tense",
+    "sluggish and heavy"
+  ]
+}
