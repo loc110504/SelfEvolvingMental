@@ -206,13 +206,17 @@ case "$STAGE" in
 
   all)
     require_key
-    "$0" fit
-    "$0" train
-    "$0" evolve
-    "$0" fit
-    "$0" freeze
-    "$0" dev
-    "$0" test
+    # Invoked as "bash $0 ..." rather than executed directly: the checkout's
+    # executable bit is not guaranteed (e.g. on a mounted/network filesystem
+    # that does not preserve Unix permissions), so re-invoking bare "$0" here
+    # would fail with "Permission denied" even though `bash "$0"` works fine.
+    bash "$0" fit
+    bash "$0" train
+    bash "$0" evolve
+    bash "$0" fit
+    bash "$0" freeze
+    bash "$0" dev
+    bash "$0" test
     score dev
     score test
     ;;
